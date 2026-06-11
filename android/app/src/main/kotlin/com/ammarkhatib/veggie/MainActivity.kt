@@ -1,4 +1,4 @@
-package com.example.vegan_motivation_app
+package com.ammarkhatib.veggie
 
 import io.flutter.embedding.android.FlutterActivity
 
