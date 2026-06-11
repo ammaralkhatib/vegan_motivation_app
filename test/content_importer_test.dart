@@ -94,10 +94,10 @@ void main() {
       jsonString: jsonString,
       lastImportedVersion: 0,
     );
-    expect(version, 1);
+    expect(version, greaterThanOrEqualTo(1));
 
     final quotes = await db.select(db.quotes).get();
-    expect(quotes.length, greaterThanOrEqualTo(60));
+    expect(quotes.length, greaterThanOrEqualTo(500));
 
     final categories = await db.select(db.categories).get();
     expect(categories.length, 6);

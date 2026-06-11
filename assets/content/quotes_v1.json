@@ -1,73 +1,2583 @@
 {
-  "version": 1,
+  "version": 2,
   "categories": [
-    { "id": "why_vegan", "name": "Why Vegan", "emoji": "🌍", "sortOrder": 0 },
-    { "id": "quick_tips", "name": "Quick Tips", "emoji": "🥗", "sortOrder": 1 },
-    { "id": "youre_awesome", "name": "You're Awesome", "emoji": "💚", "sortOrder": 2 },
-    { "id": "facts", "name": "Facts", "emoji": "📊", "sortOrder": 3 },
-    { "id": "staying_strong", "name": "Staying Strong", "emoji": "💪", "sortOrder": 4 },
-    { "id": "milestones", "name": "Milestones", "emoji": "🎉", "sortOrder": 5 }
+    {
+      "id": "why_vegan",
+      "name": "Why Vegan",
+      "emoji": "🌍",
+      "sortOrder": 0
+    },
+    {
+      "id": "quick_tips",
+      "name": "Quick Tips",
+      "emoji": "🥗",
+      "sortOrder": 1
+    },
+    {
+      "id": "youre_awesome",
+      "name": "You're Awesome",
+      "emoji": "💚",
+      "sortOrder": 2
+    },
+    {
+      "id": "facts",
+      "name": "Facts",
+      "emoji": "📊",
+      "sortOrder": 3
+    },
+    {
+      "id": "staying_strong",
+      "name": "Staying Strong",
+      "emoji": "💪",
+      "sortOrder": 4
+    },
+    {
+      "id": "milestones",
+      "name": "Milestones",
+      "emoji": "🎉",
+      "sortOrder": 5
+    }
   ],
   "quotes": [
-    { "id": 1001, "category": "why_vegan", "text": "Every meal is a quiet vote for the kind of world you want to live in." },
-    { "id": 1002, "category": "why_vegan", "text": "Compassion isn't a grand gesture. It's what you put on your plate, three times a day." },
-    { "id": 1003, "category": "why_vegan", "text": "The animals can't thank you. That's exactly why it matters." },
-    { "id": 1004, "category": "why_vegan", "text": "You don't need a reason to be kind. But if you want one: there are billions." },
-    { "id": 1005, "category": "why_vegan", "text": "A plant-based plate is climate action you can take today — no permission needed." },
-    { "id": 1006, "category": "why_vegan", "text": "Your heart, the forests, the oceans, the animals. One choice helps them all." },
-    { "id": 1007, "category": "why_vegan", "text": "Eating plants isn't giving something up. It's giving something back." },
-    { "id": 1008, "category": "why_vegan", "text": "The gentlest thing you do today might also be the most powerful." },
-    { "id": 1009, "category": "why_vegan", "text": "Somewhere, a cow is grazing under the sun because demand shifted. You're part of that shift." },
-    { "id": 1010, "category": "why_vegan", "text": "Living your values at every meal — that's not extreme. That's integrity." },
-    { "id": 1011, "category": "why_vegan", "text": "You looked at the truth and didn't look away. That's where every vegan story begins." },
-    { "id": 1012, "category": "why_vegan", "text": "Kindness scales. One plate, one day, one life at a time." },
-    { "id": 2001, "category": "quick_tips", "text": "Craving something creamy? Blend soaked cashews with lemon and a pinch of salt. Instant magic." },
-    { "id": 2002, "category": "quick_tips", "text": "Mushrooms + soy sauce + smoked paprika = the umami trio that replaces almost anything." },
-    { "id": 2003, "category": "quick_tips", "text": "Batch-cook one pot of beans on Sunday. Future-you will be grateful all week." },
-    { "id": 2004, "category": "quick_tips", "text": "Nutritional yeast on popcorn, pasta, or toast — cheesy comfort, zero cows involved." },
-    { "id": 2005, "category": "quick_tips", "text": "A ripe banana or 3 tbsp aquafaba replaces an egg in most baking. Pancakes won't know the difference." },
-    { "id": 2006, "category": "quick_tips", "text": "Freeze overripe bananas. Blend when frozen. Congratulations — that's ice cream now." },
-    { "id": 2007, "category": "quick_tips", "text": "Toss chickpeas in olive oil and spices, roast 25 minutes. Crunchy snack, big protein." },
-    { "id": 2008, "category": "quick_tips", "text": "Tofu trick: press it, freeze it, thaw it. The texture transforms completely." },
-    { "id": 2009, "category": "quick_tips", "text": "Lentils cook in 20 minutes, cost pennies, and pack more iron than steak per calorie." },
-    { "id": 2010, "category": "quick_tips", "text": "Make tonight's curry with coconut milk and red lentils. One pot, fifteen minutes, pure comfort." },
-    { "id": 2011, "category": "quick_tips", "text": "Date + peanut butter = nature's candy bar. Keep a stash for the 3pm slump." },
-    { "id": 2012, "category": "quick_tips", "text": "When in doubt: grain + green + bean + sauce. The formula behind a thousand great bowls." },
-    { "id": 3001, "category": "youre_awesome", "text": "You're doing something most people only talk about. Quietly. Daily. Beautifully." },
-    { "id": 3002, "category": "youre_awesome", "text": "Look at you — changing the world before breakfast." },
-    { "id": 3003, "category": "youre_awesome", "text": "Your kindness has a seat at every table you sit at." },
-    { "id": 3004, "category": "youre_awesome", "text": "Someone out there went vegan because they watched you do it with joy." },
-    { "id": 3005, "category": "youre_awesome", "text": "You aligned your life with your heart. That takes more courage than people know." },
-    { "id": 3006, "category": "youre_awesome", "text": "Today, your choices will be gentle, and gentle is strong." },
-    { "id": 3007, "category": "youre_awesome", "text": "You're proof that one person's plate can hold a whole philosophy." },
-    { "id": 3008, "category": "youre_awesome", "text": "Be proud. Not loud-proud, necessarily. Just the warm kind that glows from inside." },
-    { "id": 3009, "category": "youre_awesome", "text": "The world needs more people who care this much. Thanks for being one of them." },
-    { "id": 3010, "category": "youre_awesome", "text": "You make compassion look easy. (We know it isn't always.)" },
-    { "id": 4001, "category": "facts", "text": "A single plant-based day can save around 4,000 litres of water — about 50 bathtubs full." },
-    { "id": 4002, "category": "facts", "text": "Plant-based eaters spare roughly one animal's life every single day. That's 365 lives a year." },
-    { "id": 4003, "category": "facts", "text": "Skipping meat for a day saves about as much CO₂ as driving 30 fewer kilometres." },
-    { "id": 4004, "category": "facts", "text": "Beans, lentils and peas enrich the soil they grow in — they literally give back to the earth." },
-    { "id": 4005, "category": "facts", "text": "It takes up to 20 times less land to feed a person on plants than on animal products." },
-    { "id": 4006, "category": "facts", "text": "Fiber is found only in plants — and most plant-eaters get double the average intake." },
-    { "id": 4007, "category": "facts", "text": "The global plant-based food market keeps growing every year. You're early, not alone." },
-    { "id": 4008, "category": "facts", "text": "Studies link plant-rich diets to healthier hearts and lower blood pressure. Your arteries approve." },
-    { "id": 4009, "category": "facts", "text": "One hectare of land can produce about 10 times more plant protein than animal protein." },
-    { "id": 4010, "category": "facts", "text": "Many of the strongest animals on Earth — elephants, gorillas, bison — are plant-powered." },
-    { "id": 5001, "category": "staying_strong", "text": "Cravings pass. Values stay. Pour a glass of water, take a breath — you've got this." },
-    { "id": 5002, "category": "staying_strong", "text": "It's okay to miss old flavors. Missing them doesn't mean you need them back." },
-    { "id": 5003, "category": "staying_strong", "text": "At awkward dinners, remember: you're not the difficult one. You're the consistent one." },
-    { "id": 5004, "category": "staying_strong", "text": "Progress, not perfection. A wobble isn't a fall, and a fall isn't the end." },
-    { "id": 5005, "category": "staying_strong", "text": "You don't have to win the debate at the table. Your example speaks after you leave." },
-    { "id": 5006, "category": "staying_strong", "text": "Craving cheese? It's usually salt + fat your body wants. Hummus, avocado, or cashew cream can answer." },
-    { "id": 5007, "category": "staying_strong", "text": "Remember the moment you decided. That person is still in you, and they were right." },
-    { "id": 5008, "category": "staying_strong", "text": "Being the only vegan in the room is hard. It also means the room now contains a vegan." },
-    { "id": 6001, "category": "milestones", "text": "Another day plant-based. Small word, big deal: another." },
-    { "id": 6002, "category": "milestones", "text": "One week strong. Seven days of meals that matched your heart." },
-    { "id": 6003, "category": "milestones", "text": "A whole month! Your habits are becoming your nature." },
-    { "id": 6004, "category": "milestones", "text": "100 days. You're not trying this anymore — you're living it." },
-    { "id": 6005, "category": "milestones", "text": "Every streak started with a single 'today, yes'. Keep saying it." },
-    { "id": 6006, "category": "milestones", "text": "One year vegan: hundreds of animals, tonnes of CO₂, and one very aligned human." },
-    { "id": 6007, "category": "milestones", "text": "Celebrate the boring days too — the ones where it was just easy. That's growth." },
-    { "id": 6008, "category": "milestones", "text": "Look back at day one of your journey. Wave. They'd be so proud of you." }
+    {
+      "id": 1001,
+      "category": "why_vegan",
+      "text": "Every meal is a quiet vote for the kind of world you want to live in."
+    },
+    {
+      "id": 1002,
+      "category": "why_vegan",
+      "text": "Compassion isn't a grand gesture. It's what you put on your plate, three times a day."
+    },
+    {
+      "id": 1003,
+      "category": "why_vegan",
+      "text": "The animals can't thank you. That's exactly why it matters."
+    },
+    {
+      "id": 1004,
+      "category": "why_vegan",
+      "text": "You don't need a reason to be kind. But if you want one: there are billions."
+    },
+    {
+      "id": 1005,
+      "category": "why_vegan",
+      "text": "A plant-based plate is climate action you can take today — no permission needed."
+    },
+    {
+      "id": 1006,
+      "category": "why_vegan",
+      "text": "Your heart, the forests, the oceans, the animals. One choice helps them all."
+    },
+    {
+      "id": 1007,
+      "category": "why_vegan",
+      "text": "Eating plants isn't giving something up. It's giving something back."
+    },
+    {
+      "id": 1008,
+      "category": "why_vegan",
+      "text": "The gentlest thing you do today might also be the most powerful."
+    },
+    {
+      "id": 1009,
+      "category": "why_vegan",
+      "text": "Somewhere, a cow is grazing under the sun because demand shifted. You're part of that shift."
+    },
+    {
+      "id": 1010,
+      "category": "why_vegan",
+      "text": "Living your values at every meal — that's not extreme. That's integrity."
+    },
+    {
+      "id": 1011,
+      "category": "why_vegan",
+      "text": "You looked at the truth and didn't look away. That's where every vegan story begins."
+    },
+    {
+      "id": 1012,
+      "category": "why_vegan",
+      "text": "Kindness scales. One plate, one day, one life at a time."
+    },
+    {
+      "id": 1013,
+      "category": "why_vegan",
+      "text": "Somewhere a hen is dust-bathing in the sun, and your choices helped make room for that."
+    },
+    {
+      "id": 1014,
+      "category": "why_vegan",
+      "text": "Compassion isn't a grand gesture. Sometimes it's just what you put on your plate at lunch."
+    },
+    {
+      "id": 1015,
+      "category": "why_vegan",
+      "text": "You don't have to be perfect to matter. A mostly-plant week still ripples outward."
+    },
+    {
+      "id": 1016,
+      "category": "why_vegan",
+      "text": "The kindest version of you and the hungriest version of you can sit at the same table."
+    },
+    {
+      "id": 1017,
+      "category": "why_vegan",
+      "text": "Plants can feed more people on less land — your dinner is quietly generous with the planet."
+    },
+    {
+      "id": 1018,
+      "category": "why_vegan",
+      "text": "Living your values three times a day is a kind of practice. You're already practicing."
+    },
+    {
+      "id": 1019,
+      "category": "why_vegan",
+      "text": "A cow's curiosity, a pig's playfulness, a chicken's small routines — they all get to continue because of choices like yours."
+    },
+    {
+      "id": 1020,
+      "category": "why_vegan",
+      "text": "Eating with intention turns an ordinary Tuesday into a small act of care."
+    },
+    {
+      "id": 1021,
+      "category": "why_vegan",
+      "text": "The world changes in inches, and your grocery cart covers a few of them every week."
+    },
+    {
+      "id": 1022,
+      "category": "why_vegan",
+      "text": "You chose a path where kindness and dinner point in the same direction. That alignment is worth protecting."
+    },
+    {
+      "id": 1023,
+      "category": "why_vegan",
+      "text": "Rivers, forests, and topsoil all breathe a little easier when more meals come from plants."
+    },
+    {
+      "id": 1024,
+      "category": "why_vegan",
+      "text": "There's a quiet confidence in knowing your appetite doesn't argue with your conscience."
+    },
+    {
+      "id": 1025,
+      "category": "why_vegan",
+      "text": "Fiber, color, variety — a plant-forward plate tends to love your body back."
+    },
+    {
+      "id": 1026,
+      "category": "why_vegan",
+      "text": "Animals don't need you to be loud. They just need you to keep showing up, meal after meal."
+    },
+    {
+      "id": 1027,
+      "category": "why_vegan",
+      "text": "You're proof that gentleness can be a daily habit, not just a mood."
+    },
+    {
+      "id": 1028,
+      "category": "why_vegan",
+      "text": "Choosing plants can shrink your footprint more than almost any other daily habit — and it tastes like curry."
+    },
+    {
+      "id": 1029,
+      "category": "why_vegan",
+      "text": "Your future self gets a planet with more wild places in it, partly because of how you eat now."
+    },
+    {
+      "id": 1030,
+      "category": "why_vegan",
+      "text": "Every lentil soup is a small treaty between your taste buds and your beliefs."
+    },
+    {
+      "id": 1031,
+      "category": "why_vegan",
+      "text": "The animals you'll never meet are still real. So is the difference you make for them."
+    },
+    {
+      "id": 1032,
+      "category": "why_vegan",
+      "text": "Being vegan isn't about purity. It's about pointing your life in a direction you're proud of."
+    },
+    {
+      "id": 1033,
+      "category": "why_vegan",
+      "text": "Around three meals a day, your values get a vote. Yours keep winning."
+    },
+    {
+      "id": 1034,
+      "category": "why_vegan",
+      "text": "Kindness that costs you a little convenience is still kindness — maybe especially then."
+    },
+    {
+      "id": 1035,
+      "category": "why_vegan",
+      "text": "A plant-rich diet can lighten the load on water, land, and air all at once. One plate, three gifts."
+    },
+    {
+      "id": 1036,
+      "category": "why_vegan",
+      "text": "You don't eat this way because it's easy. You eat this way because it's true to you."
+    },
+    {
+      "id": 1037,
+      "category": "why_vegan",
+      "text": "The oceans hold more wonder when we ask less of them. Thank you for asking less."
+    },
+    {
+      "id": 1038,
+      "category": "why_vegan",
+      "text": "When your heart and your habits match, life gets quieter in the best way."
+    },
+    {
+      "id": 1039,
+      "category": "why_vegan",
+      "text": "A goat headbutting a fence post for fun is reason enough. Joy deserves protecting."
+    },
+    {
+      "id": 1040,
+      "category": "why_vegan",
+      "text": "You're not missing out — you're opting in to a bigger table with more colors on it."
+    },
+    {
+      "id": 1041,
+      "category": "why_vegan",
+      "text": "Some people wait for the world to change. You went ahead and changed dinner."
+    },
+    {
+      "id": 1042,
+      "category": "why_vegan",
+      "text": "Plants ask so little and give so much. There's a life lesson in that, and also lunch."
+    },
+    {
+      "id": 1043,
+      "category": "why_vegan",
+      "text": "The gentlest argument you'll ever make is a really good vegan meal shared with a friend."
+    },
+    {
+      "id": 1044,
+      "category": "why_vegan",
+      "text": "Your choices say animals are someone, not something. That sentence matters."
+    },
+    {
+      "id": 1045,
+      "category": "why_vegan",
+      "text": "Eating lower on the food chain can mean more harvest goes to people, not through them."
+    },
+    {
+      "id": 1046,
+      "category": "why_vegan",
+      "text": "A heart that includes everyone at the table — even the ones with feathers — is a heart at full size."
+    },
+    {
+      "id": 1047,
+      "category": "why_vegan",
+      "text": "You'll never know exactly how much good you've done. That's fine. The good doesn't need an audit."
+    },
+    {
+      "id": 1048,
+      "category": "why_vegan",
+      "text": "Staying vegan on the boring days counts double. Consistency is its own kind of courage."
+    },
+    {
+      "id": 1049,
+      "category": "why_vegan",
+      "text": "Beans and grains have fed civilizations for thousands of years. You're in very old, very good company."
+    },
+    {
+      "id": 1050,
+      "category": "why_vegan",
+      "text": "The version of you who started this would be proud of how far you've carried it."
+    },
+    {
+      "id": 1051,
+      "category": "why_vegan",
+      "text": "More forests standing, more fish swimming, more mornings where nothing was taken — that's the direction you lean."
+    },
+    {
+      "id": 1052,
+      "category": "why_vegan",
+      "text": "It's a strange superpower: doing less harm just by enjoying different food."
+    },
+    {
+      "id": 1053,
+      "category": "why_vegan",
+      "text": "When someone asks why, you don't need a speech. Your peace with your plate answers for you."
+    },
+    {
+      "id": 1054,
+      "category": "why_vegan",
+      "text": "Antioxidants, whole grains, leafy greens — your meals can be both an ethic and a tonic."
+    },
+    {
+      "id": 1055,
+      "category": "why_vegan",
+      "text": "You didn't lose a food group. You found a worldview that fits in a bowl."
+    },
+    {
+      "id": 1056,
+      "category": "why_vegan",
+      "text": "A pig recognizing a friend, a sheep remembering a face — minds like these are why you chose differently."
+    },
+    {
+      "id": 1057,
+      "category": "why_vegan",
+      "text": "Hope is easier to hold when your hands are also doing something. Yours are, daily."
+    },
+    {
+      "id": 1058,
+      "category": "why_vegan",
+      "text": "Growing food instead of feed can free up astonishing amounts of land for nature to take back."
+    },
+    {
+      "id": 1059,
+      "category": "why_vegan",
+      "text": "Your kitchen is a small embassy for a kinder world. The cuisine there is excellent."
+    },
+    {
+      "id": 1060,
+      "category": "why_vegan",
+      "text": "Choosing the oat milk isn't dramatic. But a million quiet choices never are — until they add up."
+    },
+    {
+      "id": 1061,
+      "category": "why_vegan",
+      "text": "Integrity is just doing the thing you believe when nobody's checking. Like breakfast."
+    },
+    {
+      "id": 1062,
+      "category": "why_vegan",
+      "text": "You can love tradition and still write a better one. Recipes evolve; so do we."
+    },
+    {
+      "id": 1063,
+      "category": "why_vegan",
+      "text": "There's room in this life for ambition, joy, dessert, and mercy. You're proof they coexist."
+    },
+    {
+      "id": 1064,
+      "category": "why_vegan",
+      "text": "The market shifts one shopper at a time, and the shelves are already starting to look like your values."
+    },
+    {
+      "id": 1065,
+      "category": "why_vegan",
+      "text": "Eating plants is one of the few habits that's gentle on your body and the biosphere at the same time."
+    },
+    {
+      "id": 1066,
+      "category": "why_vegan",
+      "text": "An animal's whole world is its one life. You decided that world deserved to stay whole."
+    },
+    {
+      "id": 1067,
+      "category": "why_vegan",
+      "text": "You're not against anything at dinner. You're for something — and it shows."
+    },
+    {
+      "id": 1068,
+      "category": "why_vegan",
+      "text": "Curiosity got you here, compassion keeps you here, and good food makes staying easy."
+    },
+    {
+      "id": 1069,
+      "category": "why_vegan",
+      "text": "The carbon math of beans is famously friendly. Your chili is basically climate diplomacy."
+    },
+    {
+      "id": 1070,
+      "category": "why_vegan",
+      "text": "Some convictions fade when tested. Yours gets reaffirmed every time the food is this good."
+    },
+    {
+      "id": 1071,
+      "category": "why_vegan",
+      "text": "Living gently is not weakness. It takes a steady spine to be soft on purpose."
+    },
+    {
+      "id": 1072,
+      "category": "why_vegan",
+      "text": "A calf staying with its mother is an ordinary miracle your choices make more common."
+    },
+    {
+      "id": 1073,
+      "category": "why_vegan",
+      "text": "The best part of aligning your meals with your morals? You stop having to look away."
+    },
+    {
+      "id": 1074,
+      "category": "why_vegan",
+      "text": "Your plate is a tiny ecosystem of grains, greens, and good intentions. Tend it with pride."
+    },
+    {
+      "id": 1075,
+      "category": "why_vegan",
+      "text": "Years from now, this way of eating may just look like common sense. You were simply early."
+    },
+    {
+      "id": 1076,
+      "category": "why_vegan",
+      "text": "Wonder is a reason too. Octopuses solve puzzles, crows hold grudges, and you decided minds matter."
+    },
+    {
+      "id": 1077,
+      "category": "why_vegan",
+      "text": "It can take less water to grow a meal of plants than you'd guess — your dinner travels light."
+    },
+    {
+      "id": 1078,
+      "category": "why_vegan",
+      "text": "You are somebody's example, even if they never tell you. Keep being one worth following."
+    },
+    {
+      "id": 1079,
+      "category": "why_vegan",
+      "text": "The point was never to be flawless. The point was to keep choosing care, and you do."
+    },
+    {
+      "id": 1080,
+      "category": "why_vegan",
+      "text": "A vegan meal isn't an absence of anything. It's a presence of intention."
+    },
+    {
+      "id": 1081,
+      "category": "why_vegan",
+      "text": "Animals can't thank you, so let the quiet of your conscience do it instead."
+    },
+    {
+      "id": 1082,
+      "category": "why_vegan",
+      "text": "There's a kind of wealth in wanting your impact to be smaller and your kindness bigger."
+    },
+    {
+      "id": 1083,
+      "category": "why_vegan",
+      "text": "Your taste buds adapted, your recipes multiplied, and your reasons only got stronger. Funny how that works."
+    },
+    {
+      "id": 1084,
+      "category": "why_vegan",
+      "text": "Each plant-based year can spare a startling number of animals. You don't need the exact figure to feel its weight."
+    },
+    {
+      "id": 1085,
+      "category": "why_vegan",
+      "text": "Gentleness scales. From one bowl of soup to a whole culture, it starts the same way."
+    },
+    {
+      "id": 1086,
+      "category": "why_vegan",
+      "text": "You decided your comfort shouldn't cost someone else everything. That's not extreme — that's tender logic."
+    },
+    {
+      "id": 1087,
+      "category": "why_vegan",
+      "text": "Soil, bees, birdsong — a food system built on plants leaves more room for all of it."
+    },
+    {
+      "id": 1088,
+      "category": "why_vegan",
+      "text": "On hard days, remember: you're living the answer to a question most people are still afraid to ask."
+    },
+    {
+      "id": 1089,
+      "category": "why_vegan",
+      "text": "A dog, a pig, a person — love doesn't check the species box, and neither do you."
+    },
+    {
+      "id": 1090,
+      "category": "why_vegan",
+      "text": "Your grandmother's recipes can survive the swap. Love is the ingredient that was never animal-based."
+    },
+    {
+      "id": 1091,
+      "category": "why_vegan",
+      "text": "Peace with animals begins as peace with yourself at mealtime. You've found a piece of both."
+    },
+    {
+      "id": 1092,
+      "category": "why_vegan",
+      "text": "The future will need people who already know how to eat like the planet matters. You're ahead of the syllabus."
+    },
+    {
+      "id": 1093,
+      "category": "why_vegan",
+      "text": "It's not about giving things up. It's about giving things back — land, water, lives, time."
+    },
+    {
+      "id": 1094,
+      "category": "why_vegan",
+      "text": "You carry a small lantern of consistency through a noisy world. Animals walk a little safer in its light."
+    },
+    {
+      "id": 1095,
+      "category": "why_vegan",
+      "text": "A bowl of dal, a roasted squash, a ripe peach — abundance was never on the other side of the fence."
+    },
+    {
+      "id": 1096,
+      "category": "why_vegan",
+      "text": "Staying vegan through birthdays, road trips, and bad weeks is quiet heroism. No cape, just groceries."
+    },
+    {
+      "id": 1097,
+      "category": "why_vegan",
+      "text": "When you eat, something in you settles. That settled feeling is your ethics saying thank you."
+    },
+    {
+      "id": 1098,
+      "category": "why_vegan",
+      "text": "The world's gentlest revolution is happening in kitchens, and yours is one of its headquarters."
+    },
+    {
+      "id": 1099,
+      "category": "why_vegan",
+      "text": "You can't fix everything. But you can refuse to fund the parts that hurt, and you do, deliciously."
+    },
+    {
+      "id": 1100,
+      "category": "why_vegan",
+      "text": "One day this will all just be called food. Until then, it's called caring — and you're fluent. 🌱"
+    },
+    {
+      "id": 2001,
+      "category": "quick_tips",
+      "text": "Craving something creamy? Blend soaked cashews with lemon and a pinch of salt. Instant magic."
+    },
+    {
+      "id": 2002,
+      "category": "quick_tips",
+      "text": "Mushrooms + soy sauce + smoked paprika = the umami trio that replaces almost anything."
+    },
+    {
+      "id": 2003,
+      "category": "quick_tips",
+      "text": "Batch-cook one pot of beans on Sunday. Future-you will be grateful all week."
+    },
+    {
+      "id": 2004,
+      "category": "quick_tips",
+      "text": "Nutritional yeast on popcorn, pasta, or toast — cheesy comfort, zero cows involved."
+    },
+    {
+      "id": 2005,
+      "category": "quick_tips",
+      "text": "A ripe banana or 3 tbsp aquafaba replaces an egg in most baking. Pancakes won't know the difference."
+    },
+    {
+      "id": 2006,
+      "category": "quick_tips",
+      "text": "Freeze overripe bananas. Blend when frozen. Congratulations — that's ice cream now."
+    },
+    {
+      "id": 2007,
+      "category": "quick_tips",
+      "text": "Toss chickpeas in olive oil and spices, roast 25 minutes. Crunchy snack, big protein."
+    },
+    {
+      "id": 2008,
+      "category": "quick_tips",
+      "text": "Tofu trick: press it, freeze it, thaw it. The texture transforms completely."
+    },
+    {
+      "id": 2009,
+      "category": "quick_tips",
+      "text": "Lentils cook in 20 minutes, cost pennies, and pack more iron than steak per calorie."
+    },
+    {
+      "id": 2010,
+      "category": "quick_tips",
+      "text": "Make tonight's curry with coconut milk and red lentils. One pot, fifteen minutes, pure comfort."
+    },
+    {
+      "id": 2011,
+      "category": "quick_tips",
+      "text": "Date + peanut butter = nature's candy bar. Keep a stash for the 3pm slump."
+    },
+    {
+      "id": 2012,
+      "category": "quick_tips",
+      "text": "When in doubt: grain + green + bean + sauce. The formula behind a thousand great bowls."
+    },
+    {
+      "id": 2013,
+      "category": "quick_tips",
+      "text": "One flax egg = 1 tablespoon ground flaxseed + 3 tablespoons water. Rest 5 minutes until gloopy, then bake away."
+    },
+    {
+      "id": 2014,
+      "category": "quick_tips",
+      "text": "Freeze tofu, thaw it, and squeeze it out — the texture turns chewy and spongy, perfect for soaking up marinades."
+    },
+    {
+      "id": 2015,
+      "category": "quick_tips",
+      "text": "Take a B12 supplement or use fortified foods regularly. It's the one non-negotiable on a vegan plate."
+    },
+    {
+      "id": 2016,
+      "category": "quick_tips",
+      "text": "Squeeze lemon over lentils, beans, or spinach — vitamin C can boost how much iron your body absorbs."
+    },
+    {
+      "id": 2017,
+      "category": "quick_tips",
+      "text": "Aquafaba, the liquid from a can of chickpeas, whips into peaks. About 3 tablespoons replaces one egg in baking."
+    },
+    {
+      "id": 2018,
+      "category": "quick_tips",
+      "text": "Nutritional yeast adds cheesy depth to pasta, popcorn, and sauces. Start with a tablespoon and adjust."
+    },
+    {
+      "id": 2019,
+      "category": "quick_tips",
+      "text": "Dry beans cost a fraction of canned. Cook a big pot on Sunday and freeze in 2-cup portions for the week."
+    },
+    {
+      "id": 2020,
+      "category": "quick_tips",
+      "text": "Shred king oyster mushrooms with two forks and sauté with barbecue sauce for an easy pulled texture."
+    },
+    {
+      "id": 2021,
+      "category": "quick_tips",
+      "text": "Cashews soaked in hot water for 15 minutes blend into a silky cream for sauces, soups, and desserts."
+    },
+    {
+      "id": 2022,
+      "category": "quick_tips",
+      "text": "Press tofu under a heavy pan for 20 minutes before cooking — less water in means more flavor gets in."
+    },
+    {
+      "id": 2023,
+      "category": "quick_tips",
+      "text": "Build a bowl with a simple formula: grain + bean + roasted veg + sauce + something crunchy on top."
+    },
+    {
+      "id": 2024,
+      "category": "quick_tips",
+      "text": "A pinch of kala namak (black salt) gives tofu scramble that eggy aroma. Add it at the end so it stays punchy."
+    },
+    {
+      "id": 2025,
+      "category": "quick_tips",
+      "text": "Mashed banana or applesauce can replace eggs in sweet bakes — about a quarter cup per egg."
+    },
+    {
+      "id": 2026,
+      "category": "quick_tips",
+      "text": "Keep canned chickpeas, coconut milk, and curry paste on hand. Dinner is 15 minutes away at all times."
+    },
+    {
+      "id": 2027,
+      "category": "quick_tips",
+      "text": "Toss cubed tofu in cornstarch before pan-frying for a crackly golden crust without deep frying."
+    },
+    {
+      "id": 2028,
+      "category": "quick_tips",
+      "text": "Lentils cook in around 20 minutes with no soaking. Red ones melt into soups; green ones hold their shape in salads."
+    },
+    {
+      "id": 2029,
+      "category": "quick_tips",
+      "text": "Browse the menu's sides at restaurants — rice, grilled veg, beans, and salad often assemble into a great plate."
+    },
+    {
+      "id": 2030,
+      "category": "quick_tips",
+      "text": "A splash of soy sauce and a dab of miso deepen almost any broth, gravy, or stew. Salty plus savory wins."
+    },
+    {
+      "id": 2031,
+      "category": "quick_tips",
+      "text": "Roast chickpeas at 200°C with spices until crisp — instant crouton, snack, and salad topper in one."
+    },
+    {
+      "id": 2032,
+      "category": "quick_tips",
+      "text": "Unsweetened soy milk usually behaves best in cooking and coffee — it's high in protein and doesn't split as easily."
+    },
+    {
+      "id": 2033,
+      "category": "quick_tips",
+      "text": "Make cheese sauce from potatoes and carrots boiled soft, blended with cashews, nooch, and a little mustard."
+    },
+    {
+      "id": 2034,
+      "category": "quick_tips",
+      "text": "Tahini + lemon + garlic + water = a five-minute sauce that improves grain bowls, roasted veg, and falafel alike."
+    },
+    {
+      "id": 2035,
+      "category": "quick_tips",
+      "text": "Buy spices from the bulk bins or international aisle — same jars, often half the price."
+    },
+    {
+      "id": 2036,
+      "category": "quick_tips",
+      "text": "Tempeh tastes milder after a 10-minute steam. Then marinate and pan-fry it for nutty, protein-packed strips."
+    },
+    {
+      "id": 2037,
+      "category": "quick_tips",
+      "text": "Aim for a protein at every meal: tofu, tempeh, beans, lentils, edamame, seitan, or a generous swirl of peanut butter."
+    },
+    {
+      "id": 2038,
+      "category": "quick_tips",
+      "text": "Caramelize onions low and slow with a pinch of salt — they're the flavor base that makes simple dishes taste fancy."
+    },
+    {
+      "id": 2039,
+      "category": "quick_tips",
+      "text": "Frozen vegetables are picked ripe and cost less. Keep peas, spinach, and stir-fry mixes in the freezer always."
+    },
+    {
+      "id": 2040,
+      "category": "quick_tips",
+      "text": "Use 3 tablespoons of aquafaba plus a pinch of cream of tartar to whip a stable mousse or meringue base."
+    },
+    {
+      "id": 2041,
+      "category": "quick_tips",
+      "text": "Check apps and websites for vegan options before choosing a restaurant — Thai, Indian, and Middle Eastern menus rarely disappoint."
+    },
+    {
+      "id": 2042,
+      "category": "quick_tips",
+      "text": "Blend silken tofu with melted dark chocolate for a two-ingredient mousse that tastes far fancier than it is."
+    },
+    {
+      "id": 2043,
+      "category": "quick_tips",
+      "text": "Add a teaspoon of white miso to mashed potatoes — it brings the buttery savoriness dairy used to."
+    },
+    {
+      "id": 2044,
+      "category": "quick_tips",
+      "text": "Toast your spices in oil for 30 seconds before adding liquids. Bloomed spices can double a curry's depth."
+    },
+    {
+      "id": 2045,
+      "category": "quick_tips",
+      "text": "TVP (textured vegetable protein) rehydrates in hot broth in 10 minutes — cheap, shelf-stable mince for chili and tacos."
+    },
+    {
+      "id": 2046,
+      "category": "quick_tips",
+      "text": "Pair calcium-set tofu with leafy greens like kale and bok choy to keep your calcium intake comfortable."
+    },
+    {
+      "id": 2047,
+      "category": "quick_tips",
+      "text": "Batch-cook one grain, one bean, and two sauces on the weekend, then mix and match bowls all week."
+    },
+    {
+      "id": 2048,
+      "category": "quick_tips",
+      "text": "Day-old rice fries better. Cold, dry grains crisp up instead of clumping in your fried rice."
+    },
+    {
+      "id": 2049,
+      "category": "quick_tips",
+      "text": "Jackfruit in brine (not syrup) shreds like pulled meat. Simmer it in sauce so it absorbs flavor before serving."
+    },
+    {
+      "id": 2050,
+      "category": "quick_tips",
+      "text": "Coconut oil chilled in flour can stand in for butter in pie crusts and biscuits — keep everything cold."
+    },
+    {
+      "id": 2051,
+      "category": "quick_tips",
+      "text": "Salt your pasta water generously and save a cup of it — the starchy water turns any sauce silky."
+    },
+    {
+      "id": 2052,
+      "category": "quick_tips",
+      "text": "Hemp seeds carry around 3 grams of protein per tablespoon. Sprinkle them on oatmeal, salads, and toast."
+    },
+    {
+      "id": 2053,
+      "category": "quick_tips",
+      "text": "Stock your pantry trio: canned tomatoes, canned beans, and dried pasta. Dozens of dinners live in those three."
+    },
+    {
+      "id": 2054,
+      "category": "quick_tips",
+      "text": "Soak dates in hot water, then blend — instant caramel-ish sweetener for smoothies, oats, and energy balls."
+    },
+    {
+      "id": 2055,
+      "category": "quick_tips",
+      "text": "Score eggplant flesh, salt it for 20 minutes, then pat dry. It roasts creamier and soaks up less oil."
+    },
+    {
+      "id": 2056,
+      "category": "quick_tips",
+      "text": "At a steakhouse or diner, build from baked potato + side salad + sautéed mushrooms. Ask for oil instead of butter."
+    },
+    {
+      "id": 2057,
+      "category": "quick_tips",
+      "text": "A teaspoon of smoked paprika plus a drop of liquid smoke turns coconut flakes or tofu strips into breakfast bacon vibes."
+    },
+    {
+      "id": 2058,
+      "category": "quick_tips",
+      "text": "Cornstarch slurry (1 tablespoon starch + 2 tablespoons cold water) thickens any stir-fry sauce in seconds."
+    },
+    {
+      "id": 2059,
+      "category": "quick_tips",
+      "text": "Overnight oats formula: half cup oats, half cup plant milk, spoonful of chia, fruit on top. Shake, chill, done."
+    },
+    {
+      "id": 2060,
+      "category": "quick_tips",
+      "text": "Choose calcium-fortified plant milks and shake the carton — the good stuff settles at the bottom."
+    },
+    {
+      "id": 2061,
+      "category": "quick_tips",
+      "text": "Seitan from vital wheat gluten costs little and packs serious protein. Knead, simmer in broth, then slice and sear."
+    },
+    {
+      "id": 2062,
+      "category": "quick_tips",
+      "text": "Add vinegar or lemon at the end of soups and stews. A little acid wakes up flavors that salt can't reach."
+    },
+    {
+      "id": 2063,
+      "category": "quick_tips",
+      "text": "Walnuts pulsed with cooked lentils and spices make a rich taco crumble — brown it well in a hot pan."
+    },
+    {
+      "id": 2064,
+      "category": "quick_tips",
+      "text": "Plan meals around what's on sale, not the other way around. Seasonal produce is cheaper and tastes better."
+    },
+    {
+      "id": 2065,
+      "category": "quick_tips",
+      "text": "Soy curls rehydrate in 10 minutes and shred like chicken. Toss them in buffalo sauce and thank yourself later."
+    },
+    {
+      "id": 2066,
+      "category": "quick_tips",
+      "text": "Keep a jar of quick-pickled red onions in the fridge — vinegar, sugar, salt, 30 minutes. They upgrade everything."
+    },
+    {
+      "id": 2067,
+      "category": "quick_tips",
+      "text": "Use ripe avocado in place of butter on toast and in brownies — about the same amount, plus a fudgier crumb."
+    },
+    {
+      "id": 2068,
+      "category": "quick_tips",
+      "text": "Edamame is a freezer-to-table protein in 5 minutes. Steam, salt, and snack, or shell into salads and rice."
+    },
+    {
+      "id": 2069,
+      "category": "quick_tips",
+      "text": "Read labels fast: scan the allergen line first. Milk and egg must be declared, which saves squinting at ingredients."
+    },
+    {
+      "id": 2070,
+      "category": "quick_tips",
+      "text": "Sear mushrooms in a dry hot pan first, then add oil after they release water — deeper browning, meatier bite."
+    },
+    {
+      "id": 2071,
+      "category": "quick_tips",
+      "text": "Stir peanut butter, soy sauce, lime, and a little maple into a satay sauce that rescues plain noodles instantly."
+    },
+    {
+      "id": 2072,
+      "category": "quick_tips",
+      "text": "One can of coconut milk, chilled overnight, gives you whippable cream on top and cooking liquid below."
+    },
+    {
+      "id": 2073,
+      "category": "quick_tips",
+      "text": "Bake oatmeal in a pan with fruit and nuts on Sunday, then slice breakfast squares for the whole week."
+    },
+    {
+      "id": 2074,
+      "category": "quick_tips",
+      "text": "Lentil-walnut, mushroom, or black bean — whatever the burger, dry your mash well or it won't hold together."
+    },
+    {
+      "id": 2075,
+      "category": "quick_tips",
+      "text": "Ask for the vegan menu — many restaurants keep one behind the counter even when nothing is marked outside."
+    },
+    {
+      "id": 2076,
+      "category": "quick_tips",
+      "text": "Swap half the mince in family recipes for lentils first. Gentle transitions tend to stick better than overhauls."
+    },
+    {
+      "id": 2077,
+      "category": "quick_tips",
+      "text": "Chia pudding ratio worth memorizing: 3 tablespoons chia to 1 cup plant milk. Stir twice, chill 2 hours."
+    },
+    {
+      "id": 2078,
+      "category": "quick_tips",
+      "text": "Buy tofu in bulk when it's discounted — unopened packs keep for weeks, and it freezes beautifully too."
+    },
+    {
+      "id": 2079,
+      "category": "quick_tips",
+      "text": "Velvety pasta sauce trick: blend roasted red peppers with cashews and garlic. No cream required, all the comfort."
+    },
+    {
+      "id": 2080,
+      "category": "quick_tips",
+      "text": "Cumin, coriander, smoked paprika, garlic powder, oregano — five jars that can season most of the world's cuisines."
+    },
+    {
+      "id": 2081,
+      "category": "quick_tips",
+      "text": "Mix tahini into your brownie batter or cookie dough — it adds richness the way butter used to."
+    },
+    {
+      "id": 2082,
+      "category": "quick_tips",
+      "text": "Iron-rich heroes to rotate weekly: lentils, tofu, pumpkin seeds, fortified oats, and dark leafy greens."
+    },
+    {
+      "id": 2083,
+      "category": "quick_tips",
+      "text": "Make broth from veggie scraps you've stashed in a freezer bag — onion ends, carrot peels, herb stems, simmered 30 minutes."
+    },
+    {
+      "id": 2084,
+      "category": "quick_tips",
+      "text": "Soba, edamame, shredded carrot, sesame dressing — a cold noodle dinner that comes together in 12 minutes flat."
+    },
+    {
+      "id": 2085,
+      "category": "quick_tips",
+      "text": "For creamy soups without cream, blend in a handful of white beans or a peeled potato. Body, protein, done."
+    },
+    {
+      "id": 2086,
+      "category": "quick_tips",
+      "text": "Grate firm tofu on a box grater for scramble — more surface area means more seasoning in every bite."
+    },
+    {
+      "id": 2087,
+      "category": "quick_tips",
+      "text": "Traveling? Pack a small kit: nuts, dried fruit, instant oats, and a protein bar. Airports become much friendlier."
+    },
+    {
+      "id": 2088,
+      "category": "quick_tips",
+      "text": "Omega-3s without fish: a daily tablespoon of ground flax or chia, or walnuts on your morning oats."
+    },
+    {
+      "id": 2089,
+      "category": "quick_tips",
+      "text": "Massage kale with a little oil and salt for 2 minutes before serving — it softens and sweetens noticeably."
+    },
+    {
+      "id": 2090,
+      "category": "quick_tips",
+      "text": "Taco night formula: a bean, a slaw, a creamy sauce, and something pickled. Repeat weekly, never the same twice."
+    },
+    {
+      "id": 2091,
+      "category": "quick_tips",
+      "text": "Sub maple syrup or agave one-for-one where a recipe calls for honey. Date syrup works for deeper flavor."
+    },
+    {
+      "id": 2092,
+      "category": "quick_tips",
+      "text": "Roast vegetables at higher heat than you think — around 220°C — and don't crowd the pan. Browning is flavor."
+    },
+    {
+      "id": 2093,
+      "category": "quick_tips",
+      "text": "Stash cooked grains in the freezer in flat bags. They thaw in minutes and turn any sauce into a meal."
+    },
+    {
+      "id": 2094,
+      "category": "quick_tips",
+      "text": "Sunflower seed butter stands in for peanut butter in sauces and bakes when allergies are at the table."
+    },
+    {
+      "id": 2095,
+      "category": "quick_tips",
+      "text": "A spoon of tomato paste, browned in the pan before liquids go in, gives stews a slow-cooked depth in minutes."
+    },
+    {
+      "id": 2096,
+      "category": "quick_tips",
+      "text": "Crisp chickpea flour batter makes excellent onion rings and veggie fritters — just chickpea flour, water, and spice."
+    },
+    {
+      "id": 2097,
+      "category": "quick_tips",
+      "text": "When eating out, sauces hide the surprises — ask about butter, cream, and fish sauce, then relax and enjoy."
+    },
+    {
+      "id": 2098,
+      "category": "quick_tips",
+      "text": "Banana slightly underripe for smoothies, fully spotty for baking. The freckles are nature's sweetness meter."
+    },
+    {
+      "id": 2099,
+      "category": "quick_tips",
+      "text": "Make Sunday a soup day: one big pot, four containers, and your future weekday self eats like royalty."
+    },
+    {
+      "id": 2100,
+      "category": "quick_tips",
+      "text": "Keep one no-thinking meal memorized — pasta, garlic, olive oil, white beans, greens. Tired nights need a default. 🍝"
+    },
+    {
+      "id": 3001,
+      "category": "youre_awesome",
+      "text": "You're doing something most people only talk about. Quietly. Daily. Beautifully."
+    },
+    {
+      "id": 3002,
+      "category": "youre_awesome",
+      "text": "Look at you — changing the world before breakfast."
+    },
+    {
+      "id": 3003,
+      "category": "youre_awesome",
+      "text": "Your kindness has a seat at every table you sit at."
+    },
+    {
+      "id": 3004,
+      "category": "youre_awesome",
+      "text": "Someone out there went vegan because they watched you do it with joy."
+    },
+    {
+      "id": 3005,
+      "category": "youre_awesome",
+      "text": "You aligned your life with your heart. That takes more courage than people know."
+    },
+    {
+      "id": 3006,
+      "category": "youre_awesome",
+      "text": "Today, your choices will be gentle, and gentle is strong."
+    },
+    {
+      "id": 3007,
+      "category": "youre_awesome",
+      "text": "You're proof that one person's plate can hold a whole philosophy."
+    },
+    {
+      "id": 3008,
+      "category": "youre_awesome",
+      "text": "Be proud. Not loud-proud, necessarily. Just the warm kind that glows from inside."
+    },
+    {
+      "id": 3009,
+      "category": "youre_awesome",
+      "text": "The world needs more people who care this much. Thanks for being one of them."
+    },
+    {
+      "id": 3010,
+      "category": "youre_awesome",
+      "text": "You make compassion look easy. (We know it isn't always.)"
+    },
+    {
+      "id": 3011,
+      "category": "youre_awesome",
+      "text": "Somewhere along the way you decided your values belonged on your plate. That quiet decision matters more than you know."
+    },
+    {
+      "id": 3012,
+      "category": "youre_awesome",
+      "text": "You're living proof that kindness can be a daily practice, not just a nice idea people talk about."
+    },
+    {
+      "id": 3013,
+      "category": "youre_awesome",
+      "text": "Every meal you make with care is a small vote for the world you want. You vote a lot."
+    },
+    {
+      "id": 3014,
+      "category": "youre_awesome",
+      "text": "It's not easy swimming against the current — and yet here you are, doing it with grace."
+    },
+    {
+      "id": 3015,
+      "category": "youre_awesome",
+      "text": "You turned compassion into a habit. Most people only manage to turn it into a conversation."
+    },
+    {
+      "id": 3016,
+      "category": "youre_awesome",
+      "text": "The animals will never know your name, and you keep showing up for them anyway. That's the good stuff."
+    },
+    {
+      "id": 3017,
+      "category": "youre_awesome",
+      "text": "Give yourself some credit today: you rethought something most people never even question."
+    },
+    {
+      "id": 3018,
+      "category": "youre_awesome",
+      "text": "You don't need to be perfect at this. You just need to keep being you, trying — and you are."
+    },
+    {
+      "id": 3019,
+      "category": "youre_awesome",
+      "text": "Remember your first wobbly week of reading every label? Look at you now — practically fluent."
+    },
+    {
+      "id": 3020,
+      "category": "youre_awesome",
+      "text": "Quiet consistency is its own kind of brave, and you've got it in spades."
+    },
+    {
+      "id": 3021,
+      "category": "youre_awesome",
+      "text": "You make compassion look ordinary, which might be the most extraordinary thing about you."
+    },
+    {
+      "id": 3022,
+      "category": "youre_awesome",
+      "text": "There's a gentleness in how you move through the world, and your plate is where it shows up three times a day."
+    },
+    {
+      "id": 3023,
+      "category": "youre_awesome",
+      "text": "Some people wait for permission to live by their values. You just quietly started."
+    },
+    {
+      "id": 3024,
+      "category": "youre_awesome",
+      "text": "You've answered the same curious questions a hundred times and stayed kind. That patience is a gift."
+    },
+    {
+      "id": 3025,
+      "category": "youre_awesome",
+      "text": "Today, like most days, you chose gentleness when nobody was watching. That counts double."
+    },
+    {
+      "id": 3026,
+      "category": "youre_awesome",
+      "text": "If effort were visible, you'd be glowing right now. Trust us on this one."
+    },
+    {
+      "id": 3027,
+      "category": "youre_awesome",
+      "text": "You're building a life where your meals and your morals point the same direction. That alignment is rare."
+    },
+    {
+      "id": 3028,
+      "category": "youre_awesome",
+      "text": "Slip-ups don't erase your progress. You've already proven who you are a thousand meals over."
+    },
+    {
+      "id": 3029,
+      "category": "youre_awesome",
+      "text": "Be honest — you've become a much better cook since you went plant-based, haven't you? 🌱"
+    },
+    {
+      "id": 3030,
+      "category": "youre_awesome",
+      "text": "You carry your convictions lightly, and that makes them easier for everyone around you to pick up."
+    },
+    {
+      "id": 3031,
+      "category": "youre_awesome",
+      "text": "Not everyone could navigate a family dinner with this much patience and humor. You're a natural."
+    },
+    {
+      "id": 3032,
+      "category": "youre_awesome",
+      "text": "The version of you from a few years ago would be amazed at what's normal for you now."
+    },
+    {
+      "id": 3033,
+      "category": "youre_awesome",
+      "text": "You didn't just change what you eat. You changed what you believe is possible for yourself."
+    },
+    {
+      "id": 3034,
+      "category": "youre_awesome",
+      "text": "Caring this much in a busy world is not a weakness. It's your superpower in comfortable shoes."
+    },
+    {
+      "id": 3035,
+      "category": "youre_awesome",
+      "text": "Whatever today throws at you, remember: you already did something kind before lunch."
+    },
+    {
+      "id": 3036,
+      "category": "youre_awesome",
+      "text": "You're allowed to be proud of this. Pride and humility can share a plate."
+    },
+    {
+      "id": 3037,
+      "category": "youre_awesome",
+      "text": "Each time someone asks you for a recipe, a little ripple goes out into the world. You make ripples."
+    },
+    {
+      "id": 3038,
+      "category": "youre_awesome",
+      "text": "You've made peace with imperfect days, and that's exactly why you keep going on the good ones."
+    },
+    {
+      "id": 3039,
+      "category": "youre_awesome",
+      "text": "Your grocery cart tells a story about who you are, and honestly, it's a lovely read."
+    },
+    {
+      "id": 3040,
+      "category": "youre_awesome",
+      "text": "You chose the path that asks a little more of you. That choice says everything."
+    },
+    {
+      "id": 3041,
+      "category": "youre_awesome",
+      "text": "Even on the days it feels small, what you're doing is part of something genuinely big."
+    },
+    {
+      "id": 3042,
+      "category": "youre_awesome",
+      "text": "You've learned to find joy in vegetables most people walk straight past. That's a quiet talent."
+    },
+    {
+      "id": 3043,
+      "category": "youre_awesome",
+      "text": "Nobody claps when you order the veggie option. Consider this your standing ovation."
+    },
+    {
+      "id": 3044,
+      "category": "youre_awesome",
+      "text": "The world needs more people who act on what they care about. Thanks for being one of them."
+    },
+    {
+      "id": 3045,
+      "category": "youre_awesome",
+      "text": "You're not chasing perfect. You're chasing better, and you catch it almost every day."
+    },
+    {
+      "id": 3046,
+      "category": "youre_awesome",
+      "text": "You've turned curiosity into a kitchen full of new flavors. That openness is worth celebrating."
+    },
+    {
+      "id": 3047,
+      "category": "youre_awesome",
+      "text": "Some kindness is loud. Yours is steady, three meals a day, year after year. Steady wins."
+    },
+    {
+      "id": 3048,
+      "category": "youre_awesome",
+      "text": "When the choice was between easy and kind, you picked kind. You keep picking it."
+    },
+    {
+      "id": 3049,
+      "category": "youre_awesome",
+      "text": "If you ever doubt you're making a difference, count your meals this week. There's your answer."
+    },
+    {
+      "id": 3050,
+      "category": "youre_awesome",
+      "text": "You're someone's reason to wonder if they could do it too. You probably don't even know it."
+    },
+    {
+      "id": 3051,
+      "category": "youre_awesome",
+      "text": "Your compassion has a seat at every table you sit at, and it never says a single preachy word."
+    },
+    {
+      "id": 3052,
+      "category": "youre_awesome",
+      "text": "Take a second to notice how natural this feels now. That ease was earned, one meal at a time."
+    },
+    {
+      "id": 3053,
+      "category": "youre_awesome",
+      "text": "You've handled awkward menus, puzzled waiters, and tricky potlucks with style. Adaptability looks good on you."
+    },
+    {
+      "id": 3054,
+      "category": "youre_awesome",
+      "text": "Being gentle with animals starts with being gentle with yourself. You're learning both, beautifully."
+    },
+    {
+      "id": 3055,
+      "category": "youre_awesome",
+      "text": "You ask better questions than most people are willing to. That curiosity is how everything good starts."
+    },
+    {
+      "id": 3056,
+      "category": "youre_awesome",
+      "text": "However long you've been doing this — a week or a decade — you belong here completely."
+    },
+    {
+      "id": 3057,
+      "category": "youre_awesome",
+      "text": "You found a way to care for the planet that fits inside your everyday life. That's clever, not small."
+    },
+    {
+      "id": 3058,
+      "category": "youre_awesome",
+      "text": "There's no trophy for choosing the lentils again. But if there were, it would have your name on it."
+    },
+    {
+      "id": 3059,
+      "category": "youre_awesome",
+      "text": "Your future self is going to look back on this season of your life with so much gratitude."
+    },
+    {
+      "id": 3060,
+      "category": "youre_awesome",
+      "text": "You make this look easier than it is, which is its own quiet form of generosity to everyone watching."
+    },
+    {
+      "id": 3061,
+      "category": "youre_awesome",
+      "text": "Some people talk about their values. You season yours and serve them for dinner."
+    },
+    {
+      "id": 3062,
+      "category": "youre_awesome",
+      "text": "Every time you tried something new and liked it, your world got a little bigger. It keeps growing."
+    },
+    {
+      "id": 3063,
+      "category": "youre_awesome",
+      "text": "You're the friend who brings the dish everyone secretly hopes will be there. Own it."
+    },
+    {
+      "id": 3064,
+      "category": "youre_awesome",
+      "text": "It takes a sturdy kind of heart to stay soft on purpose. Yours is doing great."
+    },
+    {
+      "id": 3065,
+      "category": "youre_awesome",
+      "text": "The hardest part was starting, and you already did that. Everything else is momentum."
+    },
+    {
+      "id": 3066,
+      "category": "youre_awesome",
+      "text": "You've never needed anyone's applause to do the right thing. Have some anyway. 👏"
+    },
+    {
+      "id": 3067,
+      "category": "youre_awesome",
+      "text": "On tired days, ordinary kindness still shows up in your choices. That's character, not luck."
+    },
+    {
+      "id": 3068,
+      "category": "youre_awesome",
+      "text": "You've built habits most people would call discipline. To you, it's just love with a routine."
+    },
+    {
+      "id": 3069,
+      "category": "youre_awesome",
+      "text": "Notice how often you say yes to new things now? Going plant-based made you braver everywhere."
+    },
+    {
+      "id": 3070,
+      "category": "youre_awesome",
+      "text": "You're not missing out on anything. You traded a little convenience for a lot of meaning."
+    },
+    {
+      "id": 3071,
+      "category": "youre_awesome",
+      "text": "Somewhere out there, an animal is just living its life. You're part of the reason why."
+    },
+    {
+      "id": 3072,
+      "category": "youre_awesome",
+      "text": "Doubt visits everyone. You let it in for tea and then got back to making dinner anyway."
+    },
+    {
+      "id": 3073,
+      "category": "youre_awesome",
+      "text": "You keep choosing this even when no one would notice if you didn't. Integrity, defined."
+    },
+    {
+      "id": 3074,
+      "category": "youre_awesome",
+      "text": "Your kitchen has become a place where good intentions actually turn into something delicious."
+    },
+    {
+      "id": 3075,
+      "category": "youre_awesome",
+      "text": "You learned that gentleness and strength were never opposites. You demonstrate it daily."
+    },
+    {
+      "id": 3076,
+      "category": "youre_awesome",
+      "text": "There's a whole community of people like you out there, and you make it better just by being in it."
+    },
+    {
+      "id": 3077,
+      "category": "youre_awesome",
+      "text": "You handled that one dinner party question with more grace than the question deserved. Respect."
+    },
+    {
+      "id": 3078,
+      "category": "youre_awesome",
+      "text": "Look at the streak you're building — not on a screen, but in the kind of person you're becoming."
+    },
+    {
+      "id": 3079,
+      "category": "youre_awesome",
+      "text": "You give yourself room to grow instead of demanding perfection. That's wisdom, plain and simple."
+    },
+    {
+      "id": 3080,
+      "category": "youre_awesome",
+      "text": "The way you live answers a question a lot of people are still afraid to ask themselves."
+    },
+    {
+      "id": 3081,
+      "category": "youre_awesome",
+      "text": "Three meals a day, you get a chance to be who you want to be. You take it more often than not."
+    },
+    {
+      "id": 3082,
+      "category": "youre_awesome",
+      "text": "You've made room at your table for everyone — and for your principles too. That's hosting done right."
+    },
+    {
+      "id": 3083,
+      "category": "youre_awesome",
+      "text": "If kindness had a frequent flyer program, you'd be boarding first by now."
+    },
+    {
+      "id": 3084,
+      "category": "youre_awesome",
+      "text": "You're writing a quiet little legacy with every grocery list. Future you signs off on all of it."
+    },
+    {
+      "id": 3085,
+      "category": "youre_awesome",
+      "text": "Your choices whisper instead of shout, and somehow people hear them anyway."
+    },
+    {
+      "id": 3086,
+      "category": "youre_awesome",
+      "text": "You didn't become someone different when you went vegan. You became more yourself."
+    },
+    {
+      "id": 3087,
+      "category": "youre_awesome",
+      "text": "Rest is part of the work. Even the most caring hearts need a slow Sunday, and you've earned yours."
+    },
+    {
+      "id": 3088,
+      "category": "youre_awesome",
+      "text": "You believed you could change one small thing, and the small thing turned out to be enormous."
+    },
+    {
+      "id": 3089,
+      "category": "youre_awesome",
+      "text": "Every gentle choice you've made is still out there in the world, quietly doing its good work."
+    },
+    {
+      "id": 3090,
+      "category": "youre_awesome",
+      "text": "Whatever brought you here — health, animals, the planet, curiosity — we're so glad you stayed."
+    },
+    {
+      "id": 4001,
+      "category": "facts",
+      "text": "A single plant-based day can save around 4,000 litres of water — about 50 bathtubs full."
+    },
+    {
+      "id": 4002,
+      "category": "facts",
+      "text": "Plant-based eaters spare roughly one animal's life every single day. That's 365 lives a year."
+    },
+    {
+      "id": 4003,
+      "category": "facts",
+      "text": "Skipping meat for a day saves about as much CO₂ as driving 30 fewer kilometres."
+    },
+    {
+      "id": 4004,
+      "category": "facts",
+      "text": "Beans, lentils and peas enrich the soil they grow in — they literally give back to the earth."
+    },
+    {
+      "id": 4005,
+      "category": "facts",
+      "text": "It takes up to 20 times less land to feed a person on plants than on animal products."
+    },
+    {
+      "id": 4006,
+      "category": "facts",
+      "text": "Fiber is found only in plants — and most plant-eaters get double the average intake."
+    },
+    {
+      "id": 4007,
+      "category": "facts",
+      "text": "The global plant-based food market keeps growing every year. You're early, not alone."
+    },
+    {
+      "id": 4008,
+      "category": "facts",
+      "text": "Studies link plant-rich diets to healthier hearts and lower blood pressure. Your arteries approve."
+    },
+    {
+      "id": 4009,
+      "category": "facts",
+      "text": "One hectare of land can produce about 10 times more plant protein than animal protein."
+    },
+    {
+      "id": 4010,
+      "category": "facts",
+      "text": "Many of the strongest animals on Earth — elephants, gorillas, bison — are plant-powered."
+    },
+    {
+      "id": 4011,
+      "category": "facts",
+      "text": "A single plant-based day can save thousands of litres of water — roughly enough for months of showers."
+    },
+    {
+      "id": 4012,
+      "category": "facts",
+      "text": "Lentils are one of the most water-friendly proteins on Earth, needing only a fraction of what most foods do."
+    },
+    {
+      "id": 4013,
+      "category": "facts",
+      "text": "Tofu has been nourishing people for around 2,000 years — it was a staple in China long before it was trendy."
+    },
+    {
+      "id": 4014,
+      "category": "facts",
+      "text": "Tempeh has been crafted on the island of Java for centuries, a fermentation tradition still going strong."
+    },
+    {
+      "id": 4015,
+      "category": "facts",
+      "text": "Gorillas build their famous strength almost entirely on leaves, stems, and fruit. Plants pack power."
+    },
+    {
+      "id": 4016,
+      "category": "facts",
+      "text": "Elephants, the largest land animals alive, are fully plant-powered — and they can carry quite a lot."
+    },
+    {
+      "id": 4017,
+      "category": "facts",
+      "text": "Some of the world's top ultramarathoners and tennis champions fuel their training entirely with plants."
+    },
+    {
+      "id": 4018,
+      "category": "facts",
+      "text": "Humans have been cultivating lentils for around 10,000 years — one of our oldest friendships with a food."
+    },
+    {
+      "id": 4019,
+      "category": "facts",
+      "text": "Quinoa is a complete protein, carrying all nine essential amino acids in one tiny, fluffy seed."
+    },
+    {
+      "id": 4020,
+      "category": "facts",
+      "text": "Cup for cup, cooked broccoli can deliver more vitamin C than an orange. The green stuff overdelivers."
+    },
+    {
+      "id": 4021,
+      "category": "facts",
+      "text": "The number of people trying plant-based eating has grown dramatically worldwide over the past decade."
+    },
+    {
+      "id": 4022,
+      "category": "facts",
+      "text": "Beans quietly improve the soil they grow in, fixing nitrogen so the next crop grows better. Generous plants."
+    },
+    {
+      "id": 4023,
+      "category": "facts",
+      "text": "Choosing plants more often can shrink your food-related carbon footprint by up to half. Small fork, big lever."
+    },
+    {
+      "id": 4024,
+      "category": "facts",
+      "text": "Seitan traces back over a thousand years to Buddhist monks in China who wanted hearty meals without meat."
+    },
+    {
+      "id": 4025,
+      "category": "facts",
+      "text": "Plant-based eaters typically get around twice the fiber of the average diet — and gut bacteria love it."
+    },
+    {
+      "id": 4026,
+      "category": "facts",
+      "text": "A handful of walnuts a day delivers plant omega-3s along with a satisfying crunch. Brains approve."
+    },
+    {
+      "id": 4027,
+      "category": "facts",
+      "text": "Chickpeas have been on human menus for around 9,000 years, from ancient kitchens to your hummus bowl."
+    },
+    {
+      "id": 4028,
+      "category": "facts",
+      "text": "Mushrooms left in sunlight can make their own vitamin D, just like skin does. Set them on the windowsill."
+    },
+    {
+      "id": 4029,
+      "category": "facts",
+      "text": "Plant milks now fill whole supermarket aisles that barely existed twenty years ago. Oat, soy, almond — take your pick."
+    },
+    {
+      "id": 4030,
+      "category": "facts",
+      "text": "Pound for pound, dried beans are among the most affordable protein sources you can buy anywhere."
+    },
+    {
+      "id": 4031,
+      "category": "facts",
+      "text": "Eating plant-based can free up a remarkable amount of land — space that can return to forests and wild meadows."
+    },
+    {
+      "id": 4032,
+      "category": "facts",
+      "text": "In the world's longevity hotspots, beans and greens show up on the table nearly every single day."
+    },
+    {
+      "id": 4033,
+      "category": "facts",
+      "text": "Okinawans traditionally got most of their calories from sweet potatoes — and famously lived long, active lives."
+    },
+    {
+      "id": 4034,
+      "category": "facts",
+      "text": "India has nurtured rich vegetarian food traditions for thousands of years, with hundreds of beloved dishes."
+    },
+    {
+      "id": 4035,
+      "category": "facts",
+      "text": "One cup of cooked spinach offers a solid dose of iron, folate, and vitamin K. Tiny leaf, mighty resume."
+    },
+    {
+      "id": 4036,
+      "category": "facts",
+      "text": "Veganuary participation has climbed year after year, with millions of sign-ups from nearly every country."
+    },
+    {
+      "id": 4037,
+      "category": "facts",
+      "text": "Dark chocolate is often naturally vegan — cocoa, sugar, and not much else. Dessert was on your side all along. 🍫"
+    },
+    {
+      "id": 4038,
+      "category": "facts",
+      "text": "Oats can help support healthy cholesterol levels thanks to a soluble fiber called beta-glucan."
+    },
+    {
+      "id": 4039,
+      "category": "facts",
+      "text": "Hemp seeds carry complete protein plus healthy fats, and they taste like a nuttier sunflower seed."
+    },
+    {
+      "id": 4040,
+      "category": "facts",
+      "text": "Bison, wild horses, and oxen — some of history's strongest working animals — run entirely on grass and plants."
+    },
+    {
+      "id": 4041,
+      "category": "facts",
+      "text": "The global plant-based food market has roughly doubled in just a few years, and it keeps on growing."
+    },
+    {
+      "id": 4042,
+      "category": "facts",
+      "text": "A single mature oak can support hundreds of species. Land returned to nature gets busy fast."
+    },
+    {
+      "id": 4043,
+      "category": "facts",
+      "text": "Sweet potatoes are loaded with beta-carotene, which your body turns into vitamin A. Orange means go."
+    },
+    {
+      "id": 4044,
+      "category": "facts",
+      "text": "Peanuts are technically legumes, cousins of beans and lentils — which explains their generous protein."
+    },
+    {
+      "id": 4045,
+      "category": "facts",
+      "text": "Swapping beef for beans even once a week can save a surprising amount of water over a year."
+    },
+    {
+      "id": 4046,
+      "category": "facts",
+      "text": "Miso, soy sauce, and tempeh all come from one humble bean. The soybean might be food's greatest multitasker."
+    },
+    {
+      "id": 4047,
+      "category": "facts",
+      "text": "Many of the brightest pigments in fruit and veg are antioxidants. Eating the rainbow is real advice."
+    },
+    {
+      "id": 4048,
+      "category": "facts",
+      "text": "The word 'vegan' was coined in 1944 by a small British club. Today, millions around the world use it daily."
+    },
+    {
+      "id": 4049,
+      "category": "facts",
+      "text": "Rice and beans together form a complete protein — a pairing cultures worldwide figured out centuries ago."
+    },
+    {
+      "id": 4050,
+      "category": "facts",
+      "text": "Strawberries, kiwis, and bell peppers are all vitamin C heavyweights — citrus has plenty of company."
+    },
+    {
+      "id": 4051,
+      "category": "facts",
+      "text": "Falafel has been delighting people across the Middle East for centuries — chickpeas had a fan club early."
+    },
+    {
+      "id": 4052,
+      "category": "facts",
+      "text": "Diverse plant farming supports pollinators, and pollinators support around a third of the food we eat."
+    },
+    {
+      "id": 4053,
+      "category": "facts",
+      "text": "Nutritional yeast is fortified with B12 and tastes remarkably cheesy. Sprinkle generously, thank us later."
+    },
+    {
+      "id": 4054,
+      "category": "facts",
+      "text": "Some of the strongest powerlifters competing today train and recover on fully plant-based diets."
+    },
+    {
+      "id": 4055,
+      "category": "facts",
+      "text": "Eating more legumes is one of the most consistent habits shared by the world's longest-living communities."
+    },
+    {
+      "id": 4056,
+      "category": "facts",
+      "text": "Growing a kilo of vegetables generally takes far less land and water than almost any other food."
+    },
+    {
+      "id": 4057,
+      "category": "facts",
+      "text": "Seaweed has fed coastal communities for millennia and grows without any farmland or fresh water at all."
+    },
+    {
+      "id": 4058,
+      "category": "facts",
+      "text": "A cup of cooked lentils brings around 18 grams of protein plus iron and folate. Soup never looked so strong."
+    },
+    {
+      "id": 4059,
+      "category": "facts",
+      "text": "Many classic comfort foods — pasta with marinara, veggie curries, bean chili — have always been plant-based."
+    },
+    {
+      "id": 4060,
+      "category": "facts",
+      "text": "Vegan cookbook publishing has boomed, with more plant-based titles released now than ever before."
+    },
+    {
+      "id": 4061,
+      "category": "facts",
+      "text": "Apples float because they're about a quarter air — and they come in more than 7,000 known varieties."
+    },
+    {
+      "id": 4062,
+      "category": "facts",
+      "text": "Restoring farmland to wild grassland can bring back birdsong within just a few seasons. Nature rebounds quickly."
+    },
+    {
+      "id": 4063,
+      "category": "facts",
+      "text": "Most plant proteins come bundled with fiber — a bonus that animal proteins simply never include."
+    },
+    {
+      "id": 4064,
+      "category": "facts",
+      "text": "Black beans, kidney beans, and pintos are rich in antioxidants — darker beans often pack the most."
+    },
+    {
+      "id": 4065,
+      "category": "facts",
+      "text": "Major cities around the world now host entire vegan food festivals that draw tens of thousands of visitors."
+    },
+    {
+      "id": 4066,
+      "category": "facts",
+      "text": "Tahini, made from humble sesame seeds, delivers calcium, healthy fats, and serious flavor in one spoonful."
+    },
+    {
+      "id": 4067,
+      "category": "facts",
+      "text": "Plant-forward eating is linked with healthier hearts in study after study. Your arteries enjoy the salad too."
+    },
+    {
+      "id": 4068,
+      "category": "facts",
+      "text": "Ethiopia's injera with lentil and vegetable stews is a centuries-old, naturally plant-based feast."
+    },
+    {
+      "id": 4069,
+      "category": "facts",
+      "text": "Oat milk went from niche curiosity to one of the most popular coffee companions in under a decade."
+    },
+    {
+      "id": 4070,
+      "category": "facts",
+      "text": "Around the world, the foods that feed the most people — rice, wheat, maize, potatoes — are all plants."
+    },
+    {
+      "id": 4071,
+      "category": "facts",
+      "text": "Edamame is just young soybeans, and a single bowl can rival a chicken breast for protein."
+    },
+    {
+      "id": 4072,
+      "category": "facts",
+      "text": "Frozen fruits and vegetables can hold onto their nutrients beautifully — sometimes better than fresh."
+    },
+    {
+      "id": 4073,
+      "category": "facts",
+      "text": "Manatees, gentle giants of warm coastal waters, graze contentedly on seagrass all day long."
+    },
+    {
+      "id": 4074,
+      "category": "facts",
+      "text": "Avocados, olives, and nuts show that satisfying, rich-tasting fats grow happily on trees."
+    },
+    {
+      "id": 4075,
+      "category": "facts",
+      "text": "Some endurance cyclists ride multi-week races fueled mostly by rice, fruit, and beans. Carbs are friends."
+    },
+    {
+      "id": 4076,
+      "category": "facts",
+      "text": "Herbs and spices are among the most antioxidant-dense foods known — flavor and function in one jar."
+    },
+    {
+      "id": 4077,
+      "category": "facts",
+      "text": "More than half of new food products in some markets now carry plant-based or vegan-friendly labels."
+    },
+    {
+      "id": 4078,
+      "category": "facts",
+      "text": "Pumpkin seeds are a quiet zinc and magnesium powerhouse — save them next time you carve or cook."
+    },
+    {
+      "id": 4079,
+      "category": "facts",
+      "text": "Hummus is enjoyed on every continent today, yet its core recipe has barely changed in hundreds of years."
+    },
+    {
+      "id": 4080,
+      "category": "facts",
+      "text": "Trees planted on recovered land keep working for decades, storing carbon and sheltering wildlife."
+    },
+    {
+      "id": 4081,
+      "category": "facts",
+      "text": "Crop rotation with peas and beans has helped farmers refresh tired soil since ancient Roman times."
+    },
+    {
+      "id": 4082,
+      "category": "facts",
+      "text": "Kiwi fruit offers vitamin C, fiber, and potassium in a package small enough for your pocket."
+    },
+    {
+      "id": 4083,
+      "category": "facts",
+      "text": "Jackfruit, the world's largest tree fruit, can grow heavier than a toddler and feeds whole neighborhoods."
+    },
+    {
+      "id": 4084,
+      "category": "facts",
+      "text": "Eating a wide variety of plants each week is one of the best things you can do for your gut microbiome."
+    },
+    {
+      "id": 4085,
+      "category": "facts",
+      "text": "Plant-based menus are now standard at major airlines, stadiums, and universities across the globe."
+    },
+    {
+      "id": 4086,
+      "category": "facts",
+      "text": "Chia seeds can absorb many times their weight in water, turning breakfast into pudding like magic."
+    },
+    {
+      "id": 4087,
+      "category": "facts",
+      "text": "The Mediterranean diet, long praised for heart health, is built on olive oil, legumes, grains, and greens."
+    },
+    {
+      "id": 4088,
+      "category": "facts",
+      "text": "Highland cattle, reindeer, and yaks thrive in the harshest climates on Earth — powered entirely by plants."
+    },
+    {
+      "id": 4089,
+      "category": "facts",
+      "text": "Bananas, rice, and dates fueled ancient travelers and modern marathoners alike. Simple energy, long history."
+    },
+    {
+      "id": 4090,
+      "category": "facts",
+      "text": "Every year, more land worldwide is set aside for rewilding projects — and plant-rich diets help make room."
+    },
+    {
+      "id": 5001,
+      "category": "staying_strong",
+      "text": "Cravings pass. Values stay. Pour a glass of water, take a breath — you've got this."
+    },
+    {
+      "id": 5002,
+      "category": "staying_strong",
+      "text": "It's okay to miss old flavors. Missing them doesn't mean you need them back."
+    },
+    {
+      "id": 5003,
+      "category": "staying_strong",
+      "text": "At awkward dinners, remember: you're not the difficult one. You're the consistent one."
+    },
+    {
+      "id": 5004,
+      "category": "staying_strong",
+      "text": "Progress, not perfection. A wobble isn't a fall, and a fall isn't the end."
+    },
+    {
+      "id": 5005,
+      "category": "staying_strong",
+      "text": "You don't have to win the debate at the table. Your example speaks after you leave."
+    },
+    {
+      "id": 5006,
+      "category": "staying_strong",
+      "text": "Craving cheese? It's usually salt + fat your body wants. Hummus, avocado, or cashew cream can answer."
+    },
+    {
+      "id": 5007,
+      "category": "staying_strong",
+      "text": "Remember the moment you decided. That person is still in you, and they were right."
+    },
+    {
+      "id": 5008,
+      "category": "staying_strong",
+      "text": "Being the only vegan in the room is hard. It also means the room now contains a vegan."
+    },
+    {
+      "id": 5009,
+      "category": "staying_strong",
+      "text": "That craving feels huge right now, but it's a wave, not a tide. Give it ten minutes and something warm to eat — it usually shrinks."
+    },
+    {
+      "id": 5010,
+      "category": "staying_strong",
+      "text": "Being the only vegan at the table can feel lonely. Remember: you're not odd, you're early. Someone there is quietly curious about your plate."
+    },
+    {
+      "id": 5011,
+      "category": "staying_strong",
+      "text": "Family dinners get easier. Bring a dish you love, share it freely, and let the food do the talking instead of you."
+    },
+    {
+      "id": 5012,
+      "category": "staying_strong",
+      "text": "You don't owe anyone a debate over dessert. A smile and a simple 'this works for me' is a complete answer."
+    },
+    {
+      "id": 5013,
+      "category": "staying_strong",
+      "text": "Slipped up? That's a moment, not a verdict. The next meal is a fresh start, and it's already on its way."
+    },
+    {
+      "id": 5014,
+      "category": "staying_strong",
+      "text": "Travel tip from every vegan ever: pack snacks like you mean it. A fed traveler is a calm traveler."
+    },
+    {
+      "id": 5015,
+      "category": "staying_strong",
+      "text": "The menu has nothing for you? Sides become a feast: fries, salad, bread, grilled veg. You've built dinner from less."
+    },
+    {
+      "id": 5016,
+      "category": "staying_strong",
+      "text": "Cravings are often just hunger wearing a costume. Eat something hearty first, then see if it still wants attention."
+    },
+    {
+      "id": 5017,
+      "category": "staying_strong",
+      "text": "When a relative teases you, they're usually testing, not attacking. Stay light, stay kind, pass the potatoes."
+    },
+    {
+      "id": 5018,
+      "category": "staying_strong",
+      "text": "Dating while vegan: the right person finds your values interesting, not inconvenient. Let that be a quiet filter, not a worry."
+    },
+    {
+      "id": 5019,
+      "category": "staying_strong",
+      "text": "It's okay to call the restaurant ahead. Two minutes on the phone can save an evening of menu anxiety."
+    },
+    {
+      "id": 5020,
+      "category": "staying_strong",
+      "text": "Feeling like the odd one out is real. So is this: somewhere nearby there's a whole community who gets it. Go find one meetup."
+    },
+    {
+      "id": 5021,
+      "category": "staying_strong",
+      "text": "You can love the people who don't get it yet. Their understanding isn't a requirement for your peace."
+    },
+    {
+      "id": 5022,
+      "category": "staying_strong",
+      "text": "A craving for cheese is usually a craving for salt, fat, and comfort. All three exist in your kitchen right now."
+    },
+    {
+      "id": 5023,
+      "category": "staying_strong",
+      "text": "Hard day? Lower the bar gently. Toast with peanut butter is a perfectly noble dinner. Nourished beats perfect."
+    },
+    {
+      "id": 5024,
+      "category": "staying_strong",
+      "text": "When someone asks 'but where do you get your protein,' it's an opening, not a trap. Answer once, smile, and change the subject if you like."
+    },
+    {
+      "id": 5025,
+      "category": "staying_strong",
+      "text": "You made a choice most people never even consider. Some days that's heavy. Most days it's quietly wonderful. Both count."
+    },
+    {
+      "id": 5026,
+      "category": "staying_strong",
+      "text": "Airport food deserts happen. Hummus, pretzels, fruit, and a little patience will carry you to the other gate."
+    },
+    {
+      "id": 5027,
+      "category": "staying_strong",
+      "text": "If a slip-up happens, skip the spiral. Curiosity beats shame: what made today hard, and what would help next time?"
+    },
+    {
+      "id": 5028,
+      "category": "staying_strong",
+      "text": "The awkward silence after you say 'I'm vegan' lasts three seconds. Your reasons last a lifetime. Fair trade."
+    },
+    {
+      "id": 5029,
+      "category": "staying_strong",
+      "text": "Social pressure is loudest at the start. Stay steady through a few dinners and watch it quietly turn into respect."
+    },
+    {
+      "id": 5030,
+      "category": "staying_strong",
+      "text": "Keep one comfort meal you can make half asleep. On the hard nights, that recipe is your safety net."
+    },
+    {
+      "id": 5031,
+      "category": "staying_strong",
+      "text": "Nobody at the barbecue is thinking about your plate as much as you are. Bring great veggie skewers and enjoy the sunshine."
+    },
+    {
+      "id": 5032,
+      "category": "staying_strong",
+      "text": "You're allowed to leave the conversation. 'I'd rather just enjoy dinner' is a boundary, and boundaries are allowed at tables."
+    },
+    {
+      "id": 5033,
+      "category": "staying_strong",
+      "text": "A craving you ride out gets weaker the next time it visits. You're not just resisting — you're retraining."
+    },
+    {
+      "id": 5034,
+      "category": "staying_strong",
+      "text": "Homesick for old favorites? There's almost certainly a vegan version someone perfected out of the same longing. Go look."
+    },
+    {
+      "id": 5035,
+      "category": "staying_strong",
+      "text": "When the office orders pizza and forgets you again, breathe. Keep a backup stash in your desk and a little grace in your pocket."
+    },
+    {
+      "id": 5036,
+      "category": "staying_strong",
+      "text": "You don't have to be the perfect vegan to be a real one. Direction matters more than flawlessness."
+    },
+    {
+      "id": 5037,
+      "category": "staying_strong",
+      "text": "One honest 'this is hard today' to a friend beats a week of pretending it's easy. Let someone in."
+    },
+    {
+      "id": 5038,
+      "category": "staying_strong",
+      "text": "Grandma's recipes can be translated, not abandoned. Cooking her dish your way is a tribute, not a rejection."
+    },
+    {
+      "id": 5039,
+      "category": "staying_strong",
+      "text": "New city, no idea where to eat? Search 'vegan near me' before you're starving, not after. Future you says thanks."
+    },
+    {
+      "id": 5040,
+      "category": "staying_strong",
+      "text": "Some people will never ask why you went vegan. Some will ask years later, quietly. Be ready for the second kind."
+    },
+    {
+      "id": 5041,
+      "category": "staying_strong",
+      "text": "It's fine to be tired of explaining. Save a sentence you like, use it on repeat, and spend your energy elsewhere."
+    },
+    {
+      "id": 5042,
+      "category": "staying_strong",
+      "text": "A wobbly week doesn't erase a strong year. Zoom out — the bigger picture of you is still beautiful."
+    },
+    {
+      "id": 5043,
+      "category": "staying_strong",
+      "text": "First date jitters plus menu anxiety? Pick the restaurant yourself. Confidence starts with knowing there's something you can order."
+    },
+    {
+      "id": 5044,
+      "category": "staying_strong",
+      "text": "The friend who makes fun of your burger today might ask for the recipe next year. Plant seeds, not arguments."
+    },
+    {
+      "id": 5045,
+      "category": "staying_strong",
+      "text": "Hunger plus a bakery window is a tough matchup. Carry a snack and you'll win it more often than not."
+    },
+    {
+      "id": 5046,
+      "category": "staying_strong",
+      "text": "You can say no to the family dish and still say yes to the family. Love and lentils can share a table."
+    },
+    {
+      "id": 5047,
+      "category": "staying_strong",
+      "text": "Online forums, local potlucks, one vegan coworker — community comes in small doses. One real connection changes everything."
+    },
+    {
+      "id": 5048,
+      "category": "staying_strong",
+      "text": "If tonight's dinner party menu is a minefield, eat a little beforehand. Showing up relaxed is half the victory."
+    },
+    {
+      "id": 5049,
+      "category": "staying_strong",
+      "text": "Missing convenience is valid. Building new habits takes real effort, and the effort itself is something to be proud of."
+    },
+    {
+      "id": 5050,
+      "category": "staying_strong",
+      "text": "When someone says 'I could never do that,' they're often saying 'I'm impressed.' Hear the compliment hiding inside."
+    },
+    {
+      "id": 5051,
+      "category": "staying_strong",
+      "text": "Holidays are about the people, not the centerpiece. Fill your plate with what works and your evening with who matters."
+    },
+    {
+      "id": 5052,
+      "category": "staying_strong",
+      "text": "A craving at 10pm rarely survives brushing your teeth and going to bed. Sleep is an underrated tactic."
+    },
+    {
+      "id": 5053,
+      "category": "staying_strong",
+      "text": "You're not failing if you need frozen meals and shortcuts this week. Easy food is still food that matches your values."
+    },
+    {
+      "id": 5054,
+      "category": "staying_strong",
+      "text": "The waiter who shrugs at 'vegan options?' isn't the final word. Ask about the pasta, the grill, the sides. Kitchens can flex."
+    },
+    {
+      "id": 5055,
+      "category": "staying_strong",
+      "text": "Eating differently from your partner takes patience on both sides. Shared meals you both love are worth the experimenting."
+    },
+    {
+      "id": 5056,
+      "category": "staying_strong",
+      "text": "When the whole table orders the same thing and you can't, remember: you've never been a person who needed to match."
+    },
+    {
+      "id": 5057,
+      "category": "staying_strong",
+      "text": "Slip-ups teach you where the gaps are — the empty fridge, the skipped lunch, the stressful Friday. Fix the gap, not yourself."
+    },
+    {
+      "id": 5058,
+      "category": "staying_strong",
+      "text": "There's no vegan committee keeping score. The only opinion of your journey that matters lives in your own head. Be kind in there."
+    },
+    {
+      "id": 5059,
+      "category": "staying_strong",
+      "text": "Work trips get easier with a routine: grocery store first night, oatmeal packets in the bag, one researched restaurant."
+    },
+    {
+      "id": 5060,
+      "category": "staying_strong",
+      "text": "If the conversation turns into a courtroom, you're allowed to adjourn. 'Let's talk about something else' works wonders."
+    },
+    {
+      "id": 5061,
+      "category": "staying_strong",
+      "text": "The smell of old favorites can ambush you out of nowhere. That's memory, not destiny. Notice it, name it, let it drift past."
+    },
+    {
+      "id": 5062,
+      "category": "staying_strong",
+      "text": "Your values don't take vacations, but your standards can relax. A simple meal abroad is still a meal aligned with you."
+    },
+    {
+      "id": 5063,
+      "category": "staying_strong",
+      "text": "Someone else's plate is none of your business, and yours is none of theirs. Peace at the table starts with that deal."
+    },
+    {
+      "id": 5064,
+      "category": "staying_strong",
+      "text": "Feeling wobbly? Revisit why you started. Write one sentence about it and tape it inside a cupboard you open daily."
+    },
+    {
+      "id": 5065,
+      "category": "staying_strong",
+      "text": "Hosting is a secret superpower. When the dinner is at your place, every single thing on the table is yours to enjoy."
+    },
+    {
+      "id": 5066,
+      "category": "staying_strong",
+      "text": "You can be both grateful for the effort and honest that the dish has butter in it. Kind clarity protects everyone."
+    },
+    {
+      "id": 5067,
+      "category": "staying_strong",
+      "text": "On the days it feels like too much, shrink the goal: just this meal, just this choice. Small is still forward."
+    },
+    {
+      "id": 5068,
+      "category": "staying_strong",
+      "text": "A potluck invite isn't a test, it's a stage. One spectacular dish can do more convincing than a hundred conversations."
+    },
+    {
+      "id": 5069,
+      "category": "staying_strong",
+      "text": "The loneliest stretch is usually right before you find your people. Keep showing up — they're looking for you too."
+    },
+    {
+      "id": 5070,
+      "category": "staying_strong",
+      "text": "You've handled awkward dinners, blank menus, and pointed questions before. Tonight is just one more thing you already know how to do."
+    },
+    {
+      "id": 6001,
+      "category": "milestones",
+      "text": "Another day plant-based. Small word, big deal: another."
+    },
+    {
+      "id": 6002,
+      "category": "milestones",
+      "text": "One week strong. Seven days of meals that matched your heart."
+    },
+    {
+      "id": 6003,
+      "category": "milestones",
+      "text": "A whole month! Your habits are becoming your nature."
+    },
+    {
+      "id": 6004,
+      "category": "milestones",
+      "text": "100 days. You're not trying this anymore — you're living it."
+    },
+    {
+      "id": 6005,
+      "category": "milestones",
+      "text": "Every streak started with a single 'today, yes'. Keep saying it."
+    },
+    {
+      "id": 6006,
+      "category": "milestones",
+      "text": "One year vegan: hundreds of animals, tonnes of CO₂, and one very aligned human."
+    },
+    {
+      "id": 6007,
+      "category": "milestones",
+      "text": "Celebrate the boring days too — the ones where it was just easy. That's growth."
+    },
+    {
+      "id": 6008,
+      "category": "milestones",
+      "text": "Look back at day one of your journey. Wave. They'd be so proud of you."
+    },
+    {
+      "id": 6009,
+      "category": "milestones",
+      "text": "One week in. Seven days of choices that lined up with your heart. That's not small — that's a foundation."
+    },
+    {
+      "id": 6010,
+      "category": "milestones",
+      "text": "Your first vegan dish, cooked by your own hands, in your own kitchen. Every cook you admire started with exactly one."
+    },
+    {
+      "id": 6011,
+      "category": "milestones",
+      "text": "A month! Thirty days ago this was an experiment. Now it's starting to feel like home."
+    },
+    {
+      "id": 6012,
+      "category": "milestones",
+      "text": "Today you answered a question about being vegan calmly and kindly. That's a milestone too — maybe the trickiest one."
+    },
+    {
+      "id": 6013,
+      "category": "milestones",
+      "text": "Three months. Long enough that the grocery store has stopped feeling like a puzzle and started feeling like yours."
+    },
+    {
+      "id": 6014,
+      "category": "milestones",
+      "text": "Six months of meals, choices, and quiet mornings. Half a year of becoming more yourself."
+    },
+    {
+      "id": 6015,
+      "category": "milestones",
+      "text": "One year vegan. Three hundred sixty-five days of practice, patience, and plates. Take a moment — you earned it. 🎉"
+    },
+    {
+      "id": 6016,
+      "category": "milestones",
+      "text": "Today wasn't dramatic. You just ate, lived, and didn't think twice about it. Effortless days are the real trophies."
+    },
+    {
+      "id": 6017,
+      "category": "milestones",
+      "text": "Remember when you couldn't imagine a week? Look at you now, not even counting some days. That's what arrival feels like."
+    },
+    {
+      "id": 6018,
+      "category": "milestones",
+      "text": "First dinner party you hosted with an all-plant menu — and everyone went back for seconds. Frame this memory."
+    },
+    {
+      "id": 6019,
+      "category": "milestones",
+      "text": "A ten-day streak is a quiet promise you kept to yourself ten times in a row. That kind of trust compounds."
+    },
+    {
+      "id": 6020,
+      "category": "milestones",
+      "text": "Two years in. The questions got rarer, the recipes got better, and the choice got lighter. Beautiful work."
+    },
+    {
+      "id": 6021,
+      "category": "milestones",
+      "text": "You converted a family recipe today and it actually tasted like home. That's heritage and growth on one plate."
+    },
+    {
+      "id": 6022,
+      "category": "milestones",
+      "text": "First time a friend asked you for a recipe instead of a justification. Notice the shift — you've become a resource."
+    },
+    {
+      "id": 6023,
+      "category": "milestones",
+      "text": "One hundred days. Triple digits. Whatever today looks like, you've built something with real weight behind it."
+    },
+    {
+      "id": 6024,
+      "category": "milestones",
+      "text": "The first restaurant meal where you ordered without scanning the fine print twice — small moment, big arrival."
+    },
+    {
+      "id": 6025,
+      "category": "milestones",
+      "text": "Two weeks down. The cravings are quieter, the kitchen is friendlier, and you are exactly on schedule."
+    },
+    {
+      "id": 6026,
+      "category": "milestones",
+      "text": "Your streak survived a birthday party, and you still had cake — just your kind of cake. That's mastery, honestly."
+    },
+    {
+      "id": 6027,
+      "category": "milestones",
+      "text": "Five years. Half a decade of gentle consistency. Somewhere along the way, this stopped being a change and became a life."
+    },
+    {
+      "id": 6028,
+      "category": "milestones",
+      "text": "Today marks your first vegan holiday season, fully navigated. Family, feasts, and your values, all at one table."
+    },
+    {
+      "id": 6029,
+      "category": "milestones",
+      "text": "You spoke up today — kindly, briefly, without a lecture. First times like that take more courage than people know."
+    },
+    {
+      "id": 6030,
+      "category": "milestones",
+      "text": "A thirty-day streak isn't really about the number. It's proof you can rely on yourself, which is worth everything."
+    },
+    {
+      "id": 6031,
+      "category": "milestones",
+      "text": "First batch of homemade vegan cookies, gone in an evening. The highest culinary honor there is."
+    },
+    {
+      "id": 6032,
+      "category": "milestones",
+      "text": "Three days in. The very beginning is the steepest part of the climb, and you're already moving. Welcome."
+    },
+    {
+      "id": 6033,
+      "category": "milestones",
+      "text": "An anniversary worth marking: the day you decided. Not the day it got easy — the day you began anyway."
+    },
+    {
+      "id": 6034,
+      "category": "milestones",
+      "text": "You taught someone to cook their first vegan meal today. Your journey just grew a branch."
+    },
+    {
+      "id": 6035,
+      "category": "milestones",
+      "text": "Nine months. Long enough to grow something entirely new — and you have. Look how naturally this fits you now."
+    },
+    {
+      "id": 6036,
+      "category": "milestones",
+      "text": "First grocery run where you didn't read a single label twice. You've memorized your way around a new world."
+    },
+    {
+      "id": 6037,
+      "category": "milestones",
+      "text": "Another ordinary Tuesday, another day lived in line with what you believe. Stack enough of these and they become a legacy."
+    },
+    {
+      "id": 6038,
+      "category": "milestones",
+      "text": "Fifty days. Some were easy, some took grit, and every single one counted the same. Keep stacking."
+    },
+    {
+      "id": 6039,
+      "category": "milestones",
+      "text": "Your first vegan road trip is complete — snacks packed, maps marked, zero meals missed. Logistics champion. 🏆"
+    },
+    {
+      "id": 6040,
+      "category": "milestones",
+      "text": "Today a curious coworker tried your lunch and loved it. Quiet influence, delicious delivery."
+    },
+    {
+      "id": 6041,
+      "category": "milestones",
+      "text": "Three years vegan. The recipes you've gathered could fill a book, and the person you've become could fill a room."
+    },
+    {
+      "id": 6042,
+      "category": "milestones",
+      "text": "First time you fixed a recipe fail and made it brilliant on round two. Cooking confidence: unlocked."
+    },
+    {
+      "id": 6043,
+      "category": "milestones",
+      "text": "Two hundred days. You've outlasted every 'it's just a phase' prediction by a comfortable margin."
+    },
+    {
+      "id": 6044,
+      "category": "milestones",
+      "text": "The streak broke last month, and you started again without drama. Restarting is its own milestone — maybe the most important one."
+    },
+    {
+      "id": 6045,
+      "category": "milestones",
+      "text": "Your pantry officially has more grains, beans, and spices than you can name from memory. A quiet sign of a rich food life."
+    },
+    {
+      "id": 6046,
+      "category": "milestones",
+      "text": "First vegan birthday — yours, celebrated entirely your way, cake and all. Happy everything."
+    },
+    {
+      "id": 6047,
+      "category": "milestones",
+      "text": "Eighteen months. Past the novelty, past the hard part, deep into the part where it's simply who you are."
+    },
+    {
+      "id": 6048,
+      "category": "milestones",
+      "text": "Today you realized you haven't checked a menu nervously in months. Confidence arrived so quietly you almost missed it."
+    },
+    {
+      "id": 6049,
+      "category": "milestones",
+      "text": "One full week of cooking every dinner yourself. Seven pots, seven plates, one growing skill."
+    },
+    {
+      "id": 6050,
+      "category": "milestones",
+      "text": "Your hundredth home-cooked vegan meal, give or take. Nobody's counting exactly — and that's the lovely part."
+    },
+    {
+      "id": 6051,
+      "category": "milestones",
+      "text": "First time a skeptical relative said 'this is actually good.' Carve today's date somewhere special."
+    },
+    {
+      "id": 6052,
+      "category": "milestones",
+      "text": "Four years in, and the question has changed from 'why would you' to 'how do you make that.' Progress, measured in curiosity."
+    },
+    {
+      "id": 6053,
+      "category": "milestones",
+      "text": "Sixty days of small consistent choices. Not one of them made headlines, and all of them made you."
+    },
+    {
+      "id": 6054,
+      "category": "milestones",
+      "text": "You hit a year of your morning routine — same oats, same calm, same quiet alignment. Rituals are milestones in disguise."
+    },
+    {
+      "id": 6055,
+      "category": "milestones",
+      "text": "First time someone told you that you inspired their switch. You may never know how far that ripple travels."
+    },
+    {
+      "id": 6056,
+      "category": "milestones",
+      "text": "A decade. Ten years of meals, growth, and gentle stubbornness. Whatever you call it, we call it remarkable."
+    },
+    {
+      "id": 6057,
+      "category": "milestones",
+      "text": "Today's win: nothing happened. No cravings, no questions, no friction. Just a good day that matched your values perfectly."
+    },
+    {
+      "id": 6058,
+      "category": "milestones",
+      "text": "However many days it's been — today you're still here, still choosing it, still growing. That ongoing yes is the real milestone."
+    }
   ]
 }
