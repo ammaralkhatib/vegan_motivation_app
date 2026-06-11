@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/widget_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:textColor="#5C6B60"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="🌱 Veggie" />
+
+    <TextView
+        android:id="@+id/widget_quote_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="6dp"
+        android:textSize="15sp"
+        android:textColor="#26302A"
+        android:fontFamily="serif"
+        android:lineSpacingMultiplier="1.25"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:text="Every plant-based meal plants a little hope." />
+</LinearLayout>

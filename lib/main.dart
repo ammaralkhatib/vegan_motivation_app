@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
 import 'core/db/database.dart';
+import 'core/notifications/notification_service.dart';
 import 'core/prefs/prefs_repository.dart';
 import 'data/content_importer.dart';
 
@@ -16,6 +17,7 @@ Future<void> main() async {
   final db = AppDatabase();
 
   await _importContentIfNeeded(db, prefs);
+  await NotificationService.instance.init();
 
   runApp(
     ProviderScope(

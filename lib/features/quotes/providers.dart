@@ -1,0 +1,55 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/db/database.dart';
+import '../../core/utils/date_utils.dart';
+import '../../core/utils/seeded_shuffle.dart';
+
+/// Ordered quote ids for today's feed.
+///
+/// Reacts to category-mix changes (categories stream) but deliberately does
+/// NOT react to quote-row changes — incrementing shownCount while the user
+/// swipes must not reshuffle the queue under their thumb.
+final feedQueueProvider = StreamProvider<List<int>>((ref) {
+  final db = ref.watch(databaseProvider);
+  return db.quoteDao.watchCategories().asyncMap((categories) async {
+    final quotes = await db.quoteDao.getQuotesInMix();
+    final day = todayEpochDay();
+    final shuffled = seededShuffle(quotes, day);
+    // Light anti-repeat: quotes seen often sink. List.sort isn't stable, so
+    // tie-break on the shuffled index to keep the daily order deterministic.
+    final indexed = shuffled.asMap().entries.toList();
+    indexed.sort((a, b) {
+      final bucketA = a.value.shownCount > 3 ? 3 : a.value.shownCount;
+      final bucketB = b.value.shownCount > 3 ? 3 : b.value.shownCount;
+      final byBucket = bucketA.compareTo(bucketB);
+      return byBucket != 0 ? byBucket : a.key.compareTo(b.key);
+    });
+    return [for (final e in indexed) e.value.id];
+  });
+});
+
+/// Live row for one quote (heart state stays in sync everywhere).
+final quoteByIdProvider = StreamProvider.family<Quote?, int>((ref, id) {
+  final db = ref.watch(databaseProvider);
+  return (db.select(db.quotes)..where((q) => q.id.equals(id)))
+      .watchSingleOrNull();
+});
+
+final categoriesProvider = StreamProvider<List<Category>>((ref) {
+  return ref.watch(databaseProvider).quoteDao.watchCategories();
+});
+
+/// Category lookup by id, derived from the categories stream.
+final categoryByIdProvider = Provider.family<Category?, String>((ref, id) {
+  final categories = ref.watch(categoriesProvider).valueOrNull;
+  if (categories == null) return null;
+  for (final c in categories) {
+    if (c.id == id) return c;
+  }
+  return null;
+});
+
+final toggleFavoriteProvider = Provider((ref) {
+  final db = ref.watch(databaseProvider);
+  return (Quote quote) => db.quoteDao.setFavorite(quote.id, !quote.isFavorite);
+});

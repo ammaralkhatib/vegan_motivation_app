@@ -29,6 +29,17 @@ class HabitDao extends DatabaseAccessor<AppDatabase> with _$HabitDaoMixin {
         .watch();
   }
 
+  /// One-shot variant of [watchCompletionDays] (safe to await anywhere).
+  Future<List<int>> getCompletionDays(int habitId) {
+    final query = selectOnly(habitCompletions)
+      ..addColumns([habitCompletions.day])
+      ..where(habitCompletions.habitId.equals(habitId))
+      ..orderBy([OrderingTerm.asc(habitCompletions.day)]);
+    return query
+        .get()
+        .then((rows) => [for (final r in rows) r.read(habitCompletions.day)!]);
+  }
+
   /// Every completion day for one habit (for streak math), ascending.
   Stream<List<int>> watchCompletionDays(int habitId) {
     final query = selectOnly(habitCompletions)
