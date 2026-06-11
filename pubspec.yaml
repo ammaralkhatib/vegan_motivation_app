@@ -32,7 +32,9 @@ dependencies:
   flutter_timezone: ^4.1.1
 
   # Home-screen widget
-  home_widget: ^0.8.0
+  # Pinned below 0.8.x: 0.8 pulls androidx.compose.remote (alpha) which
+  # requires AGP 9.1; this project is on the Flutter-default AGP 8.x.
+  home_widget: ^0.7.0
 
   # Sharing
   share_plus: ^12.0.1
