@@ -89,8 +89,8 @@ delegates; added the delegates there and the suite went green on the next run.
 
 ## Commit & push
 
-- **Commit:** `<filled by stamp>` — `feat(l10n): add gen_l10n setup and migrate settings strings`
-- **Push:** `<filled by stamp>`
+- **Commit:** `9651c0f` — `feat(l10n): add gen_l10n setup and migrate settings strings`
+- **Push:** `origin/main` — ok (`0b71f06..9651c0f`).
 
 ## Deviations from prompt
 
