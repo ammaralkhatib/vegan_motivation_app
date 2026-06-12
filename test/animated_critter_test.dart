@@ -67,7 +67,36 @@ void main() {
     expect(_frameOpacity(tester, 'happy'), 0);
     expect(_frameOpacity(tester, 'base'), 1);
 
-    // Unmount so the bob controller and blink timer are cancelled.
+    // Unmount so the breathing controller and blink timer are cancelled.
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
+  testWidgets('idle animation breathes (scales in place, no translate)',
+      (tester) async {
+    await tester.pumpWidget(
+      _host(const AnimatedCritter(critter: Critter.cow)),
+    );
+    await tester.pump();
+
+    // The breathing is a scale, never a translate — assert nothing translates.
+    expect(find.byType(Transform), findsWidgets);
+    final translatesAtRest = tester
+        .widgetList<Transform>(find.byType(Transform))
+        .where((t) => t.transform.getTranslation().length > 0.001);
+    expect(translatesAtRest, isEmpty,
+        reason: 'breathing must not move the critter vertically');
+
+    // A quarter period in (sin == 1), the breathing scale is at its peak (~1.04).
+    await tester.pump(const Duration(milliseconds: 700));
+    final maxScale = tester
+        .widgetList<Transform>(find.byType(Transform))
+        .map((t) => t.transform.getMaxScaleOnAxis())
+        .fold<double>(0, (m, s) => s > m ? s : m);
+    expect(maxScale, greaterThan(1.0),
+        reason: 'idle critter should be scaling (breathing), not static');
+    expect(maxScale, lessThan(1.1));
+
+    // Unmount so the breathing controller and blink timer are cancelled.
     await tester.pumpWidget(const SizedBox.shrink());
   });
 

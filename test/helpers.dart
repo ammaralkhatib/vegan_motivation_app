@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// AnimatedCritter runs a never-ending bob, which would make `pumpAndSettle`
-/// time out. Request reduced motion so critters render their static base
-/// frame in tests that pump the feed. Cleared automatically at test teardown.
+/// AnimatedCritter runs a never-ending breathing scale, which would make
+/// `pumpAndSettle` time out. Request reduced motion so critters render their
+/// static base frame in tests that pump the feed. Cleared automatically at test
+/// teardown.
 void disableCritterAnimations(WidgetTester tester) {
   tester.platformDispatcher.accessibilityFeaturesTestValue =
       const FakeAccessibilityFeatures(disableAnimations: true);

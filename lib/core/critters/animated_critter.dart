@@ -39,8 +39,9 @@ enum Critter {
   }
 }
 
-/// A small kawaii farm animal that gently bobs and blinks, and does a happy
-/// wiggle when tapped. Pure `AnimationController`/`Ticker` — no packages.
+/// A small kawaii farm animal head that gently breathes (scales) and blinks,
+/// and does a happy wiggle when tapped. Pure `AnimationController`/`Ticker` —
+/// no packages.
 ///
 /// All three frames stay mounted (opacity swap) so frame changes never
 /// flicker. With [animate] false — or when the platform requests reduced
@@ -71,8 +72,8 @@ enum _Frame { base, blink, happy }
 
 class _AnimatedCritterState extends State<AnimatedCritter>
     with TickerProviderStateMixin {
-  // Drives the continuous up-down bob (one full sine period per cycle).
-  late final AnimationController _bob;
+  // Drives the continuous breathing scale (one full sine period per cycle).
+  late final AnimationController _breathe;
   // Drives the decaying tap wiggle (rotation + slight scale up) once per tap.
   late final AnimationController _tap;
 
@@ -85,14 +86,14 @@ class _AnimatedCritterState extends State<AnimatedCritter>
   bool _happy = false;
   bool _precached = false;
 
-  static const _bobPeriod = Duration(milliseconds: 2800);
+  static const _breathePeriod = Duration(milliseconds: 2800);
   static const _blinkDuration = Duration(milliseconds: 160);
   static const _tapDuration = Duration(milliseconds: 1200);
 
   @override
   void initState() {
     super.initState();
-    _bob = AnimationController(vsync: this, duration: _bobPeriod);
+    _breathe = AnimationController(vsync: this, duration: _breathePeriod);
     _tap = AnimationController(vsync: this, duration: _tapDuration)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed && mounted) {
@@ -135,10 +136,10 @@ class _AnimatedCritterState extends State<AnimatedCritter>
     if (on == _animating) return;
     _animating = on;
     if (on) {
-      _bob.repeat();
+      _breathe.repeat();
       _scheduleBlink();
     } else {
-      _bob.stop();
+      _breathe.stop();
       _cancelBlink();
       if (_blinking || _happy) {
         setState(() {
@@ -180,7 +181,7 @@ class _AnimatedCritterState extends State<AnimatedCritter>
   @override
   void dispose() {
     _cancelBlink();
-    _bob.dispose();
+    _breathe.dispose();
     _tap.dispose();
     super.dispose();
   }
@@ -211,31 +212,27 @@ class _AnimatedCritterState extends State<AnimatedCritter>
       onTap: _handleTap,
       behavior: HitTestBehavior.opaque,
       child: AnimatedBuilder(
-        animation: Listenable.merge([_bob, _tap]),
+        animation: Listenable.merge([_breathe, _tap]),
         child: stack,
         builder: (context, child) {
-          // Bob: full sine period; amplitude scales with size (≈6 px at 96).
-          final bobAmplitude = 6.0 * (size / 96.0);
-          final dy = _animating
-              ? -bobAmplitude * math.sin(_bob.value * 2 * math.pi)
-              : 0.0;
+          // Breathing: a gentle in-place scale over one full sine period.
+          // Stays put — no vertical movement.
+          final breathScale =
+              _animating ? 1 + 0.04 * math.sin(_breathe.value * 2 * math.pi) : 1.0;
 
           // Tap wiggle: a decaying oscillation in rotation + a gentle scale bump.
           double angle = 0;
-          double scale = 1;
+          double tapScale = 1;
           if (_happy) {
             final t = _tap.value;
             final decay = 1 - t;
             angle = math.sin(t * math.pi * 6) * decay * (8 * math.pi / 180);
-            scale = 1 + 0.05 * math.sin(t * math.pi);
+            tapScale = 1 + 0.05 * math.sin(t * math.pi);
           }
 
-          return Transform.translate(
-            offset: Offset(0, dy),
-            child: Transform.rotate(
-              angle: angle,
-              child: Transform.scale(scale: scale, child: child),
-            ),
+          return Transform.rotate(
+            angle: angle,
+            child: Transform.scale(scale: breathScale * tapScale, child: child),
           );
         },
       ),
