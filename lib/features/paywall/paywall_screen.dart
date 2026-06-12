@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/notifications/notification_service.dart';
+import '../../core/notifications/trial_reminder.dart';
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/purchases/purchase_service.dart';
 import '../../core/purchases/restore_flow.dart';
@@ -39,8 +43,35 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       ConfettiController(duration: const Duration(milliseconds: 1200));
   bool _busy = false;
 
+  // Close-button gating: the onboarding/discount offers fade their X in after
+  // 2 s so the offer is actually seen, not reflex-dismissed.
+  bool _closeReady = false;
+  bool _closeScheduled = false;
+  Timer? _closeTimer;
+
+  bool get _delaysClose =>
+      widget.variant == PaywallVariant.onboarding ||
+      widget.variant == PaywallVariant.discount;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_closeScheduled) return;
+    _closeScheduled = true;
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    if (!_delaysClose || reduceMotion) {
+      _closeReady = true;
+    } else {
+      _closeTimer = Timer(const Duration(seconds: 2), () {
+        if (mounted) setState(() => _closeReady = true);
+      });
+    }
+  }
+
   @override
   void dispose() {
+    _closeTimer?.cancel();
     _confetti.dispose();
     super.dispose();
   }
@@ -55,6 +86,15 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     if (!mounted) return;
     switch (outcome) {
       case PurchaseOutcome.success:
+        // Trial purchases get a "your trial ends tomorrow" reminder; the 50%/
+        // 80% products don't (no trial).
+        final productId = data.package.storeProduct.identifier;
+        if (shouldScheduleTrialReminder(productId)) {
+          await NotificationService.instance.scheduleTrialEndReminder(
+            trialReminderFireTime(DateTime.now()),
+          );
+        }
+        if (!mounted) return;
         _confetti.play();
         await Future<void>.delayed(const Duration(milliseconds: 1100));
         if (mounted) _close();
@@ -116,16 +156,23 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               gravity: 0.25,
             ),
           ),
-          // Close (X) — always available.
+          // Close (X) — fades in after a beat on the onboarding/discount offers.
           SafeArea(
             child: Align(
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: const EdgeInsets.all(4),
-                child: IconButton(
-                  onPressed: _close,
-                  icon: const Icon(Icons.close),
-                  tooltip: 'Close',
+                child: IgnorePointer(
+                  ignoring: !_closeReady,
+                  child: AnimatedOpacity(
+                    opacity: _closeReady ? 1 : 0,
+                    duration: const Duration(milliseconds: 300),
+                    child: IconButton(
+                      onPressed: _close,
+                      icon: const Icon(Icons.close),
+                      tooltip: 'Close',
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -5,6 +5,7 @@ import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'notification_scheduler.dart';
+import 'trial_reminder.dart';
 
 /// Thin wrapper around flutter_local_notifications.
 /// Pure planning lives in notification_scheduler.dart; this class only talks
@@ -109,10 +110,11 @@ class NotificationService {
     }
   }
 
-  /// Replaces all pending notifications with the given plan.
+  /// Replaces all pending *daily* notifications with the given plan. The
+  /// reserved trial-end reminder is left intact (cancelAll would wipe it).
   Future<void> scheduleAll(List<SlotPlan> plans) async {
     if (!_initialized) return;
-    await _plugin.cancelAll();
+    await _cancelDailyNotifications();
 
     const details = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -149,5 +151,46 @@ class NotificationService {
   Future<void> cancelAll() async {
     if (!_initialized) return;
     await _plugin.cancelAll();
+  }
+
+  /// Cancels every pending notification except the reserved trial reminder.
+  Future<void> _cancelDailyNotifications() async {
+    final pending = await _plugin.pendingNotificationRequests();
+    for (final p in pending) {
+      if (p.id != trialReminderNotificationId) {
+        await _plugin.cancel(p.id);
+      }
+    }
+  }
+
+  /// Schedules the one-shot trial-end reminder at [fireAt]. No-op when the
+  /// plugin isn't ready; the OS silently drops it if permission is denied.
+  Future<void> scheduleTrialEndReminder(DateTime fireAt) async {
+    if (!_initialized || !isSupportedPlatform) return;
+    const details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        'Daily motivation',
+        channelDescription: 'Your daily dose of plant-powered encouragement',
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
+        styleInformation: BigTextStyleInformation(''),
+      ),
+      iOS: DarwinNotificationDetails(),
+      macOS: DarwinNotificationDetails(),
+    );
+    try {
+      await _plugin.zonedSchedule(
+        trialReminderNotificationId,
+        'your free trial ends tomorrow',
+        "you won't be charged until then — cancel anytime in your store "
+            'settings, or do nothing to keep your sparks coming.',
+        tz.TZDateTime.from(fireAt, tz.local),
+        details,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      );
+    } catch (_) {
+      // Best-effort — never let a reminder failure surface to the user.
+    }
   }
 }

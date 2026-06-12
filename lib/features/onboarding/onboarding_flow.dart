@@ -13,7 +13,10 @@ import 'onboarding_widgets.dart';
 import 'steps/bombshell_step.dart';
 import 'steps/final_reflection_step.dart';
 import 'steps/first_spark_step.dart';
+import 'steps/loading_step.dart';
 import 'steps/motivation_chart.dart';
+import 'steps/plan_summary_step.dart';
+import 'steps/snapshot_step.dart';
 import 'steps/streak_step.dart';
 
 /// Story-driven first-run flow: problem → solution → questions → personalized
@@ -37,6 +40,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   String? _whyRelationship;
   DateTime? _veganSince;
   String? _motivation;
+  String? _commitment;
   bool _wantsNotifications = true;
   double _perDay = 3;
   int _page = 0;
@@ -104,6 +108,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     await prefs.setMotivationDipsPerWeek(_dips);
     await prefs.setObstacles(_obstacles.toList());
     await prefs.setWhyRelationship(_whyRelationship);
+    await prefs.setCommitmentLevel(_commitment);
     if (_motivation != null) await prefs.setMotivationPick(_motivation!);
 
     if (_showJourneyStep && _veganSince != null) {
@@ -195,12 +200,28 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         onContinue: _next,
       ), // S18 — first spark (a live quote)
     ];
-    // S19 — day-1 streak + review prompt. Always second-to-last, so its index
-    // is stable regardless of the conditional journey step; that lets the step
-    // know exactly when it becomes visible.
+    // S19 — day-1 streak + review prompt. Needs to know when it's visible, so
+    // it's added with an explicit index/active flag.
     final streakIndex = steps.length;
     steps.add(StreakStep(active: _page == streakIndex, onContinue: _next));
-    steps.add(_notificationsStep(theme)); // tail (temporary)
+    // S21 — fake-loading transition, auto-advances when its bar fills.
+    final loadingIndex = steps.length;
+    steps.add(LoadingStep(active: _page == loadingIndex, onDone: _next));
+    steps.add(PlanSummaryStep(
+      name: _nameController.text.trim(),
+      onContinue: _next,
+    )); // S22
+    steps.add(_commitmentStep(theme)); // S23
+    steps.add(_commitmentResponse(theme)); // S24
+    steps.add(SnapshotStep(
+      whyRelationship: _whyRelationship,
+      dipsPerWeek: _dips,
+      commitmentLevel: _commitment,
+      firstGoal: _goals.isEmpty ? null : _goals.first,
+      onContinue: _next,
+    )); // S25
+    steps.add(_notificationsStep(theme)); // S26 (reframed)
+    steps.add(_socialProofStep(theme)); // S27 → finish
     return steps;
   }
 
@@ -568,11 +589,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   Widget _notificationsStep(ThemeData theme) => InputStep(
         onContinue: _next,
-        cta: 'start my journey',
+        cta: 'continue',
         child: ListView(
           children: [
-            const SizedBox(height: 12),
-            Text('daily nudges?', style: theme.textTheme.displaySmall),
+            const SizedBox(height: 8),
+            _eyebrow(theme, 'this is how your plan reaches you'),
+            Text('daily sparks?', style: theme.textTheme.displaySmall),
             const SizedBox(height: 8),
             _body(
               theme,
@@ -605,6 +627,72 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   ),
                 ],
               ),
+          ],
+        ),
+      );
+
+  Widget _commitmentStep(ThemeData theme) => InputStep(
+        onContinue: _next,
+        enabled: _commitment != null,
+        child: _singleSelectList(
+          theme,
+          title: 'how committed are you to making this future happen?',
+          options: commitmentOptions,
+          selected: _commitment,
+          onPick: (id) => setState(() => _commitment = id),
+        ),
+      );
+
+  Widget _commitmentResponse(ThemeData theme) {
+    final copy = commitmentResponses[_commitment] ??
+        'let\'s build your habit, one spark at a time.';
+    return ColoredBox(
+      color: theme.colorScheme.primaryContainer,
+      child: InputStep(
+        onContinue: _next,
+        cta: 'done ✓',
+        child: Center(
+          child: Text(
+            copy,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineSmall
+                ?.copyWith(color: theme.colorScheme.onPrimaryContainer),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _socialProofStep(ThemeData theme) => InputStep(
+        onContinue: _next,
+        cta: 'join veggie 🌱',
+        child: ListView(
+          children: [
+            const SizedBox(height: 8),
+            Text('veggie was made for people like you',
+                style: theme.textTheme.displaySmall),
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final c in const [
+                  '508 hand-picked quotes',
+                  '6 cheering critters',
+                  'impact tracking built in',
+                ])
+                  Chip(
+                    label: Text(c),
+                    backgroundColor: theme.colorScheme.primaryContainer,
+                    side: BorderSide.none,
+                  ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _body(
+              theme,
+              'no accounts. no ads. your journey stays on your phone.',
+            ),
           ],
         ),
       );

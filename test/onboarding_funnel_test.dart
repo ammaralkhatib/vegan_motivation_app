@@ -11,6 +11,7 @@ import 'package:vegan_motivation_app/features/paywall/onboarding_paywall_funnel.
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
 
+import 'helpers.dart';
 import 'support/fake_purchase_service.dart';
 import 'support/paywall_fixtures.dart';
 
@@ -86,6 +87,7 @@ Widget _app(PrefsRepository prefs, FakePurchaseService fake) => ProviderScope(
 void main() {
   testWidgets('free user: trial paywall, then discount, then Today',
       (tester) async {
+    disableCritterAnimations(tester); // close button shows immediately
     final prefs = await _prefs({});
     final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
     await tester.pumpWidget(_app(prefs, fake));
@@ -113,6 +115,7 @@ void main() {
 
   testWidgets('discount paywall never shows again once the flag is set',
       (tester) async {
+    disableCritterAnimations(tester); // close button shows immediately
     final prefs = await _prefs({'discountOfferShown': true});
     final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
     await tester.pumpWidget(_app(prefs, fake));

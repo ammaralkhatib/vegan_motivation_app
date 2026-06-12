@@ -52,3 +52,40 @@ const obstaclePlainWords = {
   'alone': 'feeling alone in it',
   'busyness': 'a busy life',
 };
+
+/// S23 commitment options: (id, label).
+const commitmentOptions = [
+  ('extreme', '🔥 extremely committed'),
+  ('very', '💪 very committed'),
+  ('somewhat', '🙂 somewhat committed'),
+  ('little', '🌱 a little committed'),
+  ('trying', '👀 just trying it out'),
+];
+
+/// S24 — response copy tailored to the commitment answer.
+const commitmentResponses = {
+  'extreme':
+      "you're all-in — that's where change lives. let's turn that fire into a "
+          'habit.',
+  'very':
+      'strong start. commitment like this is what carries people through the '
+          'hard weeks.',
+  'somewhat':
+      "honest — and that's enough. small daily sparks will do the heavy "
+          'lifting.',
+  'little':
+      "every big change starts a little unsure. we'll keep it light and easy "
+          '— just show up.',
+  'trying':
+      'perfect — no pressure. try it for a few days and let the streak speak '
+          'for itself.',
+};
+
+/// S25 — how full the commitment bar reads, per level (0–1).
+const commitmentBarFill = {
+  'extreme': 1.0,
+  'very': 0.8,
+  'somewhat': 0.6,
+  'little': 0.4,
+  'trying': 0.2,
+};

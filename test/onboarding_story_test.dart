@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vegan_motivation_app/core/backgrounds/background_manifest.dart';
+import 'package:vegan_motivation_app/core/backgrounds/background_providers.dart';
 import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
@@ -77,6 +79,9 @@ Future<Harness> harness() async {
       purchaseServiceProvider
           .overrideWithValue(FakePurchaseService(initialPremium: true)),
       reviewPrompterProvider.overrideWithValue(reviewer),
+      // Keep the spark card on its gradient — deterministic, no asset loads.
+      backgroundManifestValueProvider
+          .overrideWithValue(BackgroundManifest.empty),
     ],
     child: MaterialApp.router(
       theme: VeggieTheme.light(),
@@ -139,6 +144,19 @@ extension _Drive on WidgetTester {
     await pickFirstChoice(); // S13 why
     await tapContinue();
   }
+
+  /// From the streak step (S19) through the conclusion to `_finish`. Selects
+  /// the first commitment option ("extreme").
+  Future<void> driveConclusionToFinish() async {
+    await tapContinue(); // S19 streak → S21 loading (auto) → S22 plan
+    await tapContinue('begin my journey'); // S22 → S23 commitment
+    await pickFirstChoice(); // commitment → "extreme"
+    await tapContinue(); // S23 → S24 response
+    await tapContinue('done ✓'); // S24 → S25 snapshot
+    await tapContinue(); // S25 → S26 notifications
+    await tapContinue(); // S26 → S27 social proof
+    await tapContinue('join veggie 🌱'); // S27 → finish
+  }
 }
 
 void main() {
@@ -179,8 +197,7 @@ void main() {
     expect(h.reviewer.calls, 1);
     expect(h.prefs.reviewPromptShown, isTrue);
 
-    await tester.tapContinue(); // S19 streak → notifications
-    await tester.tapContinue('start my journey'); // finish
+    await tester.driveConclusionToFinish();
 
     expect(find.text('TODAY HOME'), findsOneWidget);
 
@@ -190,6 +207,7 @@ void main() {
     expect(h.prefs.goalsPick, isNotEmpty);
     expect(h.prefs.motivationPick, isNotNull);
     expect(h.prefs.veganSince, isNotNull);
+    expect(h.prefs.commitmentLevel, 'extreme');
 
     await unmountAndFlush(tester);
   });
@@ -213,8 +231,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 1300));
     expect(h.reviewer.calls, 0); // guarded by the persisted flag
 
-    await tester.tapContinue(); // streak → notifications
-    await tester.tapContinue('start my journey'); // finish
+    await tester.driveConclusionToFinish();
     expect(find.text('TODAY HOME'), findsOneWidget);
 
     await unmountAndFlush(tester);

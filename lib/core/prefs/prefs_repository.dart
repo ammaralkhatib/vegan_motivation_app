@@ -43,6 +43,7 @@ class PrefsRepository {
   static const _kObstacles = 'obstacles';
   static const _kWhyRelationship = 'whyRelationship';
   static const _kReviewPromptShown = 'reviewPromptShown';
+  static const _kCommitmentLevel = 'commitmentLevel';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -91,6 +92,12 @@ class PrefsRepository {
   bool get reviewPromptShown => _prefs.getBool(_kReviewPromptShown) ?? false;
   Future<void> setReviewPromptShown(bool value) =>
       _prefs.setBool(_kReviewPromptShown, value);
+
+  /// How committed the user said they are (onboarding S23), null if unset.
+  String? get commitmentLevel => _prefs.getString(_kCommitmentLevel);
+  Future<void> setCommitmentLevel(String? value) => value == null
+      ? _prefs.remove(_kCommitmentLevel)
+      : _prefs.setString(_kCommitmentLevel, value);
 
   /// Date the user went vegan (date-only precision), null if unset.
   DateTime? get veganSince {
