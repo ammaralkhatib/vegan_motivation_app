@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.20.2
   window_manager: ^0.5.1
   purchases_flutter: ^10.2.3
+  in_app_review: ^2.0.12
 
 dev_dependencies:
   flutter_test:

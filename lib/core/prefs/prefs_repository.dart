@@ -42,6 +42,7 @@ class PrefsRepository {
   static const _kMotivationDips = 'motivationDipsPerWeek';
   static const _kObstacles = 'obstacles';
   static const _kWhyRelationship = 'whyRelationship';
+  static const _kReviewPromptShown = 'reviewPromptShown';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -84,6 +85,12 @@ class PrefsRepository {
   Future<void> setWhyRelationship(String? value) => value == null
       ? _prefs.remove(_kWhyRelationship)
       : _prefs.setString(_kWhyRelationship, value);
+
+  /// Whether the OS review prompt has been requested (at the onboarding streak
+  /// peak). Once true it never fires again.
+  bool get reviewPromptShown => _prefs.getBool(_kReviewPromptShown) ?? false;
+  Future<void> setReviewPromptShown(bool value) =>
+      _prefs.setBool(_kReviewPromptShown, value);
 
   /// Date the user went vegan (date-only precision), null if unset.
   DateTime? get veganSince {

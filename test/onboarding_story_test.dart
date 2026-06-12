@@ -1,18 +1,30 @@
+import 'dart:convert';
+
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
+import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/onboarding/onboarding_flow.dart';
 import 'package:vegan_motivation_app/features/onboarding/onboarding_widgets.dart';
+import 'package:vegan_motivation_app/features/onboarding/review_prompter.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
 
 import 'helpers.dart';
 import 'support/fake_purchase_service.dart';
+
+class FakeReviewPrompter implements ReviewPrompter {
+  int calls = 0;
+  @override
+  Future<void> requestReview() async => calls++;
+}
 
 GoRouter _router() => GoRouter(
       initialLocation: '/onboarding',
@@ -31,22 +43,47 @@ GoRouter _router() => GoRouter(
       ],
     );
 
-Future<(Widget, PrefsRepository)> harness() async {
+typedef Harness = ({
+  Widget widget,
+  PrefsRepository prefs,
+  FakeReviewPrompter reviewer,
+});
+
+Future<Harness> harness() async {
   SharedPreferences.setMockInitialValues({});
   final prefs = PrefsRepository(await SharedPreferences.getInstance());
+
+  final db = AppDatabase.forTesting(NativeDatabase.memory());
+  await ContentImporter(db).import(
+    jsonString: json.encode({
+      'version': 1,
+      'categories': [
+        {'id': 'why_vegan', 'name': 'Why Vegan', 'emoji': '🌍', 'sortOrder': 0},
+      ],
+      'quotes': [
+        {'id': 1, 'category': 'why_vegan', 'text': 'A kinder plate'},
+      ],
+    }),
+    lastImportedVersion: 0,
+  );
+  addTearDown(db.close);
+
+  final reviewer = FakeReviewPrompter();
   final widget = ProviderScope(
     overrides: [
       prefsProvider.overrideWithValue(prefs),
+      databaseProvider.overrideWithValue(db),
       // Premium → the end-of-onboarding funnel skips straight to /today.
       purchaseServiceProvider
           .overrideWithValue(FakePurchaseService(initialPremium: true)),
+      reviewPrompterProvider.overrideWithValue(reviewer),
     ],
     child: MaterialApp.router(
       theme: VeggieTheme.light(),
       routerConfig: _router(),
     ),
   );
-  return (widget, prefs);
+  return (widget: widget, prefs: prefs, reviewer: reviewer);
 }
 
 extension _Drive on WidgetTester {
@@ -69,45 +106,51 @@ extension _Drive on WidgetTester {
     await tap(find.byType(ChoiceCard).hitTestable().at(index));
     await pumpAndSettle();
   }
+
+  /// Drives S1–S13 (the shared front of the flow) for the given diet card.
+  Future<void> driveToWhyStep({required int dietIndex}) async {
+    await tapScreen(); // S1 welcome
+    await tapScreen(); // S2 problem
+    await tapScreen(); // S3 solution
+
+    await enterText(find.byType(TextField).hitTestable(), 'Sam'); // S4 name
+    await pump();
+    await tapContinue();
+
+    await pickFirstChoice(); // S5 age
+    await tapContinue();
+
+    await pickChoiceAt(dietIndex); // S6 diet
+    await tapContinue();
+
+    await tapScreen(); // S7 bombshell
+    await tapScreen(); // S8 bridge
+
+    await pickFirstChoice(); // S9 goals
+    await tapContinue();
+
+    await tapScreen(); // S10 goals reflection
+
+    await tapContinue(); // S11 dips
+
+    await pickFirstChoice(); // S12 obstacles
+    await tapContinue();
+
+    await pickFirstChoice(); // S13 why
+    await tapContinue();
+  }
 }
 
 void main() {
-  testWidgets('full flow (vegan) persists every answer and reaches today',
+  testWidgets(
+      'full flow (vegan) reaches today, fires the review once, persists answers',
       (tester) async {
     disableCritterAnimations(tester);
-    final (widget, prefs) = await harness();
-    await tester.pumpWidget(widget);
+    final h = await harness();
+    await tester.pumpWidget(h.widget);
     await tester.pumpAndSettle();
 
-    await tester.tapScreen(); // S1 welcome
-    await tester.tapScreen(); // S2 problem
-    await tester.tapScreen(); // S3 solution
-
-    await tester.enterText(find.byType(TextField).hitTestable(), 'Sam'); // S4
-    await tester.pump();
-    await tester.tapContinue();
-
-    await tester.pickFirstChoice(); // S5 age
-    await tester.tapContinue();
-
-    await tester.pickChoiceAt(0); // S6 diet → "i'm vegan"
-    await tester.tapContinue();
-
-    await tester.tapScreen(); // S7 bombshell
-    await tester.tapScreen(); // S8 bridge
-
-    await tester.pickFirstChoice(); // S9 goals
-    await tester.tapContinue();
-
-    await tester.tapScreen(); // S10 goals reflection
-
-    await tester.tapContinue(); // S11 dips (always enabled)
-
-    await tester.pickFirstChoice(); // S12 obstacles
-    await tester.tapContinue();
-
-    await tester.pickFirstChoice(); // S13 why
-    await tester.tapContinue();
+    await tester.driveToWhyStep(dietIndex: 0); // diet → "i'm vegan"
 
     // S14 journey (shown for vegan) — pick "today".
     await tester.tap(find.text('today').hitTestable());
@@ -116,65 +159,75 @@ void main() {
 
     await tester.tapScreen(); // S15 final reflection
 
-    await tester.pickFirstChoice(); // S16 motivation
+    await tester.pickFirstChoice(); // S16 motivation → animals
     await tester.tapContinue();
 
-    await tester.tapContinue(); // S17 chart
+    await tester.tapContinue(); // S17 chart → S18 first spark
 
-    await tester.tapContinue('start my journey'); // S18 notifications → finish
+    // S18 first spark shows a real quote from the why_vegan category. Let the
+    // DB-backed providers resolve before asserting.
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    });
+    await tester.pumpAndSettle();
+    expect(find.text('A kinder plate'), findsOneWidget);
+    await tester.tapContinue(); // S18 → S19 streak
+
+    // The review fires ~1.2 s after the streak lands.
+    expect(h.reviewer.calls, 0);
+    await tester.pump(const Duration(milliseconds: 1300));
+    expect(h.reviewer.calls, 1);
+    expect(h.prefs.reviewPromptShown, isTrue);
+
+    await tester.tapContinue(); // S19 streak → notifications
+    await tester.tapContinue('start my journey'); // finish
 
     expect(find.text('TODAY HOME'), findsOneWidget);
 
-    expect(prefs.onboardingDone, isTrue);
-    expect(prefs.userName, 'Sam');
-    expect(prefs.ageRange, isNotNull);
-    expect(prefs.dietStatus, 'vegan');
-    expect(prefs.goalsPick, isNotEmpty);
-    expect(prefs.motivationDipsPerWeek, 3);
-    expect(prefs.obstacles, isNotEmpty);
-    expect(prefs.whyRelationship, isNotNull);
-    expect(prefs.motivationPick, isNotNull);
-    // Vegan path recorded a start date, not curious mode.
-    expect(prefs.veganSince, isNotNull);
-    expect(prefs.curiousMode, isFalse);
+    expect(h.prefs.onboardingDone, isTrue);
+    expect(h.prefs.userName, 'Sam');
+    expect(h.prefs.dietStatus, 'vegan');
+    expect(h.prefs.goalsPick, isNotEmpty);
+    expect(h.prefs.motivationPick, isNotNull);
+    expect(h.prefs.veganSince, isNotNull);
+
+    await unmountAndFlush(tester);
+  });
+
+  testWidgets('the review prompt never fires twice (flag already set)',
+      (tester) async {
+    final h = await harness();
+    await h.prefs.setReviewPromptShown(true); // already shown on a prior run
+    disableCritterAnimations(tester);
+    await tester.pumpWidget(h.widget);
+    await tester.pumpAndSettle();
+
+    await tester.driveToWhyStep(dietIndex: 3); // "just curious" → no S14
+
+    await tester.tapScreen(); // S15 final reflection
+    await tester.pickFirstChoice(); // S16 motivation
+    await tester.tapContinue();
+    await tester.tapContinue(); // S17 chart → S18 spark
+    await tester.tapContinue(); // S18 → S19 streak
+
+    await tester.pump(const Duration(milliseconds: 1300));
+    expect(h.reviewer.calls, 0); // guarded by the persisted flag
+
+    await tester.tapContinue(); // streak → notifications
+    await tester.tapContinue('start my journey'); // finish
+    expect(find.text('TODAY HOME'), findsOneWidget);
+
+    await unmountAndFlush(tester);
   });
 
   testWidgets('journey-date step is skipped for "just curious"',
       (tester) async {
     disableCritterAnimations(tester);
-    final (widget, _) = await harness();
-    await tester.pumpWidget(widget);
+    final h = await harness();
+    await tester.pumpWidget(h.widget);
     await tester.pumpAndSettle();
 
-    await tester.tapScreen(); // S1
-    await tester.tapScreen(); // S2
-    await tester.tapScreen(); // S3
-
-    await tester.enterText(find.byType(TextField).hitTestable(), 'Sam'); // S4
-    await tester.pump();
-    await tester.tapContinue();
-
-    await tester.pickFirstChoice(); // S5 age
-    await tester.tapContinue();
-
-    await tester.pickChoiceAt(3); // S6 diet → "just curious"
-    await tester.tapContinue();
-
-    await tester.tapScreen(); // S7 bombshell (negative framing)
-    await tester.tapScreen(); // S8 bridge
-
-    await tester.pickFirstChoice(); // S9 goals
-    await tester.tapContinue();
-
-    await tester.tapScreen(); // S10 goals reflection
-
-    await tester.tapContinue(); // S11 dips
-
-    await tester.pickFirstChoice(); // S12 obstacles
-    await tester.tapContinue();
-
-    await tester.pickFirstChoice(); // S13 why
-    await tester.tapContinue();
+    await tester.driveToWhyStep(dietIndex: 3); // "just curious"
 
     // Next is S15, not the journey-date step.
     expect(find.text('when did your journey start?'), findsNothing);
@@ -182,5 +235,7 @@ void main() {
       find.textContaining('veggie was made for exactly this moment'),
       findsOneWidget,
     );
+
+    await unmountAndFlush(tester);
   });
 }

@@ -12,7 +12,9 @@ import 'onboarding_copy.dart';
 import 'onboarding_widgets.dart';
 import 'steps/bombshell_step.dart';
 import 'steps/final_reflection_step.dart';
+import 'steps/first_spark_step.dart';
 import 'steps/motivation_chart.dart';
+import 'steps/streak_step.dart';
 
 /// Story-driven first-run flow: problem → solution → questions → personalized
 /// impact → self-persuasion → chart → notifications → paywall funnel → /today.
@@ -159,7 +161,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   // --- Step list ------------------------------------------------------------
 
   List<Widget> _buildSteps(ThemeData theme) {
-    return [
+    final steps = <Widget>[
       _welcome(theme), // S1
       _problem(theme), // S2
       _solution(theme), // S3
@@ -187,8 +189,19 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       ), // S15
       _motivationStep(theme), // S16
       _chartStep(theme), // S17
-      _notificationsStep(theme), // S18
+      FirstSparkStep(
+        name: _nameController.text.trim(),
+        motivationPick: _motivation,
+        onContinue: _next,
+      ), // S18 — first spark (a live quote)
     ];
+    // S19 — day-1 streak + review prompt. Always second-to-last, so its index
+    // is stable regardless of the conditional journey step; that lets the step
+    // know exactly when it becomes visible.
+    final streakIndex = steps.length;
+    steps.add(StreakStep(active: _page == streakIndex, onContinue: _next));
+    steps.add(_notificationsStep(theme)); // tail (temporary)
+    return steps;
   }
 
   // --- Reusable bits --------------------------------------------------------
