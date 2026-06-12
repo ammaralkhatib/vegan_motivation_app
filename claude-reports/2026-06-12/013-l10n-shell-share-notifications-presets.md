@@ -104,8 +104,8 @@ directly.
 
 ## Commit & push
 
-- **Commit:** `<filled by stamp>` — `feat(l10n): migrate shell, share, notifications and preset strings`
-- **Push:** `<filled by stamp>`
+- **Commit:** `f0dcff3` — `feat(l10n): migrate shell, share, notifications and preset strings`
+- **Push:** `origin/main` — ok (`02d4458..f0dcff3`).
 
 ## Deviations from prompt
 
