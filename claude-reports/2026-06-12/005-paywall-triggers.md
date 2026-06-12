@@ -99,6 +99,12 @@ Manual click-path (for the owner):
 - This completes the monetization phase (prompts 002–005): SDK + premium state,
   category gating, paywall UI, and now the triggers.
 
+## Commit & push
+
+- **Commit(s):** `2d6d554` — `feat(paywall): wire onboarding/discount/locked-content triggers`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`f239b23..2d6d554`).
+
 ## Deviations from prompt
 
 None. (`showPremiumSheet` was renamed to `showPremiumPaywall`, which the prompt
