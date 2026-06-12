@@ -83,8 +83,8 @@ settings) without restart; [ ] back to System default restores device language.
 
 ## Commit & push
 
-- **Commit(s):** `<filled after commit>` — `feat(settings): add in-app language picker`
-- **Push:** `origin/main` — `<filled after push>`
+- **Commit(s):** `bd15068` — `feat(settings): add in-app language picker`
+- **Push:** `origin/main` — ok (`c1b6872..bd15068`)
 
 ## Open items for the owner
 
