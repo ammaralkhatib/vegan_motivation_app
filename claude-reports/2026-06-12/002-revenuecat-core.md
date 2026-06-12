@@ -86,6 +86,12 @@ pre-existing harness noise, unrelated to this change.)
   ids must match `purchase_config.dart`.
 - iOS purchase testing needs the App Store sandbox; not exercised here (no UI yet).
 
+## Commit & push
+
+- **Commit(s):** `3760744` — `feat(purchases): RevenueCat SDK + premium state core`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`1507b8b..3760744`).
+
 ## Deviations from prompt
 
 None.
