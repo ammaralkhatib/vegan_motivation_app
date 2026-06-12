@@ -34,6 +34,7 @@ class PrefsRepository {
   static const _kLastNotifScheduleDay = 'lastNotifScheduleDay';
   static const _kPremiumCached = 'premiumCached';
   static const _kDiscountOfferShown = 'discountOfferShown';
+  static const _kPhotoBackgrounds = 'photoBackgrounds';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -142,6 +143,12 @@ class PrefsRepository {
   bool get discountOfferShown => _prefs.getBool(_kDiscountOfferShown) ?? false;
   Future<void> setDiscountOfferShown(bool value) =>
       _prefs.setBool(_kDiscountOfferShown, value);
+
+  /// Premium photo backgrounds on feed cards. Default on; only consulted for
+  /// premium users.
+  bool get photoBackgrounds => _prefs.getBool(_kPhotoBackgrounds) ?? true;
+  Future<void> setPhotoBackgrounds(bool value) =>
+      _prefs.setBool(_kPhotoBackgrounds, value);
 
   /// Wipes everything (used by "reset all data").
   Future<void> clear() => _prefs.clear();

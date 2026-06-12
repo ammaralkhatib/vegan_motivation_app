@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/backgrounds/background_providers.dart';
 import '../../core/db/database.dart';
 import '../../core/prefs/prefs_repository.dart';
 import '../../core/purchases/purchase_providers.dart';
@@ -114,6 +115,21 @@ class SettingsScreen extends ConsumerWidget {
                     onTap: () => _restorePurchases(context, ref),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
+          // Premium-only: photo backgrounds on the feed (default on).
+          if (isPremium) ...[
+            Card(
+              child: SwitchListTile(
+                secondary: const Icon(Icons.image_outlined),
+                title: const Text('Photo backgrounds'),
+                subtitle:
+                    const Text('Category photos behind your daily quotes'),
+                value: ref.watch(photoBackgroundsProvider),
+                onChanged: (v) =>
+                    ref.read(photoBackgroundsProvider.notifier).set(v),
               ),
             ),
             const SizedBox(height: 24),

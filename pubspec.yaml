@@ -77,6 +77,12 @@ flutter:
   assets:
     - assets/content/
     - assets/critters/
+    - assets/images/backgrounds/why_vegan/
+    - assets/images/backgrounds/quick_tips/
+    - assets/images/backgrounds/youre_awesome/
+    - assets/images/backgrounds/facts/
+    - assets/images/backgrounds/staying_strong/
+    - assets/images/backgrounds/milestones/
 
   fonts:
     - family: Fraunces

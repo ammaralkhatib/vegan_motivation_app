@@ -4,7 +4,11 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vegan_motivation_app/core/backgrounds/background_manifest.dart';
+import 'package:vegan_motivation_app/core/backgrounds/background_providers.dart';
 import 'package:vegan_motivation_app/core/db/database.dart';
+import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
@@ -30,14 +34,20 @@ Future<AppDatabase> seededDb() async {
   return db;
 }
 
-Widget app(AppDatabase db) {
+Future<Widget> app(AppDatabase db) async {
+  SharedPreferences.setMockInitialValues({});
+  final prefs = PrefsRepository(await SharedPreferences.getInstance());
   return ProviderScope(
     overrides: [
       databaseProvider.overrideWithValue(db),
+      prefsProvider.overrideWithValue(prefs),
       // The seeded quote is 'why_vegan' (a free category); premium keeps the
       // existing assertions independent of the gate.
       purchaseServiceProvider
           .overrideWithValue(FakePurchaseService(initialPremium: true)),
+      // No background images → the feed stays on its gradient.
+      backgroundManifestValueProvider
+          .overrideWithValue(BackgroundManifest.empty),
     ],
     child: MaterialApp(
       theme: VeggieTheme.light(),
@@ -52,7 +62,7 @@ void main() {
     final db = await seededDb();
     addTearDown(db.close);
 
-    await tester.pumpWidget(app(db));
+    await tester.pumpWidget(await app(db));
     await tester.pumpAndSettle();
 
     expect(find.text('Single test quote'), findsOneWidget);
@@ -67,7 +77,7 @@ void main() {
     final db = await seededDb();
     addTearDown(db.close);
 
-    await tester.pumpWidget(app(db));
+    await tester.pumpWidget(await app(db));
     await tester.pumpAndSettle();
 
     await tester.tap(find.byIcon(Icons.favorite_outline));
