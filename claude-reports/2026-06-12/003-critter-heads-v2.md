@@ -63,8 +63,8 @@ pig 174–184 KB, sheep 178–181 KB.
 
 ## Commit & push
 
-- **Commit(s):** `<filled after commit>` — `feat(critters): head-only art v2 + breathing idle animation`
-- **Push:** `origin/main` — `<filled after push>`
+- **Commit(s):** `25c4c09` — `feat(critters): head-only art v2 + breathing idle animation`
+- **Push:** `origin/main` — ok (`a43ba5b..25c4c09`)
 
 ## Open items for the owner
 
