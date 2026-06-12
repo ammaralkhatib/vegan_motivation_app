@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../l10n/app_localizations.dart';
+
 /// Adaptive navigation shell: bottom NavigationBar on phones,
 /// NavigationRail on wide layouts (>= 840dp, Phase 11 polish).
 class VeggieShell extends StatelessWidget {
@@ -8,24 +10,28 @@ class VeggieShell extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
+  // Icons/ids stay const; the visible label is resolved per build with context.
   static const _destinations = [
-    (icon: Icons.spa_outlined, selectedIcon: Icons.spa, label: 'Today'),
+    (id: 'today', icon: Icons.spa_outlined, selectedIcon: Icons.spa),
+    (id: 'habits', icon: Icons.task_alt_outlined, selectedIcon: Icons.task_alt),
     (
-      icon: Icons.task_alt_outlined,
-      selectedIcon: Icons.task_alt,
-      label: 'Habits'
-    ),
-    (
+      id: 'explore',
       icon: Icons.grid_view_outlined,
-      selectedIcon: Icons.grid_view_rounded,
-      label: 'Explore'
+      selectedIcon: Icons.grid_view_rounded
     ),
     (
+      id: 'journey',
       icon: Icons.favorite_outline,
-      selectedIcon: Icons.favorite,
-      label: 'Journey'
+      selectedIcon: Icons.favorite
     ),
   ];
+
+  String _label(AppLocalizations l, String id) => switch (id) {
+        'today' => l.shellTabToday,
+        'habits' => l.shellTabHabits,
+        'explore' => l.shellTabExplore,
+        _ => l.shellTabJourney,
+      };
 
   void _goBranch(int index) {
     navigationShell.goBranch(
@@ -36,6 +42,7 @@ class VeggieShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final wide = MediaQuery.sizeOf(context).width >= 840;
 
     if (wide) {
@@ -54,7 +61,7 @@ class VeggieShell extends StatelessWidget {
                     NavigationRailDestination(
                       icon: Icon(d.icon),
                       selectedIcon: Icon(d.selectedIcon),
-                      label: Text(d.label),
+                      label: Text(_label(l, d.id)),
                     ),
                 ],
               ),
@@ -86,7 +93,7 @@ class VeggieShell extends StatelessWidget {
             NavigationDestination(
               icon: Icon(d.icon),
               selectedIcon: Icon(d.selectedIcon),
-              label: d.label,
+              label: _label(l, d.id),
             ),
         ],
       ),

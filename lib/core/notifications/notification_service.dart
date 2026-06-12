@@ -1,11 +1,27 @@
+import 'dart:ui' show Locale, PlatformDispatcher;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
+import '../../l10n/app_localizations.dart';
 import 'notification_scheduler.dart';
 import 'trial_reminder.dart';
+
+/// Notification text has no BuildContext, so we resolve [AppLocalizations] from
+/// the device locale, falling back to English for any unsupported locale.
+/// Daily notifications are rescheduled on every app launch (see app bootstrap),
+/// so a language change is picked up on the next relaunch; the one-shot trial
+/// reminder keeps the language it was scheduled in.
+AppLocalizations _notificationL10n() {
+  try {
+    return lookupAppLocalizations(PlatformDispatcher.instance.locale);
+  } catch (_) {
+    return lookupAppLocalizations(const Locale('en'));
+  }
+}
 
 /// Thin wrapper around flutter_local_notifications.
 /// Pure planning lives in notification_scheduler.dart; this class only talks
@@ -116,17 +132,18 @@ class NotificationService {
     if (!_initialized) return;
     await _cancelDailyNotifications();
 
-    const details = NotificationDetails(
+    final l = _notificationL10n();
+    final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
-        'Daily motivation',
-        channelDescription: 'Your daily dose of plant-powered encouragement',
+        l.notificationChannelName,
+        channelDescription: l.notificationChannelDescription,
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
-        styleInformation: BigTextStyleInformation(''),
+        styleInformation: const BigTextStyleInformation(''),
       ),
-      iOS: DarwinNotificationDetails(),
-      macOS: DarwinNotificationDetails(),
+      iOS: const DarwinNotificationDetails(),
+      macOS: const DarwinNotificationDetails(),
     );
 
     for (final plan in plans) {
@@ -167,24 +184,24 @@ class NotificationService {
   /// plugin isn't ready; the OS silently drops it if permission is denied.
   Future<void> scheduleTrialEndReminder(DateTime fireAt) async {
     if (!_initialized || !isSupportedPlatform) return;
-    const details = NotificationDetails(
+    final l = _notificationL10n();
+    final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
-        'Daily motivation',
-        channelDescription: 'Your daily dose of plant-powered encouragement',
+        l.notificationChannelName,
+        channelDescription: l.notificationChannelDescription,
         importance: Importance.defaultImportance,
         priority: Priority.defaultPriority,
-        styleInformation: BigTextStyleInformation(''),
+        styleInformation: const BigTextStyleInformation(''),
       ),
-      iOS: DarwinNotificationDetails(),
-      macOS: DarwinNotificationDetails(),
+      iOS: const DarwinNotificationDetails(),
+      macOS: const DarwinNotificationDetails(),
     );
     try {
       await _plugin.zonedSchedule(
         trialReminderNotificationId,
-        'your free trial ends tomorrow',
-        "you won't be charged until then — cancel anytime in your store "
-            'settings, or do nothing to keep your sparks coming.',
+        l.notificationTrialTitle,
+        l.notificationTrialBody,
         tz.TZDateTime.from(fireAt, tz.local),
         details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,

@@ -170,7 +170,8 @@ class _PresetPickerState extends ConsumerState<_PresetPicker> {
                     ? _selected.add(preset.key)
                     : _selected.remove(preset.key);
               }),
-              title: Text('${preset.emoji}  ${preset.name}'),
+              title: Text(
+                  '${preset.emoji}  ${presetHabitName(l, preset.key)}'),
               controlAffinity: ListTileControlAffinity.trailing,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
@@ -189,7 +190,7 @@ class _PresetPickerState extends ConsumerState<_PresetPicker> {
                   for (final preset in presetHabits) {
                     if (_selected.contains(preset.key)) {
                       await dao.insertHabit(
-                        name: preset.name,
+                        name: presetHabitName(l, preset.key),
                         emoji: preset.emoji,
                         presetKey: preset.key,
                         sortOrder: order++,

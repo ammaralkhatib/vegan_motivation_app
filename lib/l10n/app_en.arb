@@ -1329,5 +1329,89 @@
   "habitsSaveButton": "Save changes",
   "@habitsSaveButton": {
     "description": "Save button when editing a habit."
+  },
+
+  "shellTabToday": "Today",
+  "@shellTabToday": {
+    "description": "Bottom navigation tab label for the daily feed."
+  },
+  "shellTabHabits": "Habits",
+  "@shellTabHabits": {
+    "description": "Bottom navigation tab label for habits."
+  },
+  "shellTabExplore": "Explore",
+  "@shellTabExplore": {
+    "description": "Bottom navigation tab label for explore."
+  },
+  "shellTabJourney": "Journey",
+  "@shellTabJourney": {
+    "description": "Bottom navigation tab label for the journey dashboard."
+  },
+
+  "shareTitle": "Share this quote",
+  "@shareTitle": {
+    "description": "Title of the share bottom sheet."
+  },
+  "shareStyleCream": "Cream",
+  "@shareStyleCream": {
+    "description": "Share card palette option."
+  },
+  "shareStyleForest": "Forest",
+  "@shareStyleForest": {
+    "description": "Share card palette option."
+  },
+  "shareStyleCoral": "Coral",
+  "@shareStyleCoral": {
+    "description": "Share card palette option."
+  },
+  "shareButton": "Share",
+  "@shareButton": {
+    "description": "Button that opens the platform share sheet."
+  },
+  "shareSubject": "A little plant-powered motivation",
+  "@shareSubject": {
+    "description": "Subject line attached to the shared image."
+  },
+
+  "notificationChannelName": "Daily motivation",
+  "@notificationChannelName": {
+    "description": "Android notification channel name (visible in system settings)."
+  },
+  "notificationChannelDescription": "Your daily dose of plant-powered encouragement",
+  "@notificationChannelDescription": {
+    "description": "Android notification channel description."
+  },
+  "notificationTrialTitle": "your free trial ends tomorrow",
+  "@notificationTrialTitle": {
+    "description": "Title of the trial-ending reminder notification."
+  },
+  "notificationTrialBody": "you won't be charged until then — cancel anytime in your store settings, or do nothing to keep your sparks coming.",
+  "@notificationTrialBody": {
+    "description": "Body of the trial-ending reminder notification."
+  },
+
+  "habitsPresetPlantBasedDay": "Ate fully plant-based today",
+  "@habitsPresetPlantBasedDay": {
+    "description": "Preset habit name."
+  },
+  "habitsPresetNewRecipe": "Tried a new vegan recipe",
+  "@habitsPresetNewRecipe": {
+    "description": "Preset habit name."
+  },
+  "habitsPresetB12": "Took B12",
+  "@habitsPresetB12": {
+    "description": "Preset habit name."
+  },
+  "habitsPresetFiveServings": "5 servings of fruit & veg",
+  "@habitsPresetFiveServings": {
+    "description": "Preset habit name."
+  },
+  "habitsPresetWater": "Drank enough water",
+  "@habitsPresetWater": {
+    "description": "Preset habit name."
+  },
+  "habitsPresetShared": "Shared a vegan meal or idea",
+  "@habitsPresetShared": {
+    "description": "Preset habit name."
   }
 }

@@ -7,14 +7,17 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/db/database.dart';
+import '../../l10n/app_localizations.dart';
 import 'share_card.dart';
 
 /// Captures the rendered [ShareCard] (via its RepaintBoundary key) at 3x and
-/// hands the PNG to the platform share sheet.
+/// hands the PNG to the platform share sheet. [subject] is resolved at the call
+/// site (which has a BuildContext) so this no-context function stays localized.
 Future<void> shareCardImage({
   required GlobalKey boundaryKey,
   required Quote quote,
   required Rect sharePositionOrigin,
+  required String subject,
 }) async {
   final boundary = boundaryKey.currentContext?.findRenderObject()
       as RenderRepaintBoundary?;
@@ -30,7 +33,7 @@ Future<void> shareCardImage({
 
   await SharePlus.instance.share(ShareParams(
     files: [XFile(file.path, mimeType: 'image/png')],
-    subject: 'A little plant-powered motivation',
+    subject: subject,
     sharePositionOrigin: sharePositionOrigin, // iPad popover anchor
   ));
 }
@@ -60,6 +63,7 @@ class _ShareSheetState extends State<_ShareSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final media = MediaQuery.of(context);
     final previewWidth =
         (media.size.width - 96).clamp(180.0, ShareCard.designSize.width);
@@ -71,7 +75,7 @@ class _ShareSheetState extends State<_ShareSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Share this quote', style: theme.textTheme.headlineMedium),
+            Text(l.shareTitle, style: theme.textTheme.headlineMedium),
             const SizedBox(height: 16),
             // Live preview — also the capture source.
             ClipRRect(
@@ -89,18 +93,18 @@ class _ShareSheetState extends State<_ShareSheet> {
             ),
             const SizedBox(height: 16),
             SegmentedButton<ShareCardStyle>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: ShareCardStyle.cream,
-                  label: Text('Cream'),
+                  label: Text(l.shareStyleCream),
                 ),
                 ButtonSegment(
                   value: ShareCardStyle.forest,
-                  label: Text('Forest'),
+                  label: Text(l.shareStyleForest),
                 ),
                 ButtonSegment(
                   value: ShareCardStyle.coral,
-                  label: Text('Coral'),
+                  label: Text(l.shareStyleCoral),
                 ),
               ],
               selected: {_style},
@@ -122,11 +126,12 @@ class _ShareSheetState extends State<_ShareSheet> {
                       boundaryKey: _boundaryKey,
                       quote: widget.quote,
                       sharePositionOrigin: origin,
+                      subject: l.shareSubject,
                     );
                     if (context.mounted) Navigator.pop(context);
                   },
                   icon: const Icon(Icons.ios_share),
-                  label: const Text('Share'),
+                  label: Text(l.shareButton),
                 ),
               ),
             ),
