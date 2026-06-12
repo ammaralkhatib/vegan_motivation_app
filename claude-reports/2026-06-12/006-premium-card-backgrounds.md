@@ -94,6 +94,12 @@ Manual click-path (open item for Ammar, once images exist):
   `assets/content/backgrounds_v1.json`; no code change needed. Convention:
   `<categoryId>/<categoryId>_NN.webp` (jpg also fine).
 
+## Commit & push
+
+- **Commit(s):** `c1a2025` — `feat(quotes): premium photo backgrounds on feed cards`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`b92e449..c1a2025`).
+
 ## Deviations from prompt
 
 None.
