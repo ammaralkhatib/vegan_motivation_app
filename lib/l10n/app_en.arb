@@ -1331,10 +1331,6 @@
     "description": "Save button when editing a habit."
   },
 
-  "shellTabToday": "Today",
-  "@shellTabToday": {
-    "description": "Bottom navigation tab label for the daily feed."
-  },
   "shellTabHabits": "Habits",
   "@shellTabHabits": {
     "description": "Bottom navigation tab label for habits."

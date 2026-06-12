@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/app/app.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
+import 'package:vegan_motivation_app/features/habits/habits_screen.dart';
 
 import 'feed_widget_test.dart' show seededDb;
 import 'helpers.dart';
@@ -26,16 +28,38 @@ Future<ProviderScope> appWith({required bool onboarded}) async {
 }
 
 void main() {
-  testWidgets('onboarded users land on the shell with four tabs',
-      (tester) async {
+  testWidgets('onboarded users land on the full-screen feed with four '
+      'corner buttons', (tester) async {
     disableCritterAnimations(tester);
     await tester.pumpWidget(await appWith(onboarded: true));
     await tester.pumpAndSettle();
 
-    expect(find.text('Today'), findsOneWidget);
-    expect(find.text('Habits'), findsOneWidget);
-    expect(find.text('Explore'), findsOneWidget);
-    expect(find.text('Journey'), findsOneWidget);
+    // One round button per corner, found by its tooltip/semantics label.
+    expect(find.byTooltip('Journey'), findsOneWidget);
+    expect(find.byTooltip('Settings'), findsOneWidget);
+    expect(find.byTooltip('Habits'), findsOneWidget);
+    expect(find.byTooltip('Explore'), findsOneWidget);
+
+    await unmountAndFlush(tester);
+  });
+
+  testWidgets('a corner button opens its screen as a sheet with a close '
+      'button that returns to the feed', (tester) async {
+    disableCritterAnimations(tester);
+    await tester.pumpWidget(await appWith(onboarded: true));
+    await tester.pumpAndSettle();
+
+    // Tapping the Habits corner button slides HabitsScreen up.
+    await tester.tap(find.byTooltip('Habits'));
+    await tester.pumpAndSettle();
+    expect(find.byType(HabitsScreen), findsOneWidget);
+    expect(find.byIcon(Icons.close), findsOneWidget);
+
+    // The X closes it and lands back on the feed.
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+    expect(find.byType(HabitsScreen), findsNothing);
+    expect(find.byTooltip('Habits'), findsOneWidget);
 
     await unmountAndFlush(tester);
   });

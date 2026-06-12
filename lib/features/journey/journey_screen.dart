@@ -56,14 +56,12 @@ class JourneyScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          onPressed: () => context.pop(),
+        ),
         title: Text(l.journeyTitle),
-        actions: [
-          IconButton(
-            onPressed: () => context.go('/journey/settings'),
-            icon: const Icon(Icons.settings_outlined),
-            tooltip: l.journeySettingsTooltip,
-          ),
-        ],
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),

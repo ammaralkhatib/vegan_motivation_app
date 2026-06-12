@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,11 +12,30 @@ import '../features/journey/journey_screen.dart';
 import '../features/onboarding/onboarding_flow.dart';
 import '../features/paywall/paywall_data.dart';
 import '../features/paywall/paywall_screen.dart';
-import '../features/quotes/feed_screen.dart';
 import '../features/quotes/quote_detail_screen.dart';
 import '../features/settings/notification_settings_screen.dart';
 import '../features/settings/settings_screen.dart';
 import 'shell.dart';
+
+/// A modal-sheet-style page: slides up from the bottom (ease-out, ~300ms).
+/// Used for the four corner-button screens; their nested sub-routes keep the
+/// default platform transition.
+CustomTransitionPage<void> _sheetPage(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 300),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 1),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+        child: child,
+      );
+    },
+  );
+}
 
 final routerProvider = Provider<GoRouter>((ref) {
   final prefs = ref.watch(prefsProvider);
@@ -51,67 +71,56 @@ final routerProvider = Provider<GoRouter>((ref) {
           variant: PaywallVariant.fromName(state.pathParameters['variant']),
         ),
       ),
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) =>
-            VeggieShell(navigationShell: navigationShell),
-        branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/today',
-              builder: (context, state) => const FeedScreen(),
+      // The feed + corner buttons. The only base screen; the four screens
+      // below push on top of it as bottom-up sheets.
+      GoRoute(
+        path: '/today',
+        builder: (context, state) => const VeggieShell(),
+      ),
+      GoRoute(
+        path: '/habits',
+        pageBuilder: (context, state) =>
+            _sheetPage(state, const HabitsScreen()),
+        routes: [
+          GoRoute(
+            path: 'edit/:id',
+            builder: (context, state) => HabitEditScreen(
+              habitId: state.pathParameters['id']!,
             ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/habits',
-              builder: (context, state) => const HabitsScreen(),
-              routes: [
-                GoRoute(
-                  path: 'edit/:id',
-                  builder: (context, state) => HabitEditScreen(
-                    habitId: state.pathParameters['id']!,
-                  ),
-                ),
-              ],
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/explore',
+        pageBuilder: (context, state) =>
+            _sheetPage(state, const ExploreScreen()),
+        routes: [
+          GoRoute(
+            path: 'category/:id',
+            builder: (context, state) => CategoryDetailScreen(
+              categoryId: state.pathParameters['id']!,
             ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/explore',
-              builder: (context, state) => const ExploreScreen(),
-              routes: [
-                GoRoute(
-                  path: 'category/:id',
-                  builder: (context, state) => CategoryDetailScreen(
-                    categoryId: state.pathParameters['id']!,
-                  ),
-                ),
-                GoRoute(
-                  path: 'favorites',
-                  builder: (context, state) => const FavoritesScreen(),
-                ),
-              ],
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/journey',
-              builder: (context, state) => const JourneyScreen(),
-              routes: [
-                GoRoute(
-                  path: 'settings',
-                  builder: (context, state) => const SettingsScreen(),
-                  routes: [
-                    GoRoute(
-                      path: 'notifications',
-                      builder: (context, state) =>
-                          const NotificationSettingsScreen(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ]),
+          ),
+          GoRoute(
+            path: 'favorites',
+            builder: (context, state) => const FavoritesScreen(),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/journey',
+        pageBuilder: (context, state) =>
+            _sheetPage(state, const JourneyScreen()),
+      ),
+      GoRoute(
+        path: '/settings',
+        pageBuilder: (context, state) =>
+            _sheetPage(state, const SettingsScreen()),
+        routes: [
+          GoRoute(
+            path: 'notifications',
+            builder: (context, state) => const NotificationSettingsScreen(),
+          ),
         ],
       ),
     ],

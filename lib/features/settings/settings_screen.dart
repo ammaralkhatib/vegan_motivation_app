@@ -90,7 +90,14 @@ class SettingsScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: Text(l10n.settingsTitle)),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          onPressed: () => context.pop(),
+        ),
+        title: Text(l10n.settingsTitle),
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
@@ -174,7 +181,7 @@ class SettingsScreen extends ConsumerWidget {
                   leading: const Icon(Icons.notifications_outlined),
                   title: Text(l10n.settingsDailyNotifications),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go('/journey/settings/notifications'),
+                  onTap: () => context.push('/settings/notifications'),
                 ),
                 const Divider(height: 1, indent: 56),
                 ListTile(
@@ -182,7 +189,7 @@ class SettingsScreen extends ConsumerWidget {
                   title: Text(l10n.settingsContentMix),
                   subtitle: Text(l10n.settingsContentMixSubtitle),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => context.go('/explore'),
+                  onTap: () => context.push('/explore'),
                 ),
               ],
             ),

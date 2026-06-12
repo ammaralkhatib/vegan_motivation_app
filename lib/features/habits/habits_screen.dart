@@ -76,6 +76,11 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          onPressed: () => context.pop(),
+        ),
         title: Text(l.habitsTitle),
         actions: [
           IconButton(

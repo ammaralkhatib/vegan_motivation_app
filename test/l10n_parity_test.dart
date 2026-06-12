@@ -63,7 +63,7 @@ void main() {
             final l = AppLocalizations.of(context);
             return Scaffold(
               body: Column(
-                children: [Text(l.settingsTitle), Text(l.shellTabToday)],
+                children: [Text(l.settingsTitle), Text(l.shellTabJourney)],
               ),
             );
           },
@@ -72,6 +72,6 @@ void main() {
     );
 
     expect(find.text('Einstellungen'), findsOneWidget);
-    expect(find.text('Heute'), findsOneWidget);
+    expect(find.text('Reise'), findsOneWidget);
   });
 }

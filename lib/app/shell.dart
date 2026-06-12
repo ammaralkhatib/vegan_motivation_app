@@ -1,101 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/quotes/feed_screen.dart';
 import '../l10n/app_localizations.dart';
 
-/// Adaptive navigation shell: bottom NavigationBar on phones,
-/// NavigationRail on wide layouts (>= 840dp, Phase 11 polish).
+/// The app's base screen: the full-screen quote feed with four floating,
+/// semi-transparent round buttons in the corners. Each button pushes its
+/// screen on top (so closing always lands back here on the feed). There is no
+/// bottom bar or navigation rail any more — corner buttons are used at every
+/// width.
 class VeggieShell extends StatelessWidget {
-  const VeggieShell({super.key, required this.navigationShell});
-
-  final StatefulNavigationShell navigationShell;
-
-  // Icons/ids stay const; the visible label is resolved per build with context.
-  static const _destinations = [
-    (id: 'today', icon: Icons.spa_outlined, selectedIcon: Icons.spa),
-    (id: 'habits', icon: Icons.task_alt_outlined, selectedIcon: Icons.task_alt),
-    (
-      id: 'explore',
-      icon: Icons.grid_view_outlined,
-      selectedIcon: Icons.grid_view_rounded
-    ),
-    (
-      id: 'journey',
-      icon: Icons.favorite_outline,
-      selectedIcon: Icons.favorite
-    ),
-  ];
-
-  String _label(AppLocalizations l, String id) => switch (id) {
-        'today' => l.shellTabToday,
-        'habits' => l.shellTabHabits,
-        'explore' => l.shellTabExplore,
-        _ => l.shellTabJourney,
-      };
-
-  void _goBranch(int index) {
-    navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
-    );
-  }
+  const VeggieShell({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final wide = MediaQuery.sizeOf(context).width >= 840;
-
-    if (wide) {
-      return Scaffold(
-        body: Row(
-          children: [
-            SafeArea(
-              child: NavigationRail(
-                selectedIndex: navigationShell.currentIndex,
-                onDestinationSelected: _goBranch,
-                labelType: NavigationRailLabelType.all,
-                groupAlignment: -0.8,
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                destinations: [
-                  for (final d in _destinations)
-                    NavigationRailDestination(
-                      icon: Icon(d.icon),
-                      selectedIcon: Icon(d.selectedIcon),
-                      label: Text(_label(l, d.id)),
-                    ),
-                ],
-              ),
-            ),
-            const VerticalDivider(),
-            Expanded(child: navigationShell),
-          ],
-        ),
-      );
-    }
-
-    // Today (index 0) gets a full-screen feed behind a see-through bar; other
-    // tabs keep the solid bar and a non-extended body (unchanged).
-    final onToday = navigationShell.currentIndex == 0;
-    final theme = Theme.of(context);
 
     return Scaffold(
-      extendBody: onToday,
-      body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        backgroundColor:
-            onToday ? theme.colorScheme.surface.withValues(alpha: 0.7) : null,
-        surfaceTintColor: onToday ? Colors.transparent : null,
-        elevation: onToday ? 0 : null,
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: _goBranch,
-        destinations: [
-          for (final d in _destinations)
-            NavigationDestination(
-              icon: Icon(d.icon),
-              selectedIcon: Icon(d.selectedIcon),
-              label: _label(l, d.id),
+      body: Stack(
+        children: [
+          const FeedScreen(),
+          SafeArea(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: _CornerButton(
+                    icon: Icons.favorite_outline,
+                    label: l.shellTabJourney,
+                    onTap: () => context.push('/journey'),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: _CornerButton(
+                    icon: Icons.settings_outlined,
+                    label: l.settingsTitle,
+                    onTap: () => context.push('/settings'),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: _CornerButton(
+                    icon: Icons.task_alt_outlined,
+                    label: l.shellTabHabits,
+                    onTap: () => context.push('/habits'),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: _CornerButton(
+                    icon: Icons.grid_view_outlined,
+                    label: l.shellTabExplore,
+                    onTap: () => context.push('/explore'),
+                  ),
+                ),
+              ],
             ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// A single circular corner button: translucent [surface] disc with the icon
+/// in [onSurface] — the same see-through look the old Today bar had.
+class _CornerButton extends StatelessWidget {
+  const _CornerButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Material(
+        color: scheme.surface.withValues(alpha: 0.7),
+        shape: const CircleBorder(),
+        clipBehavior: Clip.antiAlias,
+        child: IconButton(
+          onPressed: onTap,
+          icon: Icon(icon),
+          color: scheme.onSurface,
+          tooltip: label,
+          // ≥ 48dp tap target.
+          iconSize: 24,
+          style: IconButton.styleFrom(
+            minimumSize: const Size(48, 48),
+          ),
+        ),
       ),
     );
   }

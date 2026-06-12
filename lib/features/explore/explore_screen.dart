@@ -22,6 +22,11 @@ class ExploreScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          onPressed: () => context.pop(),
+        ),
         title: Text(l.exploreTitle),
         actions: [
           IconButton(
