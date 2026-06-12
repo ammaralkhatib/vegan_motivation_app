@@ -76,8 +76,9 @@ All 18 frames are 512×512, transparency preserved. Largest file is
 
 ## Commit & push
 
-- **Commit(s):** `__SHA__` — `feat(quotes): animated farm critters on feed cards`
-- **Push:** `origin/main` — __PUSH__
+- **Commit(s):** `a5e560a` — `feat(quotes): animated farm critters on feed cards`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`be98a0a..a5e560a`).
 
 ## Open items for the owner
 
