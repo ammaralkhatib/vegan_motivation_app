@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/critters/animated_critter.dart';
 import '../../core/db/database.dart';
 import '../../core/theme/app_theme.dart';
 import 'providers.dart';
@@ -54,6 +55,11 @@ class QuoteCard extends ConsumerWidget {
                 Text('— ${quote.author}', style: theme.textTheme.bodyMedium),
               ],
               const Spacer(flex: 2),
+              AnimatedCritter(
+                critter: Critter.forCategory(quote.categoryId),
+                size: 96,
+              ),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

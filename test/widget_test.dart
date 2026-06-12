@@ -24,6 +24,7 @@ Future<ProviderScope> appWith({required bool onboarded}) async {
 void main() {
   testWidgets('onboarded users land on the shell with four tabs',
       (tester) async {
+    disableCritterAnimations(tester);
     await tester.pumpWidget(await appWith(onboarded: true));
     await tester.pumpAndSettle();
 

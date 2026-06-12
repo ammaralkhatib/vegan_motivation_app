@@ -75,6 +75,7 @@ flutter:
 
   assets:
     - assets/content/
+    - assets/critters/
 
   fonts:
     - family: Fraunces

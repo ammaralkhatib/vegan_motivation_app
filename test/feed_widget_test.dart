@@ -40,6 +40,7 @@ Widget app(AppDatabase db) {
 
 void main() {
   testWidgets('feed renders quote with category chip', (tester) async {
+    disableCritterAnimations(tester);
     final db = await seededDb();
     addTearDown(db.close);
 
@@ -54,6 +55,7 @@ void main() {
 
   testWidgets('heart toggle persists favorite to the database',
       (tester) async {
+    disableCritterAnimations(tester);
     final db = await seededDb();
     addTearDown(db.close);
 
