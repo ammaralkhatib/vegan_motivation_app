@@ -6,6 +6,8 @@ part of 'quote_dao.dart';
 mixin _$QuoteDaoMixin on DatabaseAccessor<AppDatabase> {
   $CategoriesTable get categories => attachedDatabase.categories;
   $QuotesTable get quotes => attachedDatabase.quotes;
+  $QuoteTranslationsTable get quoteTranslations =>
+      attachedDatabase.quoteTranslations;
   QuoteDaoManager get managers => QuoteDaoManager(this);
 }
 
@@ -16,4 +18,9 @@ class QuoteDaoManager {
       $$CategoriesTableTableManager(_db.attachedDatabase, _db.categories);
   $$QuotesTableTableManager get quotes =>
       $$QuotesTableTableManager(_db.attachedDatabase, _db.quotes);
+  $$QuoteTranslationsTableTableManager get quoteTranslations =>
+      $$QuoteTranslationsTableTableManager(
+        _db.attachedDatabase,
+        _db.quoteTranslations,
+      );
 }

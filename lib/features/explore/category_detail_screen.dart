@@ -3,16 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../core/locale/locale_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../quotes/category_display.dart';
 import '../quotes/providers.dart';
 
 final _categoryQuotesProvider =
     StreamProvider.family<List<Quote>, String>((ref, categoryId) {
+  final locale = ref.watch(localeCodeProvider);
   return ref
       .watch(databaseProvider)
       .quoteDao
-      .watchQuotesByCategory(categoryId);
+      .watchQuotesByCategory(categoryId, locale: locale);
 });
 
 class CategoryDetailScreen extends ConsumerWidget {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/db/database.dart';
+import '../core/locale/locale_provider.dart';
 import '../core/notifications/notification_coordinator.dart';
 import '../core/notifications/notification_service.dart';
 import '../core/prefs/prefs_repository.dart';
@@ -78,6 +79,21 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
+      // Keep the quote-text locale in sync with the resolved UI locale, so an
+      // OS language switch re-resolves quote text live (translations already
+      // live in the DB — no re-import).
+      builder: (context, child) {
+        _syncLocale(Localizations.localeOf(context).languageCode);
+        return child ?? const SizedBox.shrink();
+      },
     );
+  }
+
+  void _syncLocale(String code) {
+    if (ref.read(localeCodeProvider) == code) return;
+    // Defer the state write out of the build phase.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.read(localeCodeProvider.notifier).state = code;
+    });
   }
 }

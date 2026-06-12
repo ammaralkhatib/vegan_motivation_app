@@ -24,6 +24,9 @@ class Categories extends Table {
 class Quotes extends Table {
   /// Stable id from the bundled content file.
   IntColumn get id => integer()();
+
+  /// English quote text — the base/fallback. Translations live in
+  /// [QuoteTranslations]; display resolution happens in the DAO.
   TextColumn get body => text()();
   TextColumn get author => text().nullable()();
   TextColumn get categoryId => text().references(Categories, #id)();
@@ -33,6 +36,20 @@ class Quotes extends Table {
 
   @override
   Set<Column> get primaryKey => {id};
+}
+
+/// Per-language quote text. A quote with no row for a given locale falls back
+/// to the English [Quotes.body]. Purely content — never holds user state, so
+/// it is safe to upsert on every content import.
+class QuoteTranslations extends Table {
+  IntColumn get quoteId => integer().references(Quotes, #id)();
+
+  /// Language code, e.g. 'de'. (Language only — no region in this phase.)
+  TextColumn get locale => text()();
+  TextColumn get body => text()();
+
+  @override
+  Set<Column> get primaryKey => {quoteId, locale};
 }
 
 class Habits extends Table {
@@ -65,7 +82,7 @@ class HabitCompletions extends Table {
 }
 
 @DriftDatabase(
-  tables: [Categories, Quotes, Habits, HabitCompletions],
+  tables: [Categories, Quotes, Habits, HabitCompletions, QuoteTranslations],
   daos: [QuoteDao, HabitDao],
 )
 class AppDatabase extends _$AppDatabase {
@@ -74,10 +91,16 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+        onUpgrade: (m, from, to) async {
+          // v1 → v2: add quote translations (content only, no user data).
+          if (from < 2) {
+            await m.createTable(quoteTranslations);
+          }
+        },
         beforeOpen: (details) async {
           await customStatement('PRAGMA foreign_keys = ON');
         },

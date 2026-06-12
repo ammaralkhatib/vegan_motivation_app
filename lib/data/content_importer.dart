@@ -25,6 +25,10 @@ class ContentImporter {
 
     final categoryList = (data['categories'] as List).cast<Map<String, dynamic>>();
     final quoteList = (data['quotes'] as List).cast<Map<String, dynamic>>();
+    // Optional: locale → quoteId-string → translated text. Always optional;
+    // a missing block, missing locale or missing id all just fall back to
+    // English at display time.
+    final translations = data['translations'] as Map<String, dynamic>?;
 
     await _db.transaction(() async {
       for (final c in categoryList) {
@@ -62,6 +66,28 @@ class ContentImporter {
                 ),
               ),
             );
+      }
+      if (translations != null) {
+        for (final localeEntry in translations.entries) {
+          final locale = localeEntry.key;
+          final byId = localeEntry.value as Map<String, dynamic>;
+          for (final entry in byId.entries) {
+            final quoteId = int.parse(entry.key);
+            final text = entry.value as String;
+            await _db.into(_db.quoteTranslations).insert(
+                  QuoteTranslationsCompanion.insert(
+                    quoteId: quoteId,
+                    locale: locale,
+                    body: text,
+                  ),
+                  // Content only — idempotent re-import refreshes the text and
+                  // never touches user state (which lives on the quote row).
+                  onConflict: DoUpdate(
+                    (old) => QuoteTranslationsCompanion(body: Value(text)),
+                  ),
+                );
+          }
+        }
       }
     });
 

@@ -38,8 +38,13 @@ class HomeWidgetService {
       await HomeWidget.setAppGroupId(_appGroupId);
     }
 
-    final quotes =
-        await db.quoteDao.getQuotesInMix(unlockedCategoryIds: unlockedCategoryIds);
+    // Background path: resolve text against the device locale (no BuildContext
+    // here), so the widget shows the same translated text as the feed.
+    final locale = PlatformDispatcher.instance.locale.languageCode;
+    final quotes = await db.quoteDao.getQuotesInMix(
+      unlockedCategoryIds: unlockedCategoryIds,
+      locale: locale,
+    );
     if (quotes.isEmpty) return;
     final categories = {
       for (final c in await db.select(db.categories).get()) c.id: c,

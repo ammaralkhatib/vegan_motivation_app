@@ -558,6 +558,9 @@ class $QuotesTable extends Quotes with TableInfo<$QuotesTable, Quote> {
 class Quote extends DataClass implements Insertable<Quote> {
   /// Stable id from the bundled content file.
   final int id;
+
+  /// English quote text — the base/fallback. Translations live in
+  /// [QuoteTranslations]; display resolution happens in the DAO.
   final String body;
   final String? author;
   final String categoryId;
@@ -1578,6 +1581,274 @@ class HabitCompletionsCompanion extends UpdateCompanion<HabitCompletion> {
   }
 }
 
+class $QuoteTranslationsTable extends QuoteTranslations
+    with TableInfo<$QuoteTranslationsTable, QuoteTranslation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $QuoteTranslationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _quoteIdMeta = const VerificationMeta(
+    'quoteId',
+  );
+  @override
+  late final GeneratedColumn<int> quoteId = GeneratedColumn<int>(
+    'quote_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES quotes (id)',
+    ),
+  );
+  static const VerificationMeta _localeMeta = const VerificationMeta('locale');
+  @override
+  late final GeneratedColumn<String> locale = GeneratedColumn<String>(
+    'locale',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _bodyMeta = const VerificationMeta('body');
+  @override
+  late final GeneratedColumn<String> body = GeneratedColumn<String>(
+    'body',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [quoteId, locale, body];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'quote_translations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<QuoteTranslation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('quote_id')) {
+      context.handle(
+        _quoteIdMeta,
+        quoteId.isAcceptableOrUnknown(data['quote_id']!, _quoteIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_quoteIdMeta);
+    }
+    if (data.containsKey('locale')) {
+      context.handle(
+        _localeMeta,
+        locale.isAcceptableOrUnknown(data['locale']!, _localeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_localeMeta);
+    }
+    if (data.containsKey('body')) {
+      context.handle(
+        _bodyMeta,
+        body.isAcceptableOrUnknown(data['body']!, _bodyMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_bodyMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {quoteId, locale};
+  @override
+  QuoteTranslation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return QuoteTranslation(
+      quoteId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}quote_id'],
+      )!,
+      locale: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}locale'],
+      )!,
+      body: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body'],
+      )!,
+    );
+  }
+
+  @override
+  $QuoteTranslationsTable createAlias(String alias) {
+    return $QuoteTranslationsTable(attachedDatabase, alias);
+  }
+}
+
+class QuoteTranslation extends DataClass
+    implements Insertable<QuoteTranslation> {
+  final int quoteId;
+
+  /// Language code, e.g. 'de'. (Language only — no region in this phase.)
+  final String locale;
+  final String body;
+  const QuoteTranslation({
+    required this.quoteId,
+    required this.locale,
+    required this.body,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['quote_id'] = Variable<int>(quoteId);
+    map['locale'] = Variable<String>(locale);
+    map['body'] = Variable<String>(body);
+    return map;
+  }
+
+  QuoteTranslationsCompanion toCompanion(bool nullToAbsent) {
+    return QuoteTranslationsCompanion(
+      quoteId: Value(quoteId),
+      locale: Value(locale),
+      body: Value(body),
+    );
+  }
+
+  factory QuoteTranslation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return QuoteTranslation(
+      quoteId: serializer.fromJson<int>(json['quoteId']),
+      locale: serializer.fromJson<String>(json['locale']),
+      body: serializer.fromJson<String>(json['body']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'quoteId': serializer.toJson<int>(quoteId),
+      'locale': serializer.toJson<String>(locale),
+      'body': serializer.toJson<String>(body),
+    };
+  }
+
+  QuoteTranslation copyWith({int? quoteId, String? locale, String? body}) =>
+      QuoteTranslation(
+        quoteId: quoteId ?? this.quoteId,
+        locale: locale ?? this.locale,
+        body: body ?? this.body,
+      );
+  QuoteTranslation copyWithCompanion(QuoteTranslationsCompanion data) {
+    return QuoteTranslation(
+      quoteId: data.quoteId.present ? data.quoteId.value : this.quoteId,
+      locale: data.locale.present ? data.locale.value : this.locale,
+      body: data.body.present ? data.body.value : this.body,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QuoteTranslation(')
+          ..write('quoteId: $quoteId, ')
+          ..write('locale: $locale, ')
+          ..write('body: $body')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(quoteId, locale, body);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is QuoteTranslation &&
+          other.quoteId == this.quoteId &&
+          other.locale == this.locale &&
+          other.body == this.body);
+}
+
+class QuoteTranslationsCompanion extends UpdateCompanion<QuoteTranslation> {
+  final Value<int> quoteId;
+  final Value<String> locale;
+  final Value<String> body;
+  final Value<int> rowid;
+  const QuoteTranslationsCompanion({
+    this.quoteId = const Value.absent(),
+    this.locale = const Value.absent(),
+    this.body = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  QuoteTranslationsCompanion.insert({
+    required int quoteId,
+    required String locale,
+    required String body,
+    this.rowid = const Value.absent(),
+  }) : quoteId = Value(quoteId),
+       locale = Value(locale),
+       body = Value(body);
+  static Insertable<QuoteTranslation> custom({
+    Expression<int>? quoteId,
+    Expression<String>? locale,
+    Expression<String>? body,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (quoteId != null) 'quote_id': quoteId,
+      if (locale != null) 'locale': locale,
+      if (body != null) 'body': body,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  QuoteTranslationsCompanion copyWith({
+    Value<int>? quoteId,
+    Value<String>? locale,
+    Value<String>? body,
+    Value<int>? rowid,
+  }) {
+    return QuoteTranslationsCompanion(
+      quoteId: quoteId ?? this.quoteId,
+      locale: locale ?? this.locale,
+      body: body ?? this.body,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (quoteId.present) {
+      map['quote_id'] = Variable<int>(quoteId.value);
+    }
+    if (locale.present) {
+      map['locale'] = Variable<String>(locale.value);
+    }
+    if (body.present) {
+      map['body'] = Variable<String>(body.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QuoteTranslationsCompanion(')
+          ..write('quoteId: $quoteId, ')
+          ..write('locale: $locale, ')
+          ..write('body: $body, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1587,6 +1858,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $HabitCompletionsTable habitCompletions = $HabitCompletionsTable(
     this,
   );
+  late final $QuoteTranslationsTable quoteTranslations =
+      $QuoteTranslationsTable(this);
   late final QuoteDao quoteDao = QuoteDao(this as AppDatabase);
   late final HabitDao habitDao = HabitDao(this as AppDatabase);
   @override
@@ -1598,6 +1871,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     quotes,
     habits,
     habitCompletions,
+    quoteTranslations,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -1952,6 +2226,30 @@ final class $$QuotesTableReferences
       manager.$state.copyWith(prefetchedData: [item]),
     );
   }
+
+  static MultiTypedResultKey<$QuoteTranslationsTable, List<QuoteTranslation>>
+  _quoteTranslationsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.quoteTranslations,
+        aliasName: $_aliasNameGenerator(
+          db.quotes.id,
+          db.quoteTranslations.quoteId,
+        ),
+      );
+
+  $$QuoteTranslationsTableProcessedTableManager get quoteTranslationsRefs {
+    final manager = $$QuoteTranslationsTableTableManager(
+      $_db,
+      $_db.quoteTranslations,
+    ).filter((f) => f.quoteId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _quoteTranslationsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$QuotesTableFilterComposer
@@ -2014,6 +2312,31 @@ class $$QuotesTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> quoteTranslationsRefs(
+    Expression<bool> Function($$QuoteTranslationsTableFilterComposer f) f,
+  ) {
+    final $$QuoteTranslationsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.quoteTranslations,
+      getReferencedColumn: (t) => t.quoteId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QuoteTranslationsTableFilterComposer(
+            $db: $db,
+            $table: $db.quoteTranslations,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -2135,6 +2458,32 @@ class $$QuotesTableAnnotationComposer
     );
     return composer;
   }
+
+  Expression<T> quoteTranslationsRefs<T extends Object>(
+    Expression<T> Function($$QuoteTranslationsTableAnnotationComposer a) f,
+  ) {
+    final $$QuoteTranslationsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.quoteTranslations,
+          getReferencedColumn: (t) => t.quoteId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$QuoteTranslationsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.quoteTranslations,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$QuotesTableTableManager
@@ -2150,7 +2499,7 @@ class $$QuotesTableTableManager
           $$QuotesTableUpdateCompanionBuilder,
           (Quote, $$QuotesTableReferences),
           Quote,
-          PrefetchHooks Function({bool categoryId})
+          PrefetchHooks Function({bool categoryId, bool quoteTranslationsRefs})
         > {
   $$QuotesTableTableManager(_$AppDatabase db, $QuotesTable table)
     : super(
@@ -2205,47 +2554,72 @@ class $$QuotesTableTableManager
                     (e.readTable(table), $$QuotesTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({categoryId = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (categoryId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.categoryId,
-                                referencedTable: $$QuotesTableReferences
-                                    ._categoryIdTable(db),
-                                referencedColumn: $$QuotesTableReferences
-                                    ._categoryIdTable(db)
-                                    .id,
-                              )
-                              as T;
-                    }
+          prefetchHooksCallback:
+              ({categoryId = false, quoteTranslationsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (quoteTranslationsRefs) db.quoteTranslations,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (categoryId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.categoryId,
+                                    referencedTable: $$QuotesTableReferences
+                                        ._categoryIdTable(db),
+                                    referencedColumn: $$QuotesTableReferences
+                                        ._categoryIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (quoteTranslationsRefs)
+                        await $_getPrefetchedData<
+                          Quote,
+                          $QuotesTable,
+                          QuoteTranslation
+                        >(
+                          currentTable: table,
+                          referencedTable: $$QuotesTableReferences
+                              ._quoteTranslationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$QuotesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).quoteTranslationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.quoteId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -2262,7 +2636,7 @@ typedef $$QuotesTableProcessedTableManager =
       $$QuotesTableUpdateCompanionBuilder,
       (Quote, $$QuotesTableReferences),
       Quote,
-      PrefetchHooks Function({bool categoryId})
+      PrefetchHooks Function({bool categoryId, bool quoteTranslationsRefs})
     >;
 typedef $$HabitsTableCreateCompanionBuilder =
     HabitsCompanion Function({
@@ -2904,6 +3278,302 @@ typedef $$HabitCompletionsTableProcessedTableManager =
       HabitCompletion,
       PrefetchHooks Function({bool habitId})
     >;
+typedef $$QuoteTranslationsTableCreateCompanionBuilder =
+    QuoteTranslationsCompanion Function({
+      required int quoteId,
+      required String locale,
+      required String body,
+      Value<int> rowid,
+    });
+typedef $$QuoteTranslationsTableUpdateCompanionBuilder =
+    QuoteTranslationsCompanion Function({
+      Value<int> quoteId,
+      Value<String> locale,
+      Value<String> body,
+      Value<int> rowid,
+    });
+
+final class $$QuoteTranslationsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $QuoteTranslationsTable,
+          QuoteTranslation
+        > {
+  $$QuoteTranslationsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $QuotesTable _quoteIdTable(_$AppDatabase db) => db.quotes.createAlias(
+    $_aliasNameGenerator(db.quoteTranslations.quoteId, db.quotes.id),
+  );
+
+  $$QuotesTableProcessedTableManager get quoteId {
+    final $_column = $_itemColumn<int>('quote_id')!;
+
+    final manager = $$QuotesTableTableManager(
+      $_db,
+      $_db.quotes,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_quoteIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$QuoteTranslationsTableFilterComposer
+    extends Composer<_$AppDatabase, $QuoteTranslationsTable> {
+  $$QuoteTranslationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get locale => $composableBuilder(
+    column: $table.locale,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$QuotesTableFilterComposer get quoteId {
+    final $$QuotesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.quoteId,
+      referencedTable: $db.quotes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QuotesTableFilterComposer(
+            $db: $db,
+            $table: $db.quotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$QuoteTranslationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $QuoteTranslationsTable> {
+  $$QuoteTranslationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get locale => $composableBuilder(
+    column: $table.locale,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get body => $composableBuilder(
+    column: $table.body,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$QuotesTableOrderingComposer get quoteId {
+    final $$QuotesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.quoteId,
+      referencedTable: $db.quotes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QuotesTableOrderingComposer(
+            $db: $db,
+            $table: $db.quotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$QuoteTranslationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $QuoteTranslationsTable> {
+  $$QuoteTranslationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get locale =>
+      $composableBuilder(column: $table.locale, builder: (column) => column);
+
+  GeneratedColumn<String> get body =>
+      $composableBuilder(column: $table.body, builder: (column) => column);
+
+  $$QuotesTableAnnotationComposer get quoteId {
+    final $$QuotesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.quoteId,
+      referencedTable: $db.quotes,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$QuotesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.quotes,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$QuoteTranslationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $QuoteTranslationsTable,
+          QuoteTranslation,
+          $$QuoteTranslationsTableFilterComposer,
+          $$QuoteTranslationsTableOrderingComposer,
+          $$QuoteTranslationsTableAnnotationComposer,
+          $$QuoteTranslationsTableCreateCompanionBuilder,
+          $$QuoteTranslationsTableUpdateCompanionBuilder,
+          (QuoteTranslation, $$QuoteTranslationsTableReferences),
+          QuoteTranslation,
+          PrefetchHooks Function({bool quoteId})
+        > {
+  $$QuoteTranslationsTableTableManager(
+    _$AppDatabase db,
+    $QuoteTranslationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$QuoteTranslationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$QuoteTranslationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$QuoteTranslationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> quoteId = const Value.absent(),
+                Value<String> locale = const Value.absent(),
+                Value<String> body = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => QuoteTranslationsCompanion(
+                quoteId: quoteId,
+                locale: locale,
+                body: body,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int quoteId,
+                required String locale,
+                required String body,
+                Value<int> rowid = const Value.absent(),
+              }) => QuoteTranslationsCompanion.insert(
+                quoteId: quoteId,
+                locale: locale,
+                body: body,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$QuoteTranslationsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({quoteId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (quoteId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.quoteId,
+                                referencedTable:
+                                    $$QuoteTranslationsTableReferences
+                                        ._quoteIdTable(db),
+                                referencedColumn:
+                                    $$QuoteTranslationsTableReferences
+                                        ._quoteIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$QuoteTranslationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $QuoteTranslationsTable,
+      QuoteTranslation,
+      $$QuoteTranslationsTableFilterComposer,
+      $$QuoteTranslationsTableOrderingComposer,
+      $$QuoteTranslationsTableAnnotationComposer,
+      $$QuoteTranslationsTableCreateCompanionBuilder,
+      $$QuoteTranslationsTableUpdateCompanionBuilder,
+      (QuoteTranslation, $$QuoteTranslationsTableReferences),
+      QuoteTranslation,
+      PrefetchHooks Function({bool quoteId})
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2916,4 +3586,6 @@ class $AppDatabaseManager {
       $$HabitsTableTableManager(_db, _db.habits);
   $$HabitCompletionsTableTableManager get habitCompletions =>
       $$HabitCompletionsTableTableManager(_db, _db.habitCompletions);
+  $$QuoteTranslationsTableTableManager get quoteTranslations =>
+      $$QuoteTranslationsTableTableManager(_db, _db.quoteTranslations);
 }

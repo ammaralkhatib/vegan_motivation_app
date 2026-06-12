@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../core/locale/locale_provider.dart';
 import '../../l10n/app_localizations.dart';
 import 'category_detail_screen.dart';
 
 final favoritesProvider = StreamProvider<List<Quote>>((ref) {
-  return ref.watch(databaseProvider).quoteDao.watchFavorites();
+  final locale = ref.watch(localeCodeProvider);
+  return ref.watch(databaseProvider).quoteDao.watchFavorites(locale: locale);
 });
 
 class FavoritesScreen extends ConsumerWidget {

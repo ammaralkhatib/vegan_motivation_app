@@ -1,3 +1,5 @@
+import 'dart:ui' show PlatformDispatcher;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/settings/notification_prefs.dart';
@@ -38,10 +40,13 @@ class NotificationCoordinator {
     if (!force && prefs.lastNotifScheduleDay == today) return;
 
     final unlocked = _ref.read(unlockedCategoryIdsProvider);
+    // Notifications have no BuildContext; resolve quote text against the device
+    // locale so notification bodies match the feed.
+    final locale = PlatformDispatcher.instance.locale.languageCode;
     final quotes = await _ref
         .read(databaseProvider)
         .quoteDao
-        .getQuotesInMix(unlockedCategoryIds: unlocked);
+        .getQuotesInMix(unlockedCategoryIds: unlocked, locale: locale);
     final schedulable = [
       for (final q in quotes)
         SchedulableQuote(

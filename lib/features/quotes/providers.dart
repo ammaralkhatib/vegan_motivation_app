@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../core/locale/locale_provider.dart';
 import '../../core/purchases/premium_gate.dart';
 import '../../core/utils/date_utils.dart';
 import '../../core/utils/seeded_shuffle.dart';
@@ -32,11 +33,12 @@ final feedQueueProvider = StreamProvider<List<int>>((ref) {
   });
 });
 
-/// Live row for one quote (heart state stays in sync everywhere).
+/// Live row for one quote (heart state stays in sync everywhere), with text
+/// resolved to the active locale.
 final quoteByIdProvider = StreamProvider.family<Quote?, int>((ref, id) {
   final db = ref.watch(databaseProvider);
-  return (db.select(db.quotes)..where((q) => q.id.equals(id)))
-      .watchSingleOrNull();
+  final locale = ref.watch(localeCodeProvider);
+  return db.quoteDao.watchQuoteById(id, locale: locale);
 });
 
 final categoriesProvider = StreamProvider<List<Category>>((ref) {
