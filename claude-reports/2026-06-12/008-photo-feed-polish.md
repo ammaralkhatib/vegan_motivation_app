@@ -82,9 +82,9 @@ clearly different colors.
 
 ## Commit & push
 
-- **Commit(s):** `__SHA__` — `feat(quotes): photo-feed polish — paywall hook, full-screen, Ken Burns, tints`
+- **Commit(s):** `babf248` — `feat(quotes): photo-feed polish — paywall hook, full-screen, Ken Burns, tints`
   (this report's SHA stamp is a tiny follow-up `docs` commit).
-- **Push:** `origin/main` — __PUSH__
+- **Push:** `origin/main` — ok (`1d65cdc..babf248`).
 
 ## Deviations from prompt
 
