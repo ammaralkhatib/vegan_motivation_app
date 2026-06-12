@@ -95,6 +95,12 @@ Manual click-path (open item for Ammar):
   — wiring those into the manifest is the prompt-006 follow-up, left untouched
   here.
 
+## Commit & push
+
+- **Commit(s):** `1ca4af4` — `feat(onboarding): story-driven intro + question bank`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`d363aff..1ca4af4`).
+
 ## Deviations from prompt
 
 None.
