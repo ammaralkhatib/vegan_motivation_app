@@ -133,16 +133,21 @@ class ChoiceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      color: selected ? theme.colorScheme.primaryContainer : null,
-      child: ListTile(
-        title: Text(label),
-        trailing: selected
-            ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
-            : null,
-        onTap: onTap,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    // The global cardTheme zeroes Card margins, so add the gap between options
+    // here rather than touching that theme.
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Card(
+        color: selected ? theme.colorScheme.primaryContainer : null,
+        child: ListTile(
+          title: Text(label),
+          trailing: selected
+              ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
+              : null,
+          onTap: onTap,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
       ),
     );
