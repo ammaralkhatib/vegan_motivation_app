@@ -77,8 +77,8 @@ text readable on light and dark photos.
 
 ## Commit & push
 
-- **Commit:** `<filled after commit>` — `feat(quotes): bundle 110 Pexels background images`
-- **Push:** `origin/main` — `<filled after push>`
+- **Commit:** `e71c085` — `feat(quotes): bundle 110 Pexels background images`
+- **Push:** `origin/main` — ok (`522475f..e71c085`).
 
 ## Open items for the owner
 
