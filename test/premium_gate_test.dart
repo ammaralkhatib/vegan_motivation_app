@@ -50,6 +50,8 @@ Widget exploreApp(AppDatabase db, {required bool premium}) {
     ],
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const ExploreScreen(),
     ),
   );

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/db/database.dart';
+import '../../l10n/app_localizations.dart';
 import 'providers.dart';
 import 'quote_card.dart';
 import 'share_service.dart';
@@ -38,16 +39,17 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final queue = ref.watch(feedQueueProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: queue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Something went sideways: $e')),
+        error: (e, _) => Center(child: Text(l.feedError(e.toString()))),
         data: (ids) {
           if (ids.isEmpty) {
-            return const Center(child: Text('No quotes in your mix yet.'));
+            return Center(child: Text(l.feedEmpty));
           }
           return Stack(
             children: [

@@ -979,5 +979,355 @@
   "onboardingBombshellNegativeClose": "how many of them could you spare?",
   "@onboardingBombshellNegativeClose": {
     "description": "Closing line of the negative bombshell."
+  },
+
+  "categoryNameWhyVegan": "Why Vegan",
+  "@categoryNameWhyVegan": {
+    "description": "Display name for the why_vegan quote category."
+  },
+  "categoryNameQuickTips": "Quick Tips",
+  "@categoryNameQuickTips": {
+    "description": "Display name for the quick_tips quote category."
+  },
+  "categoryNameYoureAwesome": "You're Awesome",
+  "@categoryNameYoureAwesome": {
+    "description": "Display name for the youre_awesome quote category."
+  },
+  "categoryNameFacts": "Facts",
+  "@categoryNameFacts": {
+    "description": "Display name for the facts quote category."
+  },
+  "categoryNameStayingStrong": "Staying Strong",
+  "@categoryNameStayingStrong": {
+    "description": "Display name for the staying_strong quote category."
+  },
+  "categoryNameMilestones": "Milestones",
+  "@categoryNameMilestones": {
+    "description": "Display name for the milestones quote category."
+  },
+
+  "feedError": "Something went sideways: {error}",
+  "@feedError": {
+    "description": "Shown when the feed queue fails to load.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "feedEmpty": "No quotes in your mix yet.",
+  "@feedEmpty": {
+    "description": "Shown when no categories are in the mix."
+  },
+  "quotesShareTooltip": "Share",
+  "@quotesShareTooltip": {
+    "description": "Tooltip on the share button of a quote card."
+  },
+  "quotesFavorite": "Favorite",
+  "@quotesFavorite": {
+    "description": "Tooltip when a quote is not yet favorited."
+  },
+  "quotesUnfavorite": "Unfavorite",
+  "@quotesUnfavorite": {
+    "description": "Tooltip when a quote is already favorited."
+  },
+  "quotesCloseTooltip": "Close",
+  "@quotesCloseTooltip": {
+    "description": "Tooltip on the close button of the full-screen quote."
+  },
+
+  "exploreTitle": "Explore",
+  "@exploreTitle": {
+    "description": "App bar title for the explore screen."
+  },
+  "exploreFavoritesTooltip": "Favorites",
+  "@exploreFavoritesTooltip": {
+    "description": "Tooltip on the favorites button in explore."
+  },
+  "exploreCategoriesError": "Could not load categories: {error}",
+  "@exploreCategoriesError": {
+    "description": "Shown when categories fail to load.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "exploreMixHint": "Your daily mix pulls from the categories you switch on.",
+  "@exploreMixHint": {
+    "description": "Hint above the category list in explore."
+  },
+  "exploreQuoteCount": "{count, plural, =1{1 quote} other{{count} quotes}}",
+  "@exploreQuoteCount": {
+    "description": "Per-category quote count in explore.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exploreKeepOne": "Keep at least one category in your mix 🌱",
+  "@exploreKeepOne": {
+    "description": "Warning when the user tries to switch off the last category."
+  },
+  "exploreQuotesError": "Could not load quotes: {error}",
+  "@exploreQuotesError": {
+    "description": "Shown when a category's quotes fail to load.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesTitle": "Favorites",
+  "@favoritesTitle": {
+    "description": "App bar title for the favorites screen."
+  },
+  "favoritesError": "Could not load favorites: {error}",
+  "@favoritesError": {
+    "description": "Shown when favorites fail to load.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "favoritesEmpty": "Tap the heart on any quote\nand it will live here.",
+  "@favoritesEmpty": {
+    "description": "Empty state on the favorites screen."
+  },
+
+  "journeyTitle": "Journey",
+  "@journeyTitle": {
+    "description": "App bar title for the journey screen."
+  },
+  "journeySettingsTooltip": "Settings",
+  "@journeySettingsTooltip": {
+    "description": "Tooltip on the settings button in journey."
+  },
+  "journeyDatePickerHelp": "When did your vegan journey begin?",
+  "@journeyDatePickerHelp": {
+    "description": "Help text in the vegan-since date picker."
+  },
+  "journeyAboutNumbersTitle": "About these numbers",
+  "@journeyAboutNumbersTitle": {
+    "description": "Title (and tooltip) for the impact-estimates info sheet."
+  },
+  "journeyAboutNumbersBody": "These are rough estimates of what one fully plant-based day saves, based on commonly cited figures (the Cowspiracy fact sheet, Water Footprint Network data, and similar aggregations popularized by The Vegan Calculator).\n\nReal-world impact varies by diet, region, and season — treat them as a motivating sketch, not an exact audit. The direction is what matters, and the direction is wonderful.",
+  "@journeyAboutNumbersBody": {
+    "description": "Body of the impact-estimates info sheet."
+  },
+  "journeyHeroTitle": "Your vegan journey",
+  "@journeyHeroTitle": {
+    "description": "Journey hero label when no name is set."
+  },
+  "journeyHeroTitleNamed": "{name}, your vegan journey",
+  "@journeyHeroTitleNamed": {
+    "description": "Journey hero label with the user's name.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sam"
+      }
+    }
+  },
+  "journeyDayCount": "Day {count} 🌱",
+  "@journeyDayCount": {
+    "description": "Big day-counter on the journey hero (Day N).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "journeySince": "since {date}",
+  "@journeySince": {
+    "description": "Vegan-since date button. {date} is a locale-formatted date.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Jan 1, 2026"
+      }
+    }
+  },
+  "journeyEstimatedImpact": "Your estimated impact",
+  "@journeyEstimatedImpact": {
+    "description": "Section header above the impact counters."
+  },
+  "journeyCuriousTitle": "Curious about the difference\none month could make?",
+  "@journeyCuriousTitle": {
+    "description": "Hero title for users without a start date."
+  },
+  "journeyCuriousSubtitle": "Here is what 30 plant-based days are estimated to save:",
+  "@journeyCuriousSubtitle": {
+    "description": "Hero subtitle for users without a start date."
+  },
+  "journeyCuriousFootnote": "Estimates, not audits — tap for sources.",
+  "@journeyCuriousFootnote": {
+    "description": "Footnote next to the impact info button."
+  },
+  "journeyHaveStartDate": "I have a start date!",
+  "@journeyHaveStartDate": {
+    "description": "Button to set a vegan-since date."
+  },
+  "journeyMilestone1Week": "1 week",
+  "@journeyMilestone1Week": {
+    "description": "Journey milestone chip label (7 days)."
+  },
+  "journeyMilestone1Month": "1 month",
+  "@journeyMilestone1Month": {
+    "description": "Journey milestone chip label (30 days)."
+  },
+  "journeyMilestone100Days": "100 days",
+  "@journeyMilestone100Days": {
+    "description": "Journey milestone chip label (100 days)."
+  },
+  "journeyMilestone1Year": "1 year",
+  "@journeyMilestone1Year": {
+    "description": "Journey milestone chip label (365 days)."
+  },
+  "journeyImpactAnimals": "animal lives spared",
+  "@journeyImpactAnimals": {
+    "description": "Impact counter label for animals."
+  },
+  "journeyImpactCo2": "kg CO₂e avoided",
+  "@journeyImpactCo2": {
+    "description": "Impact counter label for CO₂."
+  },
+  "journeyImpactWater": "litres of water saved",
+  "@journeyImpactWater": {
+    "description": "Impact counter label for water."
+  },
+  "journeyImpactGrain": "kg of grain redirected",
+  "@journeyImpactGrain": {
+    "description": "Impact counter label for grain."
+  },
+  "journeyImpactForest": "m² of forest spared",
+  "@journeyImpactForest": {
+    "description": "Impact counter label for forest."
+  },
+
+  "habitsTitle": "Habits",
+  "@habitsTitle": {
+    "description": "App bar title for the habits screen."
+  },
+  "habitsNewTooltip": "New habit",
+  "@habitsNewTooltip": {
+    "description": "Tooltip on the add-habit button."
+  },
+  "habitsError": "Could not load habits: {error}",
+  "@habitsError": {
+    "description": "Shown when habits fail to load.",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "habitsMilestone7": "One week strong 🌱",
+  "@habitsMilestone7": {
+    "description": "Celebration when a habit hits a 7-day streak."
+  },
+  "habitsMilestone30": "A whole month! 🌿",
+  "@habitsMilestone30": {
+    "description": "Celebration when a habit hits a 30-day streak."
+  },
+  "habitsMilestone100": "100 days. Incredible. 🌳",
+  "@habitsMilestone100": {
+    "description": "Celebration when a habit hits a 100-day streak."
+  },
+  "habitsAllDone": "Everything done today. You showed up 💚",
+  "@habitsAllDone": {
+    "description": "Celebration when every habit is completed today."
+  },
+  "habitsPresetTitle": "Build your plant-powered routine",
+  "@habitsPresetTitle": {
+    "description": "Title of the first-visit preset picker."
+  },
+  "habitsPresetSubtitle": "Pick a few daily habits to track. You can add your own anytime.",
+  "@habitsPresetSubtitle": {
+    "description": "Subtitle of the first-visit preset picker."
+  },
+  "habitsStartTracking": "{count, plural, =1{Start tracking 1 habit} other{Start tracking {count} habits}}",
+  "@habitsStartTracking": {
+    "description": "Preset-picker confirm button.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "habitsStreak": "{count, plural, =1{1-day streak 🔥} other{{count}-day streak 🔥}}",
+  "@habitsStreak": {
+    "description": "Streak badge under a habit name.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "habitsCompletedSemantics": "Completed today",
+  "@habitsCompletedSemantics": {
+    "description": "Accessibility label when a habit is done today."
+  },
+  "habitsMarkCompleteSemantics": "Mark complete",
+  "@habitsMarkCompleteSemantics": {
+    "description": "Accessibility label to mark a habit complete."
+  },
+  "habitsHeatmapLess": "less",
+  "@habitsHeatmapLess": {
+    "description": "Low end of the month heatmap legend."
+  },
+  "habitsHeatmapMore": "more",
+  "@habitsHeatmapMore": {
+    "description": "High end of the month heatmap legend."
+  },
+  "habitsEditNewTitle": "New habit",
+  "@habitsEditNewTitle": {
+    "description": "App bar title when creating a habit."
+  },
+  "habitsEditTitle": "Edit habit",
+  "@habitsEditTitle": {
+    "description": "App bar title when editing a habit."
+  },
+  "habitsArchiveTooltip": "Archive",
+  "@habitsArchiveTooltip": {
+    "description": "Tooltip on the archive button."
+  },
+  "habitsArchiveConfirmTitle": "Archive habit?",
+  "@habitsArchiveConfirmTitle": {
+    "description": "Title of the archive confirmation dialog."
+  },
+  "habitsArchiveConfirmBody": "Its history is kept, but it disappears from your daily list.",
+  "@habitsArchiveConfirmBody": {
+    "description": "Body of the archive confirmation dialog."
+  },
+  "habitsArchiveCancel": "Cancel",
+  "@habitsArchiveCancel": {
+    "description": "Cancel button on the archive dialog."
+  },
+  "habitsArchiveConfirm": "Archive",
+  "@habitsArchiveConfirm": {
+    "description": "Confirm button on the archive dialog."
+  },
+  "habitsNameLabel": "Habit name",
+  "@habitsNameLabel": {
+    "description": "Label for the habit name field."
+  },
+  "habitsNameHint": "e.g. Cooked dinner at home",
+  "@habitsNameHint": {
+    "description": "Hint for the habit name field."
+  },
+  "habitsPickEmoji": "Pick an emoji",
+  "@habitsPickEmoji": {
+    "description": "Header above the emoji picker."
+  },
+  "habitsAddButton": "Add habit",
+  "@habitsAddButton": {
+    "description": "Save button when creating a habit."
+  },
+  "habitsSaveButton": "Save changes",
+  "@habitsSaveButton": {
+    "description": "Save button when editing a habit."
   }
 }

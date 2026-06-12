@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/impact_estimates.dart';
+import '../../l10n/app_localizations.dart';
 import 'impact_counter.dart';
 import 'providers.dart';
 
@@ -17,7 +18,7 @@ class JourneyScreen extends ConsumerWidget {
       initialDate: journey.veganSince ?? DateTime.now(),
       firstDate: DateTime(1970),
       lastDate: DateTime.now(),
-      helpText: 'When did your vegan journey begin?',
+      helpText: AppLocalizations.of(context).journeyDatePickerHelp,
     );
     if (picked != null) {
       await ref.read(journeyProvider.notifier).setVeganSince(picked);
@@ -25,6 +26,7 @@ class JourneyScreen extends ConsumerWidget {
   }
 
   void _showEstimatesInfo(BuildContext context) {
+    final l = AppLocalizations.of(context);
     showModalBottomSheet<void>(
       context: context,
       builder: (context) => Padding(
@@ -33,17 +35,11 @@ class JourneyScreen extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('About these numbers',
+            Text(l.journeyAboutNumbersTitle,
                 style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 12),
             Text(
-              'These are rough estimates of what one fully plant-based day '
-              'saves, based on commonly cited figures (the Cowspiracy fact '
-              'sheet, Water Footprint Network data, and similar aggregations '
-              'popularized by The Vegan Calculator).\n\n'
-              'Real-world impact varies by diet, region, and season — treat '
-              'them as a motivating sketch, not an exact audit. The direction '
-              'is what matters, and the direction is wonderful.',
+              l.journeyAboutNumbersBody,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -54,17 +50,18 @@ class JourneyScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final journey = ref.watch(journeyProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Journey'),
+        title: Text(l.journeyTitle),
         actions: [
           IconButton(
             onPressed: () => context.go('/journey/settings'),
             icon: const Icon(Icons.settings_outlined),
-            tooltip: 'Settings',
+            tooltip: l.journeySettingsTooltip,
           ),
         ],
       ),
@@ -86,6 +83,7 @@ class JourneyScreen extends ConsumerWidget {
     JourneyState journey,
   ) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final days = journey.daysVegan;
     final name = journey.userName;
 
@@ -98,14 +96,14 @@ class JourneyScreen extends ConsumerWidget {
             children: [
               Text(
                 name == null || name.isEmpty
-                    ? 'Your vegan journey'
-                    : '$name, your vegan journey',
+                    ? l.journeyHeroTitle
+                    : l.journeyHeroTitleNamed(name),
                 style: theme.textTheme.bodyMedium
                     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: 8),
               Text(
-                'Day $days 🌱',
+                l.journeyDayCount(days),
                 style: theme.textTheme.displayLarge
                     ?.copyWith(color: theme.colorScheme.primary),
               ),
@@ -114,7 +112,9 @@ class JourneyScreen extends ConsumerWidget {
                 onPressed: () => _pickDate(context, ref),
                 icon: const Icon(Icons.edit_calendar_outlined, size: 18),
                 label: Text(
-                  'since ${DateFormat('MMM d, y').format(journey.veganSince!)}',
+                  l.journeySince(
+                    DateFormat('MMM d, y').format(journey.veganSince!),
+                  ),
                 ),
               ),
             ],
@@ -126,13 +126,13 @@ class JourneyScreen extends ConsumerWidget {
       const SizedBox(height: 20),
       Row(
         children: [
-          Text('Your estimated impact', style: theme.textTheme.titleMedium),
+          Text(l.journeyEstimatedImpact, style: theme.textTheme.titleMedium),
           const SizedBox(width: 6),
           IconButton(
             onPressed: () => _showEstimatesInfo(context),
             icon: const Icon(Icons.info_outline, size: 18),
             visualDensity: VisualDensity.compact,
-            tooltip: 'About these numbers',
+            tooltip: l.journeyAboutNumbersTitle,
           ),
         ],
       ),
@@ -150,18 +150,19 @@ class JourneyScreen extends ConsumerWidget {
     JourneyState journey,
   ) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return [
       Card(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              Text('Curious about the difference\none month could make?',
+              Text(l.journeyCuriousTitle,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.displaySmall),
               const SizedBox(height: 8),
               Text(
-                'Here is what 30 plant-based days are estimated to save:',
+                l.journeyCuriousSubtitle,
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium
                     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
@@ -180,14 +181,14 @@ class JourneyScreen extends ConsumerWidget {
         children: [
           Expanded(
             child: Text(
-              'Estimates, not audits — tap for sources.',
+              l.journeyCuriousFootnote,
               style: theme.textTheme.bodySmall,
             ),
           ),
           IconButton(
             onPressed: () => _showEstimatesInfo(context),
             icon: const Icon(Icons.info_outline, size: 18),
-            tooltip: 'About these numbers',
+            tooltip: l.journeyAboutNumbersTitle,
           ),
         ],
       ),
@@ -195,7 +196,7 @@ class JourneyScreen extends ConsumerWidget {
       FilledButton.icon(
         onPressed: () => _pickDate(context, ref),
         icon: const Icon(Icons.eco),
-        label: const Text('I have a start date!'),
+        label: Text(l.journeyHaveStartDate),
       ),
     ];
   }
@@ -207,15 +208,23 @@ class _MilestoneChips extends StatelessWidget {
   final int days;
 
   static const _milestones = [
-    (days: 7, label: '1 week', emoji: '🌱'),
-    (days: 30, label: '1 month', emoji: '🌿'),
-    (days: 100, label: '100 days', emoji: '🌳'),
-    (days: 365, label: '1 year', emoji: '🏆'),
+    (days: 7, emoji: '🌱'),
+    (days: 30, emoji: '🌿'),
+    (days: 100, emoji: '🌳'),
+    (days: 365, emoji: '🏆'),
   ];
+
+  String _label(AppLocalizations l, int milestoneDays) => switch (milestoneDays) {
+        7 => l.journeyMilestone1Week,
+        30 => l.journeyMilestone1Month,
+        100 => l.journeyMilestone100Days,
+        _ => l.journeyMilestone1Year,
+      };
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context);
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -223,7 +232,7 @@ class _MilestoneChips extends StatelessWidget {
         for (final m in _milestones)
           Chip(
             avatar: Text(m.emoji),
-            label: Text(m.label),
+            label: Text(_label(l, m.days)),
             backgroundColor: days >= m.days
                 ? scheme.primaryContainer
                 : scheme.surfaceContainerHighest,

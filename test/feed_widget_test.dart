@@ -11,6 +11,7 @@ import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/quotes/feed_screen.dart';
 
@@ -51,6 +52,8 @@ Future<Widget> app(AppDatabase db) async {
     ],
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const FeedScreen(),
     ),
   );

@@ -6,6 +6,7 @@ import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/core/utils/date_utils.dart';
 import 'package:vegan_motivation_app/features/habits/habits_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'helpers.dart';
 
@@ -14,6 +15,8 @@ Widget app(AppDatabase db) {
     overrides: [databaseProvider.overrideWithValue(db)],
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const HabitsScreen(),
     ),
   );

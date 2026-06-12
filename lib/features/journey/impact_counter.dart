@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/impact_estimates.dart';
+import '../../l10n/app_localizations.dart';
 
 /// One animated impact stat: counts up from zero on first build.
 class ImpactCounter extends StatelessWidget {
@@ -12,6 +13,7 @@ class ImpactCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final target = stat.perDay * days;
 
     return Card(
@@ -37,7 +39,8 @@ class ImpactCounter extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text(stat.label, style: theme.textTheme.bodySmall),
+                  Text(impactStatLabel(l, stat.id),
+                      style: theme.textTheme.bodySmall),
                 ],
               ),
             ),

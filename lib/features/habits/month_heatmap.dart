@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_utils.dart';
+import '../../l10n/app_localizations.dart';
 import 'providers.dart';
 
 /// GitHub-style intensity grid for the current month: how many habits were
@@ -16,6 +17,7 @@ class MonthHeatmap extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final ramp = theme.extension<VeggieAccents>()!.heatmapRamp;
     final completions = ref.watch(monthCompletionsProvider).valueOrNull ?? {};
 
@@ -49,7 +51,7 @@ class MonthHeatmap extends ConsumerWidget {
                   style: theme.textTheme.titleMedium,
                 ),
                 const Spacer(),
-                Text('less', style: theme.textTheme.labelSmall),
+                Text(l.habitsHeatmapLess, style: theme.textTheme.labelSmall),
                 const SizedBox(width: 6),
                 for (final color in ramp) ...[
                   Container(
@@ -63,7 +65,7 @@ class MonthHeatmap extends ConsumerWidget {
                   const SizedBox(width: 3),
                 ],
                 const SizedBox(width: 3),
-                Text('more', style: theme.textTheme.labelSmall),
+                Text(l.habitsHeatmapMore, style: theme.textTheme.labelSmall),
               ],
             ),
             const SizedBox(height: 14),

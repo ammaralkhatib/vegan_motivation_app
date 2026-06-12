@@ -7,6 +7,8 @@ import '../../core/critters/animated_critter.dart';
 import '../../core/db/database.dart';
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
+import 'category_display.dart';
 import 'providers.dart';
 
 /// Scrim over a photo background: ~25% black at the top → ~55% at the bottom,
@@ -188,6 +190,7 @@ class _CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final isLong = quote.body.length > 120;
     // On a photo the scrim guarantees a dark backdrop → force light text, and
     // lift it off the image with a soft shadow.
@@ -201,7 +204,12 @@ class _CardContent extends StatelessWidget {
       children: [
         const Spacer(flex: 2),
         if (category != null)
-          Chip(label: Text('${category!.emoji}  ${category!.name}')),
+          Chip(
+            label: Text(
+              '${category!.emoji}  '
+              '${categoryDisplayName(l, category!.id, category!.name)}',
+            ),
+          ),
         const SizedBox(height: 28),
         Text(
           quote.body,
@@ -242,7 +250,7 @@ class _CardContent extends StatelessWidget {
               padding: const EdgeInsets.all(14),
               style: onPhoto ? _onPhotoButtonStyle : null,
               icon: const Icon(Icons.ios_share),
-              tooltip: 'Share',
+              tooltip: l.quotesShareTooltip,
             ),
           ],
         ),
@@ -268,6 +276,7 @@ class _FavoriteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return IconButton.filledTonal(
       onPressed: () {
         HapticFeedback.lightImpact();
@@ -286,7 +295,7 @@ class _FavoriteButton extends ConsumerWidget {
         ),
       ),
       icon: const Icon(Icons.favorite_outline),
-      tooltip: quote.isFavorite ? 'Unfavorite' : 'Favorite',
+      tooltip: quote.isFavorite ? l.quotesUnfavorite : l.quotesFavorite,
     );
   }
 }

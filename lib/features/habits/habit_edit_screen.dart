@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
+import '../../l10n/app_localizations.dart';
 
 const _emojiChoices = [
   '🌱', '🥦', '🍎', '🍲', '💊', '💧', '🏃', '🧘', '📖', '🤝', '☀️', '✨',
@@ -71,21 +72,20 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
   }
 
   Future<void> _archive() async {
+    final l = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Archive habit?'),
-        content: const Text(
-          'Its history is kept, but it disappears from your daily list.',
-        ),
+        title: Text(l.habitsArchiveConfirmTitle),
+        content: Text(l.habitsArchiveConfirmBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l.habitsArchiveCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Archive'),
+            child: Text(l.habitsArchiveConfirm),
           ),
         ],
       ),
@@ -99,16 +99,17 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: Text(_isNew ? 'New habit' : 'Edit habit'),
+        title: Text(_isNew ? l.habitsEditNewTitle : l.habitsEditTitle),
         actions: [
           if (!_isNew && _existing != null)
             IconButton(
               onPressed: _archive,
               icon: const Icon(Icons.archive_outlined),
-              tooltip: 'Archive',
+              tooltip: l.habitsArchiveTooltip,
             ),
         ],
       ),
@@ -121,15 +122,15 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
                   controller: _nameController,
                   autofocus: _isNew,
                   textCapitalization: TextCapitalization.sentences,
-                  decoration: const InputDecoration(
-                    labelText: 'Habit name',
-                    hintText: 'e.g. Cooked dinner at home',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: l.habitsNameLabel,
+                    hintText: l.habitsNameHint,
+                    border: const OutlineInputBorder(),
                   ),
                   onSubmitted: (_) => _save(),
                 ),
                 const SizedBox(height: 24),
-                Text('Pick an emoji', style: theme.textTheme.titleMedium),
+                Text(l.habitsPickEmoji, style: theme.textTheme.titleMedium),
                 const SizedBox(height: 12),
                 Wrap(
                   spacing: 10,
@@ -147,7 +148,7 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
                 const SizedBox(height: 32),
                 FilledButton(
                   onPressed: _save,
-                  child: Text(_isNew ? 'Add habit' : 'Save changes'),
+                  child: Text(_isNew ? l.habitsAddButton : l.habitsSaveButton),
                 ),
               ],
             ),

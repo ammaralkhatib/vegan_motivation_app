@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
 import 'quote_card.dart';
 
 /// Full-screen single quote — the landing target when a notification is
@@ -12,6 +13,7 @@ class QuoteDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -26,7 +28,7 @@ class QuoteDetailScreen extends StatelessWidget {
                   onPressed: () =>
                       context.canPop() ? context.pop() : context.go('/today'),
                   icon: const Icon(Icons.close),
-                  tooltip: 'Close',
+                  tooltip: l.quotesCloseTooltip,
                 ),
               ),
             ),

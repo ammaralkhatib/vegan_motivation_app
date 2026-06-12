@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
 import '../../core/utils/date_utils.dart';
+import '../../l10n/app_localizations.dart';
 import 'providers.dart';
 import 'streak_engine.dart';
 import 'week_strip.dart';
@@ -26,6 +27,7 @@ class HabitTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final today = todayEpochDay();
     final doneToday = weekDays.contains(today);
     final allDays =
@@ -51,7 +53,7 @@ class HabitTile extends ConsumerWidget {
                     if (streak > 1) ...[
                       const SizedBox(height: 2),
                       Text(
-                        '$streak-day streak 🔥',
+                        l.habitsStreak(streak),
                         style: theme.textTheme.bodySmall,
                       ),
                     ],
@@ -92,9 +94,10 @@ class _CheckButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l = AppLocalizations.of(context);
     return Semantics(
       button: true,
-      label: done ? 'Completed today' : 'Mark complete',
+      label: done ? l.habitsCompletedSemantics : l.habitsMarkCompleteSemantics,
       child: GestureDetector(
         onTap: onPressed,
         child: AnimatedContainer(

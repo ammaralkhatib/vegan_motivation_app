@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../l10n/app_localizations.dart';
 import 'category_detail_screen.dart';
 
 final favoritesProvider = StreamProvider<List<Quote>>((ref) {
@@ -13,14 +14,15 @@ class FavoritesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final favorites = ref.watch(favoritesProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: const Text('Favorites')),
+      appBar: AppBar(title: Text(l.favoritesTitle)),
       body: favorites.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Could not load favorites: $e')),
+        error: (e, _) => Center(child: Text(l.favoritesError(e.toString()))),
         data: (list) {
           if (list.isEmpty) {
             return Center(
@@ -36,7 +38,7 @@ class FavoritesScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Tap the heart on any quote\nand it will live here.',
+                      l.favoritesEmpty,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),

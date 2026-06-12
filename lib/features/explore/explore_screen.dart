@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
 import '../../core/purchases/premium_gate.dart';
+import '../../l10n/app_localizations.dart';
+import '../quotes/category_display.dart';
 import '../quotes/providers.dart';
 
 /// Browse categories, toggle which ones feed the daily mix, jump to
@@ -13,24 +15,26 @@ class ExploreScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final categories = ref.watch(categoriesProvider);
     final counts = ref.watch(quoteCountsProvider).valueOrNull ?? const {};
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Explore'),
+        title: Text(l.exploreTitle),
         actions: [
           IconButton(
             onPressed: () => context.go('/explore/favorites'),
             icon: const Icon(Icons.favorite_outline),
-            tooltip: 'Favorites',
+            tooltip: l.exploreFavoritesTooltip,
           ),
         ],
       ),
       body: categories.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Could not load categories: $e')),
+        error: (e, _) =>
+            Center(child: Text(l.exploreCategoriesError(e.toString()))),
         data: (list) => ListView.separated(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           itemCount: list.length + 1,
@@ -40,7 +44,7 @@ class ExploreScreen extends ConsumerWidget {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
-                  'Your daily mix pulls from the categories you switch on.',
+                  l.exploreMixHint,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               );
@@ -70,6 +74,7 @@ class _CategoryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final locked = !ref.watch(unlockedCategoryIdsProvider).contains(category.id);
     return Card(
       child: InkWell(
@@ -88,10 +93,13 @@ class _CategoryCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(category.name, style: theme.textTheme.titleMedium),
+                    Text(
+                      categoryDisplayName(l, category.id, category.name),
+                      style: theme.textTheme.titleMedium,
+                    ),
                     const SizedBox(height: 2),
                     Text(
-                      '$quoteCount quotes',
+                      l.exploreQuoteCount(quoteCount),
                       style: theme.textTheme.bodySmall,
                     ),
                   ],
@@ -116,9 +124,8 @@ class _CategoryCard extends ConsumerWidget {
                         .setCategoryInMix(category.id, value);
                     if (!applied && context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text('Keep at least one category in your mix 🌱'),
+                        SnackBar(
+                          content: Text(l.exploreKeepOne),
                         ),
                       );
                     }

@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../l10n/app_localizations.dart';
+import '../quotes/category_display.dart';
 import '../quotes/providers.dart';
 
 final _categoryQuotesProvider =
@@ -20,6 +22,7 @@ class CategoryDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context);
     final category = ref.watch(categoryByIdProvider(categoryId));
     final quotes = ref.watch(_categoryQuotesProvider(categoryId));
 
@@ -27,12 +30,15 @@ class CategoryDetailScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
-          category == null ? '' : '${category.emoji}  ${category.name}',
+          category == null
+              ? ''
+              : '${category.emoji}  '
+                  '${categoryDisplayName(l, category.id, category.name)}',
         ),
       ),
       body: quotes.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Could not load quotes: $e')),
+        error: (e, _) => Center(child: Text(l.exploreQuotesError(e.toString()))),
         data: (list) => ListView.separated(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
           itemCount: list.length,
@@ -53,6 +59,7 @@ class QuoteListTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 16, 8, 16),
@@ -77,7 +84,7 @@ class QuoteListTile extends ConsumerWidget {
               selectedIcon:
                   Icon(Icons.favorite, color: theme.colorScheme.tertiary),
               icon: const Icon(Icons.favorite_outline),
-              tooltip: quote.isFavorite ? 'Unfavorite' : 'Favorite',
+              tooltip: quote.isFavorite ? l.quotesUnfavorite : l.quotesFavorite,
             ),
           ],
         ),

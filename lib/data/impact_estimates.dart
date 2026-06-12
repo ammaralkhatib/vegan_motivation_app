@@ -1,3 +1,5 @@
+import '../l10n/app_localizations.dart';
+
 /// Per-day impact estimates for a fully plant-based day.
 ///
 /// Sources: aggregated figures popularized by TheVeganCalculator.com,
@@ -24,16 +26,28 @@ abstract final class ImpactEstimates {
 class ImpactStat {
   const ImpactStat({
     required this.emoji,
-    required this.label,
+    required this.id,
     required this.perDay,
     required this.format,
   });
 
   final String emoji;
-  final String label;
+
+  /// Stable id; the visible label is resolved via [impactStatLabel] in the UI.
+  final String id;
   final double perDay;
   final String Function(double value) format;
 }
+
+/// Localized label for an [ImpactStat] id (data layer stays string-free,
+/// 011 Requirement-5 pattern).
+String impactStatLabel(AppLocalizations l, String id) => switch (id) {
+      'animals' => l.journeyImpactAnimals,
+      'co2' => l.journeyImpactCo2,
+      'water' => l.journeyImpactWater,
+      'grain' => l.journeyImpactGrain,
+      _ => l.journeyImpactForest,
+    };
 
 String _compact(double v) {
   if (v >= 1000000) return '${(v / 1000000).toStringAsFixed(1)}M';
@@ -45,31 +59,31 @@ String _compact(double v) {
 final impactStats = [
   ImpactStat(
     emoji: '🐷',
-    label: 'animal lives spared',
+    id: 'animals',
     perDay: ImpactEstimates.animalsPerDay,
     format: _compact,
   ),
   ImpactStat(
     emoji: '🌫️',
-    label: 'kg CO₂e avoided',
+    id: 'co2',
     perDay: ImpactEstimates.co2KgPerDay,
     format: _compact,
   ),
   ImpactStat(
     emoji: '💧',
-    label: 'litres of water saved',
+    id: 'water',
     perDay: ImpactEstimates.waterLitresPerDay,
     format: _compact,
   ),
   ImpactStat(
     emoji: '🌾',
-    label: 'kg of grain redirected',
+    id: 'grain',
     perDay: ImpactEstimates.grainKgPerDay,
     format: _compact,
   ),
   ImpactStat(
     emoji: '🌳',
-    label: 'm² of forest spared',
+    id: 'forest',
     perDay: ImpactEstimates.forestM2PerDay,
     format: _compact,
   ),

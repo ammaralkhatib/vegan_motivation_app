@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../core/utils/date_utils.dart';
 
@@ -13,11 +14,11 @@ class WeekStrip extends StatelessWidget {
   final Set<int> completedDays;
   final int today;
 
-  static const _weekdayLetters = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    // Narrow weekday initial in the ambient locale (English: M T W T F S S).
+    final weekdayLetter = DateFormat('EEEEE');
     return Row(
       children: [
         for (var offset = 6; offset >= 0; offset--)
@@ -27,8 +28,7 @@ class WeekStrip extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  _weekdayLetters[
-                      (dateFromEpochDay(today - offset).weekday - 1) % 7],
+                  weekdayLetter.format(dateFromEpochDay(today - offset)),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontSize: 10,
                         color: scheme.onSurfaceVariant,

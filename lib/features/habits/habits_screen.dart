@@ -7,6 +7,7 @@ import '../../core/db/database.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_utils.dart';
 import '../../data/preset_habits.dart';
+import '../../l10n/app_localizations.dart';
 import 'habit_tile.dart';
 import 'month_heatmap.dart';
 import 'providers.dart';
@@ -36,7 +37,12 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
   ) {
     if (!nowCompleted) return;
 
-    const milestones = {7: 'One week strong 🌱', 30: 'A whole month! 🌿', 100: '100 days. Incredible. 🌳'};
+    final l = AppLocalizations.of(context);
+    final milestones = {
+      7: l.habitsMilestone7,
+      30: l.habitsMilestone30,
+      100: l.habitsMilestone100,
+    };
     final milestone = milestones[streak];
     if (milestone != null) {
       _confetti.play();
@@ -53,7 +59,7 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     if (allDone && habits.length > 1) {
       _confetti.play();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Everything done today. You showed up 💚')),
+        SnackBar(content: Text(l.habitsAllDone)),
       );
     }
   }
@@ -66,15 +72,16 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
     final celebration =
         Theme.of(context).extension<VeggieAccents>()!.celebration;
 
+    final l = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('Habits'),
+        title: Text(l.habitsTitle),
         actions: [
           IconButton(
             onPressed: () => context.go('/habits/edit/new'),
             icon: const Icon(Icons.add),
-            tooltip: 'New habit',
+            tooltip: l.habitsNewTooltip,
           ),
         ],
       ),
@@ -82,7 +89,7 @@ class _HabitsScreenState extends ConsumerState<HabitsScreen> {
         children: [
           habits.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (e, _) => Center(child: Text('Could not load habits: $e')),
+            error: (e, _) => Center(child: Text(l.habitsError(e.toString()))),
             data: (list) {
               if (list.isEmpty) return const _PresetPicker();
               return ListView(
@@ -142,14 +149,14 @@ class _PresetPickerState extends ConsumerState<_PresetPicker> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
       children: [
-        Text('Build your plant-powered routine',
-            style: theme.textTheme.displaySmall),
+        Text(l.habitsPresetTitle, style: theme.textTheme.displaySmall),
         const SizedBox(height: 6),
         Text(
-          'Pick a few daily habits to track. You can add your own anytime.',
+          l.habitsPresetSubtitle,
           style: theme.textTheme.bodyMedium
               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
@@ -190,7 +197,7 @@ class _PresetPickerState extends ConsumerState<_PresetPicker> {
                     }
                   }
                 },
-          child: Text('Start tracking ${_selected.length} habits'),
+          child: Text(l.habitsStartTracking(_selected.length)),
         ),
       ],
     );
