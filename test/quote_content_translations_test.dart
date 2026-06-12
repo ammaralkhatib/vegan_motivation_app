@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 
-/// Coverage guard for the bundled quote translations (content v4+).
+/// Coverage guard for the bundled quote translations (content v5+).
 ///
 /// Generalized across every locale present under `translations`: each must
 /// cover exactly the set of quote ids (no missing, no orphans) with non-empty
@@ -23,12 +23,12 @@ void main() {
     translations = (data['translations'] as Map).cast<String, dynamic>();
   });
 
-  test('content version is at least 4', () {
-    expect(data['version'] as int, greaterThanOrEqualTo(4));
+  test('content version is at least 5', () {
+    expect(data['version'] as int, greaterThanOrEqualTo(5));
   });
 
   test('expected locales are present', () {
-    expect(translations.keys, containsAll(<String>['de', 'fr']));
+    expect(translations.keys, containsAll(<String>['de', 'fr', 'es']));
   });
 
   test('the library has 508 quotes', () {
