@@ -45,7 +45,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Veggie'), findsOneWidget);
-    expect(find.text("Let's grow 🌱"), findsOneWidget);
+    expect(find.text('your daily dose of vegan motivation'), findsOneWidget);
 
     await unmountAndFlush(tester);
   });

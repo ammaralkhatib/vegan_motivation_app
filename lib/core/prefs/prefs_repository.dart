@@ -35,6 +35,13 @@ class PrefsRepository {
   static const _kPremiumCached = 'premiumCached';
   static const _kDiscountOfferShown = 'discountOfferShown';
   static const _kPhotoBackgrounds = 'photoBackgrounds';
+  // Onboarding story answers.
+  static const _kAgeRange = 'ageRange';
+  static const _kDietStatus = 'dietStatus';
+  static const _kGoalsPick = 'goalsPick';
+  static const _kMotivationDips = 'motivationDipsPerWeek';
+  static const _kObstacles = 'obstacles';
+  static const _kWhyRelationship = 'whyRelationship';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -48,6 +55,35 @@ class PrefsRepository {
   String? get motivationPick => _prefs.getString(_kMotivationPick);
   Future<void> setMotivationPick(String value) =>
       _prefs.setString(_kMotivationPick, value);
+
+  // --- Onboarding story answers -------------------------------------------
+  String? get ageRange => _prefs.getString(_kAgeRange);
+  Future<void> setAgeRange(String? value) => value == null
+      ? _prefs.remove(_kAgeRange)
+      : _prefs.setString(_kAgeRange, value);
+
+  String? get dietStatus => _prefs.getString(_kDietStatus);
+  Future<void> setDietStatus(String? value) => value == null
+      ? _prefs.remove(_kDietStatus)
+      : _prefs.setString(_kDietStatus, value);
+
+  List<String> get goalsPick => _prefs.getStringList(_kGoalsPick) ?? const [];
+  Future<void> setGoalsPick(List<String> value) =>
+      _prefs.setStringList(_kGoalsPick, value);
+
+  /// Days/week the user's motivation dips. -1 means unanswered.
+  int get motivationDipsPerWeek => _prefs.getInt(_kMotivationDips) ?? -1;
+  Future<void> setMotivationDipsPerWeek(int value) =>
+      _prefs.setInt(_kMotivationDips, value);
+
+  List<String> get obstacles => _prefs.getStringList(_kObstacles) ?? const [];
+  Future<void> setObstacles(List<String> value) =>
+      _prefs.setStringList(_kObstacles, value);
+
+  String? get whyRelationship => _prefs.getString(_kWhyRelationship);
+  Future<void> setWhyRelationship(String? value) => value == null
+      ? _prefs.remove(_kWhyRelationship)
+      : _prefs.setString(_kWhyRelationship, value);
 
   /// Date the user went vegan (date-only precision), null if unset.
   DateTime? get veganSince {
