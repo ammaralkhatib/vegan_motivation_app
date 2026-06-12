@@ -106,8 +106,8 @@ resolves end-to-end.
 
 ## Commit & push
 
-- **Commit:** `<filled by stamp>` — `feat(l10n): add German, French and Spanish translations`
-- **Push:** `<filled by stamp>`
+- **Commit:** `175318f` — `feat(l10n): add German, French and Spanish translations`
+- **Push:** `origin/main` — ok (`f037989..175318f`).
 
 ## Deviations from prompt
 
