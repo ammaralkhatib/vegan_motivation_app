@@ -53,8 +53,8 @@ paywalls, premium rows hidden; [ ] run without → behaves as today.
 
 ## Commit & push
 
-- **Commit:** `<filled after commit>` — `feat(purchases): dev-only FORCE_PREMIUM build flag`
-- **Push:** `origin/main` — `<filled after push>`
+- **Commit:** `50d8428` — `feat(purchases): dev-only FORCE_PREMIUM build flag`
+- **Push:** `origin/main` — ok (`a8ccf8e..50d8428`).
 
 ## Deviations from prompt
 
