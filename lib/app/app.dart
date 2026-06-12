@@ -48,6 +48,7 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
     await HomeWidgetService.pushQueue(
       ref.read(databaseProvider),
       unlockedCategoryIds: ref.read(unlockedCategoryIdsProvider),
+      languageOverride: ref.read(languageOverrideProvider),
     );
   }
 
@@ -69,6 +70,7 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeProvider);
     final router = ref.watch(routerProvider);
+    final locale = ref.watch(appLocaleProvider);
 
     return MaterialApp.router(
       title: 'Veggie',
@@ -76,6 +78,9 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
       theme: VeggieTheme.light(),
       darkTheme: VeggieTheme.dark(),
       themeMode: themeMode,
+      // null = follow the device language; a non-null override flips the whole
+      // app (UI + quote text via the locale sync below) immediately.
+      locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,

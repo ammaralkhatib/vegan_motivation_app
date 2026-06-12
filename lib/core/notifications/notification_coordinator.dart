@@ -1,9 +1,8 @@
-import 'dart:ui' show PlatformDispatcher;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/settings/notification_prefs.dart';
 import '../db/database.dart';
+import '../locale/locale_provider.dart';
 import '../prefs/prefs_repository.dart';
 import '../purchases/premium_gate.dart';
 import '../utils/date_utils.dart';
@@ -40,9 +39,10 @@ class NotificationCoordinator {
     if (!force && prefs.lastNotifScheduleDay == today) return;
 
     final unlocked = _ref.read(unlockedCategoryIdsProvider);
-    // Notifications have no BuildContext; resolve quote text against the device
-    // locale so notification bodies match the feed.
-    final locale = PlatformDispatcher.instance.locale.languageCode;
+    // Notifications have no BuildContext; resolve quote text against the user's
+    // language override (or the device locale when unset) so notification
+    // bodies match the feed.
+    final locale = resolveLanguageCode(prefs.languageOverride);
     final quotes = await _ref
         .read(databaseProvider)
         .quoteDao
@@ -71,7 +71,7 @@ class NotificationCoordinator {
           quotes: schedulable,
         ),
     };
-    await service.scheduleAll(plans);
+    await service.scheduleAll(plans, languageCode: locale);
     await prefs.setLastNotifScheduleDay(today);
   }
 

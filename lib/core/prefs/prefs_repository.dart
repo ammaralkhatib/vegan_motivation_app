@@ -35,6 +35,7 @@ class PrefsRepository {
   static const _kPremiumCached = 'premiumCached';
   static const _kDiscountOfferShown = 'discountOfferShown';
   static const _kPhotoBackgrounds = 'photoBackgrounds';
+  static const _kLanguageOverride = 'languageOverride';
   // Onboarding story answers.
   static const _kAgeRange = 'ageRange';
   static const _kDietStatus = 'dietStatus';
@@ -199,6 +200,14 @@ class PrefsRepository {
   bool get photoBackgrounds => _prefs.getBool(_kPhotoBackgrounds) ?? true;
   Future<void> setPhotoBackgrounds(bool value) =>
       _prefs.setBool(_kPhotoBackgrounds, value);
+
+  /// User's app-language override as a language code (e.g. 'de'), or null to
+  /// follow the device language. Null is the default — users who never touch
+  /// the setting keep byte-identical system-locale behavior.
+  String? get languageOverride => _prefs.getString(_kLanguageOverride);
+  Future<void> setLanguageOverride(String? value) => value == null
+      ? _prefs.remove(_kLanguageOverride)
+      : _prefs.setString(_kLanguageOverride, value);
 
   /// Wipes everything (used by "reset all data").
   Future<void> clear() => _prefs.clear();

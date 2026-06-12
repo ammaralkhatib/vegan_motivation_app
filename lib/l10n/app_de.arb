@@ -15,6 +15,8 @@
   "settingsDailyNotifications": "Tägliche Benachrichtigungen",
   "settingsContentMix": "Inhaltsmix",
   "settingsContentMixSubtitle": "Wähle, welche Kategorien du siehst",
+  "settingsLanguage": "Sprache",
+  "settingsLanguageSystemDefault": "Systemstandard",
   "settingsAbout": "Über Veggie",
   "settingsAboutSubtitle": "Open-Source-Lizenzen & Schrift-Credits",
   "settingsAboutLegalese": "Tägliche vegane Motivation.\nSchriften: Fraunces & Inter (SIL OFL 1.1).",

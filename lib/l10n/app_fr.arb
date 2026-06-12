@@ -15,6 +15,8 @@
   "settingsDailyNotifications": "Notifications quotidiennes",
   "settingsContentMix": "Mélange de contenu",
   "settingsContentMixSubtitle": "Choisis les catégories que tu vois",
+  "settingsLanguage": "Langue",
+  "settingsLanguageSystemDefault": "Langue du système",
   "settingsAbout": "À propos de Veggie",
   "settingsAboutSubtitle": "Licences open source et crédits des polices",
   "settingsAboutLegalese": "Motivation végane quotidienne.\nPolices : Fraunces & Inter (SIL OFL 1.1).",

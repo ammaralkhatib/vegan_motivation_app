@@ -11,13 +11,17 @@ import 'notification_scheduler.dart';
 import 'trial_reminder.dart';
 
 /// Notification text has no BuildContext, so we resolve [AppLocalizations] from
-/// the device locale, falling back to English for any unsupported locale.
-/// Daily notifications are rescheduled on every app launch (see app bootstrap),
-/// so a language change is picked up on the next relaunch; the one-shot trial
-/// reminder keeps the language it was scheduled in.
-AppLocalizations _notificationL10n() {
+/// the given [languageCode] (the user's override, threaded in from the
+/// coordinator) or the device locale when null, falling back to English for any
+/// unsupported locale. Daily notifications are rescheduled whenever the language
+/// changes and on every app launch, so the language flips promptly; the
+/// one-shot trial reminder keeps the language it was scheduled in.
+AppLocalizations _notificationL10n([String? languageCode]) {
   try {
-    return lookupAppLocalizations(PlatformDispatcher.instance.locale);
+    final locale = languageCode != null
+        ? Locale(languageCode)
+        : PlatformDispatcher.instance.locale;
+    return lookupAppLocalizations(locale);
   } catch (_) {
     return lookupAppLocalizations(const Locale('en'));
   }
@@ -128,11 +132,11 @@ class NotificationService {
 
   /// Replaces all pending *daily* notifications with the given plan. The
   /// reserved trial-end reminder is left intact (cancelAll would wipe it).
-  Future<void> scheduleAll(List<SlotPlan> plans) async {
+  Future<void> scheduleAll(List<SlotPlan> plans, {String? languageCode}) async {
     if (!_initialized) return;
     await _cancelDailyNotifications();
 
-    final l = _notificationL10n();
+    final l = _notificationL10n(languageCode);
     final details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,

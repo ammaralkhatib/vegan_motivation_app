@@ -61,6 +61,14 @@
   "@settingsContentMixSubtitle": {
     "description": "Subtitle of the content mix row."
   },
+  "settingsLanguage": "Language",
+  "@settingsLanguage": {
+    "description": "Row + picker title for choosing the app language."
+  },
+  "settingsLanguageSystemDefault": "System default",
+  "@settingsLanguageSystemDefault": {
+    "description": "Language option that follows the phone's language. Other options are language endonyms and are never translated."
+  },
 
   "settingsAbout": "About Veggie",
   "@settingsAbout": {

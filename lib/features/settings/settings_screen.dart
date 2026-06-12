@@ -4,14 +4,29 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/backgrounds/background_providers.dart';
 import '../../core/db/database.dart';
+import '../../core/locale/locale_provider.dart';
+import '../../core/notifications/notification_coordinator.dart';
 import '../../core/prefs/prefs_repository.dart';
+import '../../core/purchases/premium_gate.dart';
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/purchases/restore_flow.dart';
+import '../../core/widgetkit/home_widget_service.dart';
 import '../../data/content_importer.dart';
 import '../../l10n/app_localizations.dart';
 import '../paywall/paywall_data.dart';
 import '../paywall/paywall_screen.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
+/// Endonyms — a language's own name for itself. Kept literal and **never**
+/// translated (a French speaker scans for "Français", not "French"), so these
+/// are intentionally hardcoded here rather than routed through ARB. null in the
+/// picker means "follow the device language" and uses a localized label.
+const _languageEndonyms = <String, String>{
+  'en': 'English',
+  'de': 'Deutsch',
+  'fr': 'Français',
+  'es': 'Español',
+};
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -82,11 +97,73 @@ class SettingsScreen extends ConsumerWidget {
     messenger.showSnackBar(SnackBar(content: Text(restoreMessage(result))));
   }
 
+  /// The row subtitle: the current language, localized "System default" when
+  /// following the device, else the literal endonym.
+  String _languageLabel(AppLocalizations l10n, String? override) =>
+      override == null
+          ? l10n.settingsLanguageSystemDefault
+          : (_languageEndonyms[override] ?? override);
+
+  Future<void> _pickLanguage(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final current = ref.read(languageOverrideProvider);
+    // (code, label) pairs; a null code is "System default".
+    final options = <(String?, String)>[
+      (null, l10n.settingsLanguageSystemDefault),
+      for (final e in _languageEndonyms.entries) (e.key, e.value),
+    ];
+
+    // Records distinguish a real pick (any code, including null) from a dismiss
+    // (sheet returns null), since "System default" is itself a null code.
+    final picked = await showModalBottomSheet<({String? code})>(
+      context: context,
+      builder: (sheetContext) => SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    l10n.settingsLanguage,
+                    style: Theme.of(sheetContext).textTheme.titleMedium,
+                  ),
+                ),
+              ),
+              for (final (code, label) in options)
+                ListTile(
+                  title: Text(label),
+                  trailing: code == current ? const Icon(Icons.check) : null,
+                  onTap: () => Navigator.pop(sheetContext, (code: code)),
+                ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (picked == null || picked.code == current) return;
+    await ref.read(languageOverrideProvider.notifier).set(picked.code);
+
+    // Flip the background paths promptly (the UI + quote text flip on rebuild
+    // via the appLocaleProvider). Reuse the existing reschedule + widget push.
+    await ref.read(notificationCoordinatorProvider).reschedule(force: true);
+    await HomeWidgetService.pushQueue(
+      ref.read(databaseProvider),
+      unlockedCategoryIds: ref.read(unlockedCategoryIdsProvider),
+      languageOverride: picked.code,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final isPremium = ref.watch(isPremiumProvider);
+    final languageOverride = ref.watch(languageOverrideProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -172,6 +249,16 @@ class SettingsScreen extends ConsumerWidget {
             selected: {themeMode},
             onSelectionChanged: (selection) =>
                 ref.read(themeModeProvider.notifier).set(selection.first),
+          ),
+          const SizedBox(height: 24),
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.language_outlined),
+              title: Text(l10n.settingsLanguage),
+              subtitle: Text(_languageLabel(l10n, languageOverride)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => _pickLanguage(context, ref),
+            ),
           ),
           const SizedBox(height: 24),
           Card(

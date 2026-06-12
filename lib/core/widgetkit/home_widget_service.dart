@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:home_widget/home_widget.dart';
 
 import '../db/database.dart';
+import '../locale/locale_provider.dart';
 import '../utils/date_utils.dart';
 import '../utils/seeded_shuffle.dart';
 
@@ -28,9 +29,14 @@ class HomeWidgetService {
   ///
   /// [unlockedCategoryIds] applies the same premium gate as the feed, so a free
   /// user's widget never surfaces a locked category's quote.
+  ///
+  /// [languageOverride] is the user's app-language choice (null = follow the
+  /// device language), so the widget shows the same translated text as the feed
+  /// after a language switch.
   static Future<void> pushQueue(
     AppDatabase db, {
     Set<String>? unlockedCategoryIds,
+    String? languageOverride,
   }) async {
     if (!isSupported) return;
 
@@ -38,9 +44,9 @@ class HomeWidgetService {
       await HomeWidget.setAppGroupId(_appGroupId);
     }
 
-    // Background path: resolve text against the device locale (no BuildContext
-    // here), so the widget shows the same translated text as the feed.
-    final locale = PlatformDispatcher.instance.locale.languageCode;
+    // Background path: no BuildContext here, so resolve text against the user's
+    // language override (or the device locale when unset).
+    final locale = resolveLanguageCode(languageOverride);
     final quotes = await db.quoteDao.getQuotesInMix(
       unlockedCategoryIds: unlockedCategoryIds,
       locale: locale,
