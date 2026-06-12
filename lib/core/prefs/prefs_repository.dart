@@ -20,6 +20,16 @@ class PrefsRepository {
   static const _kNotifPerDay = 'notifPerDay';
   static const _kNotifWindowStart = 'notifWindowStart';
   static const _kNotifWindowEnd = 'notifWindowEnd';
+  static const _kNotifMode = 'notifMode';
+  static const _kBreakfastEnabled = 'notifBreakfastEnabled';
+  static const _kBreakfastTime = 'notifBreakfastTime';
+  static const _kBreakfastCount = 'notifBreakfastCount';
+  static const _kLunchEnabled = 'notifLunchEnabled';
+  static const _kLunchTime = 'notifLunchTime';
+  static const _kLunchCount = 'notifLunchCount';
+  static const _kDinnerEnabled = 'notifDinnerEnabled';
+  static const _kDinnerTime = 'notifDinnerTime';
+  static const _kDinnerCount = 'notifDinnerCount';
   static const _kContentVersion = 'contentVersion';
   static const _kLastNotifScheduleDay = 'lastNotifScheduleDay';
   static const _kPremiumCached = 'premiumCached';
@@ -80,6 +90,37 @@ class PrefsRepository {
   int get notifWindowEnd => _prefs.getInt(_kNotifWindowEnd) ?? 21 * 60;
   Future<void> setNotifWindowEnd(int value) =>
       _prefs.setInt(_kNotifWindowEnd, value);
+
+  /// Notification scheduling mode: 'spread' (default) or 'meals'. Stored as a
+  /// string so the core layer stays free of the feature enum. Legacy users have
+  /// no value → 'spread', i.e. exactly their old window/perDay behavior.
+  String get notifMode => _prefs.getString(_kNotifMode) ?? 'spread';
+  Future<void> setNotifMode(String value) =>
+      _prefs.setString(_kNotifMode, value);
+
+  // Per-meal settings (minutes-from-midnight times). Defaults: 08:00 / 13:00 /
+  // 19:00, all enabled, count 2.
+  bool get breakfastEnabled => _prefs.getBool(_kBreakfastEnabled) ?? true;
+  Future<void> setBreakfastEnabled(bool v) =>
+      _prefs.setBool(_kBreakfastEnabled, v);
+  int get breakfastTime => _prefs.getInt(_kBreakfastTime) ?? 8 * 60;
+  Future<void> setBreakfastTime(int v) => _prefs.setInt(_kBreakfastTime, v);
+  int get breakfastCount => _prefs.getInt(_kBreakfastCount) ?? 2;
+  Future<void> setBreakfastCount(int v) => _prefs.setInt(_kBreakfastCount, v);
+
+  bool get lunchEnabled => _prefs.getBool(_kLunchEnabled) ?? true;
+  Future<void> setLunchEnabled(bool v) => _prefs.setBool(_kLunchEnabled, v);
+  int get lunchTime => _prefs.getInt(_kLunchTime) ?? 13 * 60;
+  Future<void> setLunchTime(int v) => _prefs.setInt(_kLunchTime, v);
+  int get lunchCount => _prefs.getInt(_kLunchCount) ?? 2;
+  Future<void> setLunchCount(int v) => _prefs.setInt(_kLunchCount, v);
+
+  bool get dinnerEnabled => _prefs.getBool(_kDinnerEnabled) ?? true;
+  Future<void> setDinnerEnabled(bool v) => _prefs.setBool(_kDinnerEnabled, v);
+  int get dinnerTime => _prefs.getInt(_kDinnerTime) ?? 19 * 60;
+  Future<void> setDinnerTime(int v) => _prefs.setInt(_kDinnerTime, v);
+  int get dinnerCount => _prefs.getInt(_kDinnerCount) ?? 2;
+  Future<void> setDinnerCount(int v) => _prefs.setInt(_kDinnerCount, v);
 
   int get contentVersion => _prefs.getInt(_kContentVersion) ?? 0;
   Future<void> setContentVersion(int value) =>

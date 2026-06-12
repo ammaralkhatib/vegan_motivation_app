@@ -26,7 +26,11 @@ class NotificationCoordinator {
     final settings = _ref.read(notifSettingsProvider);
     final today = todayEpochDay();
 
-    if (!settings.enabled) {
+    // Meal mode with every meal switched off schedules nothing — same end
+    // state as the master switch being off.
+    final mealsOffEntirely =
+        settings.mode == NotifMode.meals && !settings.anyMealEnabled;
+    if (!settings.enabled || mealsOffEntirely) {
       await service.cancelAll();
       await prefs.setLastNotifScheduleDay(-1);
       return;
@@ -38,19 +42,43 @@ class NotificationCoordinator {
         .read(databaseProvider)
         .quoteDao
         .getQuotesInMix(unlockedCategoryIds: unlocked);
-    final plans = planSlots(
-      perDay: settings.perDay,
-      windowStartMin: settings.windowStartMin,
-      windowEndMin: settings.windowEndMin,
-      now: DateTime.now(),
-      quotes: [
-        for (final q in quotes)
-          SchedulableQuote(id: q.id, body: q.body, shownCount: q.shownCount),
-      ],
-    );
+    final schedulable = [
+      for (final q in quotes)
+        SchedulableQuote(
+          id: q.id,
+          body: q.body,
+          shownCount: q.shownCount,
+          categoryId: q.categoryId,
+        ),
+    ];
+
+    final plans = switch (settings.mode) {
+      NotifMode.spread => planSlots(
+          perDay: settings.perDay,
+          windowStartMin: settings.windowStartMin,
+          windowEndMin: settings.windowEndMin,
+          now: DateTime.now(),
+          quotes: schedulable,
+        ),
+      NotifMode.meals => planMealSlots(
+          meals: _enabledMeals(settings),
+          now: DateTime.now(),
+          quotes: schedulable,
+        ),
+    };
     await service.scheduleAll(plans);
     await prefs.setLastNotifScheduleDay(today);
   }
+
+  List<MealConfig> _enabledMeals(NotifSettings s) => [
+        for (final meal in Meal.values)
+          if (s.meal(meal).enabled)
+            MealConfig(
+              index: meal.index,
+              timeMin: s.meal(meal).timeMin,
+              count: s.meal(meal).count,
+            ),
+      ];
 }
 
 final notificationCoordinatorProvider = Provider<NotificationCoordinator>(
