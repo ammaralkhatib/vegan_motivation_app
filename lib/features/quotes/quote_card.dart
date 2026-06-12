@@ -125,7 +125,7 @@ class _KenBurnsPhotoState extends State<_KenBurnsPhoto>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     vsync: this,
-    duration: const Duration(seconds: 14),
+    duration: const Duration(seconds: 9),
   );
   late final Animation<double> _curved =
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut);

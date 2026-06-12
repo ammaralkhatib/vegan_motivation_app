@@ -76,7 +76,7 @@ class VeggieShell extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
         backgroundColor:
-            onToday ? theme.colorScheme.surface.withValues(alpha: 0.7) : null,
+            onToday ? theme.colorScheme.surface.withValues(alpha: 0.45) : null,
         surfaceTintColor: onToday ? Colors.transparent : null,
         elevation: onToday ? 0 : null,
         selectedIndex: navigationShell.currentIndex,
