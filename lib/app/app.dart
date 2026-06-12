@@ -8,6 +8,7 @@ import '../core/prefs/prefs_repository.dart';
 import '../core/purchases/premium_gate.dart';
 import '../core/widgetkit/home_widget_service.dart';
 import '../core/theme/app_theme.dart';
+import '../l10n/app_localizations.dart';
 import 'router.dart';
 
 class VeggieApp extends ConsumerStatefulWidget {
@@ -74,6 +75,8 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
       theme: VeggieTheme.light(),
       darkTheme: VeggieTheme.dark(),
       themeMode: themeMode,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
     );
   }

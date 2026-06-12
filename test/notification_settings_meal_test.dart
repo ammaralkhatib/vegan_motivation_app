@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/settings/notification_settings_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 Future<Widget> screen() async {
   // Notifications already on, so the mode selector is visible.
@@ -14,6 +15,8 @@ Future<Widget> screen() async {
     overrides: [prefsProvider.overrideWithValue(prefs)],
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const NotificationSettingsScreen(),
     ),
   );

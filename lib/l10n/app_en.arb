@@ -1,0 +1,184 @@
+{
+  "@@locale": "en",
+
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "App bar title for the settings screen."
+  },
+
+  "settingsPremiumTitle": "Veggie Premium",
+  "@settingsPremiumTitle": {
+    "description": "Title of the premium upsell row in settings."
+  },
+  "settingsPremiumSubtitle": "Unlock all categories & the full library",
+  "@settingsPremiumSubtitle": {
+    "description": "Subtitle of the premium upsell row in settings."
+  },
+  "settingsRestorePurchases": "Restore purchases",
+  "@settingsRestorePurchases": {
+    "description": "Row that restores previous purchases."
+  },
+
+  "settingsPhotoBackgrounds": "Photo backgrounds",
+  "@settingsPhotoBackgrounds": {
+    "description": "Title of the photo backgrounds toggle."
+  },
+  "settingsPhotoBackgroundsSubtitlePremium": "Category photos behind your daily quotes",
+  "@settingsPhotoBackgroundsSubtitlePremium": {
+    "description": "Subtitle shown for premium users on the photo backgrounds toggle."
+  },
+  "settingsPhotoBackgroundsSubtitleFree": "A Veggie Premium touch for your feed",
+  "@settingsPhotoBackgroundsSubtitleFree": {
+    "description": "Subtitle shown for free users on the photo backgrounds row."
+  },
+
+  "settingsAppearance": "Appearance",
+  "@settingsAppearance": {
+    "description": "Section header for the theme selector."
+  },
+  "settingsThemeLight": "Light",
+  "@settingsThemeLight": {
+    "description": "Light theme option label."
+  },
+  "settingsThemeAuto": "Auto",
+  "@settingsThemeAuto": {
+    "description": "System (auto) theme option label."
+  },
+  "settingsThemeDark": "Dark",
+  "@settingsThemeDark": {
+    "description": "Dark theme option label."
+  },
+
+  "settingsDailyNotifications": "Daily notifications",
+  "@settingsDailyNotifications": {
+    "description": "Row opening the notification settings screen."
+  },
+  "settingsContentMix": "Content mix",
+  "@settingsContentMix": {
+    "description": "Row opening the content mix (explore) screen."
+  },
+  "settingsContentMixSubtitle": "Choose which categories you see",
+  "@settingsContentMixSubtitle": {
+    "description": "Subtitle of the content mix row."
+  },
+
+  "settingsAbout": "About Veggie",
+  "@settingsAbout": {
+    "description": "Row opening the open-source license page."
+  },
+  "settingsAboutSubtitle": "Open-source licenses & font credits",
+  "@settingsAboutSubtitle": {
+    "description": "Subtitle of the about row."
+  },
+  "settingsAboutLegalese": "Daily vegan motivation.\nFonts: Fraunces & Inter (SIL OFL 1.1).",
+  "@settingsAboutLegalese": {
+    "description": "Legalese shown on the license page."
+  },
+
+  "settingsResetAllData": "Reset all data",
+  "@settingsResetAllData": {
+    "description": "Destructive row that wipes all on-device data."
+  },
+  "settingsResetTitle": "Reset everything?",
+  "@settingsResetTitle": {
+    "description": "Title of the first reset confirmation dialog."
+  },
+  "settingsResetBody": "Favorites, habits, streaks, and settings will all be erased. This cannot be undone.",
+  "@settingsResetBody": {
+    "description": "Body of the first reset confirmation dialog."
+  },
+  "settingsResetCancel": "Cancel",
+  "@settingsResetCancel": {
+    "description": "Cancel button on the first reset confirmation dialog."
+  },
+  "settingsResetConfirm": "Reset",
+  "@settingsResetConfirm": {
+    "description": "Confirm button on the first reset confirmation dialog."
+  },
+  "settingsResetConfirmTitle": "Absolutely sure?",
+  "@settingsResetConfirmTitle": {
+    "description": "Title of the second reset confirmation dialog."
+  },
+  "settingsResetConfirmBody": "Last chance — everything will be gone.",
+  "@settingsResetConfirmBody": {
+    "description": "Body of the second reset confirmation dialog."
+  },
+  "settingsResetKeep": "Keep my data",
+  "@settingsResetKeep": {
+    "description": "Dismiss button on the second reset confirmation dialog."
+  },
+  "settingsResetEraseAll": "Yes, erase it all",
+  "@settingsResetEraseAll": {
+    "description": "Confirm button on the second reset confirmation dialog."
+  },
+
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {
+    "description": "App bar title for the notification settings screen."
+  },
+  "notificationsDailyMotivation": "Daily motivation",
+  "@notificationsDailyMotivation": {
+    "description": "Title of the master notifications toggle."
+  },
+  "notificationsDailyMotivationSubtitle": "Full quotes in every notification — they show on your watch too.",
+  "@notificationsDailyMotivationSubtitle": {
+    "description": "Subtitle of the master notifications toggle."
+  },
+  "notificationsModeSpread": "Through the day",
+  "@notificationsModeSpread": {
+    "description": "Notification scheduling mode: spread through the day."
+  },
+  "notificationsModeMeals": "Around meals",
+  "@notificationsModeMeals": {
+    "description": "Notification scheduling mode: around meal times."
+  },
+  "notificationsPerDayLabel": "How many per day",
+  "@notificationsPerDayLabel": {
+    "description": "Label for the per-day notification count slider."
+  },
+  "notificationsPerDayCount": "{count}×",
+  "@notificationsPerDayCount": {
+    "description": "Per-day notification count shown next to the slider (e.g. 3×).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notificationsBetween": "Between",
+  "@notificationsBetween": {
+    "description": "Label above the start/end time window pickers."
+  },
+  "notificationsWindowTo": "to",
+  "@notificationsWindowTo": {
+    "description": "Separator between the start and end time window pickers."
+  },
+  "notificationsSpreadHint": "Quotes come from the categories in your mix. Times vary a little day to day, on purpose — surprise is part of the charm.",
+  "@notificationsSpreadHint": {
+    "description": "Helper text under the spread-through-the-day controls."
+  },
+  "notificationsMealHintOn": "A gentle nudge before each meal, and a kind word after dinner. Times wiggle a few minutes day to day.",
+  "@notificationsMealHintOn": {
+    "description": "Helper text when at least one meal reminder is enabled."
+  },
+  "notificationsMealHintOff": "Turn on at least one meal to get reminders.",
+  "@notificationsMealHintOff": {
+    "description": "Helper text when no meal reminders are enabled."
+  },
+  "notificationsMealsApart": "Keep meals at least 2 hours apart 🌱",
+  "@notificationsMealsApart": {
+    "description": "Warning when meal times are set closer than two hours apart."
+  },
+  "notificationsMealBreakfast": "Breakfast",
+  "@notificationsMealBreakfast": {
+    "description": "Breakfast meal card title."
+  },
+  "notificationsMealLunch": "Lunch",
+  "@notificationsMealLunch": {
+    "description": "Lunch meal card title."
+  },
+  "notificationsMealDinner": "Dinner",
+  "@notificationsMealDinner": {
+    "description": "Dinner meal card title."
+  }
+}

@@ -6,6 +6,7 @@ import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/settings/settings_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'support/fake_purchase_service.dart';
 
@@ -20,6 +21,8 @@ Future<Widget> settingsApp({required bool premium}) async {
     ],
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: const SettingsScreen(),
     ),
   );

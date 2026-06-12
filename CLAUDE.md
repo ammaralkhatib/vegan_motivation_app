@@ -83,6 +83,23 @@ docs/              IOS_WIDGET_SETUP.md (manual Xcode step for the iOS widget)
   `lib/core/`. Follow the existing Riverpod provider patterns in each feature.
 - Lint config is `flutter_lints` defaults (see `analysis_options.yaml`).
 
+**Localization (gen_l10n).**
+
+- UI strings live in ARB files under `lib/l10n/` (`app_en.arb` is the English
+  template). Config is `l10n.yaml` at repo root. The build generates
+  `AppLocalizations` (via `generate: true` in pubspec) into
+  `lib/l10n/app_localizations*.dart` — these are **generated, git-ignored, never
+  edited by hand**. Import them with
+  `import '<rel>/l10n/app_localizations.dart';` and read strings with
+  `AppLocalizations.of(context).<key>`.
+- Key naming: `<feature><Description>` in lowerCamelCase
+  (e.g. `settingsTitle`, `notificationsMealBreakfast`). Strings with variables
+  use ARB placeholders (e.g. `"notificationsPerDayCount": "{count}×"`).
+- **Locked decision (2026-06-12): UI strings only — quote content is NOT
+  localized in this phase.** The quotes JSON and DB importer stay English; do not
+  route quote content through ARB. Migrate one feature per prompt; settings is
+  the reference pattern. German/French/Spanish ARBs land in later prompts.
+
 **Verification commands.**
 
 ```
@@ -170,12 +187,14 @@ a bug in the prompt — note it in the report rather than silently complying.
 
 ## 4. Current focus
 
-**Monetization — RevenueCat + 3 paywalls** (started 2026-06-12). See locked
-decisions in §3. Phased prompts: (1) SDK + purchase service + cached premium
-state, (2) gate quote categories, (3) reusable paywall screen with 3 variants,
-(4) wire triggers (onboarding → trial paywall → one-time 80% offer; locked
-content → 50% paywall) + restore purchases in settings. Ammar does the
-dashboard side: RevenueCat account, store products, offerings, API keys.
+**Monetization — RevenueCat + 3 paywalls** (code complete 2026-06-12, prompts
+002–005). See locked decisions in §3. Shipped: purchase service + cached
+premium state, category gating (free = why_vegan + facts), paywall screen with
+trial/50%/80% variants, full trigger funnel + restore. **Still pending
+(Ammar):** RevenueCat dashboard setup (3 store products, `premium`
+entitlement, 3 offerings) and pasting real API keys into
+`lib/core/purchases/purchase_config.dart` — until then paywalls show their
+offline/retry state. Then: sandbox purchase test on a real device.
 
 **Animated kawaii farm-animal characters — PAUSED 2026-06-12, phase 1 shipped.**
 Phase 1 done: 6 animals (cow, pig, sheep, chicken, duck, goat) × 3 frames

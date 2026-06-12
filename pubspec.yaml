@@ -48,6 +48,8 @@ dependencies:
   window_manager: ^0.5.1
   purchases_flutter: ^10.2.3
   in_app_review: ^2.0.12
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +76,9 @@ flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
+
+  # Generate AppLocalizations from lib/l10n/*.arb (see l10n.yaml).
+  generate: true
 
   assets:
     - assets/content/

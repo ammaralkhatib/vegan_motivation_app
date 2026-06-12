@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/notifications/notification_service.dart';
+import '../../l10n/app_localizations.dart';
 import 'notification_prefs.dart';
 
 String _formatMinutes(BuildContext context, int minutes) =>
@@ -40,12 +41,13 @@ class NotificationSettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(notifSettingsProvider);
     final notifier = ref.read(notifSettingsProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: const Text('Notifications')),
+      appBar: AppBar(title: Text(l10n.notificationsTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
@@ -57,25 +59,23 @@ class NotificationSettingsScreen extends ConsumerWidget {
               }
               await notifier.setEnabled(enabled);
             },
-            title: const Text('Daily motivation'),
-            subtitle: const Text(
-              'Full quotes in every notification — they show on your watch too.',
-            ),
+            title: Text(l10n.notificationsDailyMotivation),
+            subtitle: Text(l10n.notificationsDailyMotivationSubtitle),
             contentPadding: EdgeInsets.zero,
           ),
           if (settings.enabled) ...[
             const SizedBox(height: 16),
             SegmentedButton<NotifMode>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: NotifMode.spread,
-                  label: Text('Through the day'),
-                  icon: Icon(Icons.schedule_outlined),
+                  label: Text(l10n.notificationsModeSpread),
+                  icon: const Icon(Icons.schedule_outlined),
                 ),
                 ButtonSegment(
                   value: NotifMode.meals,
-                  label: Text('Around meals'),
-                  icon: Icon(Icons.restaurant_outlined),
+                  label: Text(l10n.notificationsModeMeals),
+                  icon: const Icon(Icons.restaurant_outlined),
                 ),
               ],
               selected: {settings.mode},
@@ -85,7 +85,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             if (settings.mode == NotifMode.spread)
               ..._spreadControls(context, ref, theme, settings, notifier)
             else
-              ..._mealControls(theme, settings),
+              ..._mealControls(l10n, theme, settings),
           ],
         ],
       ),
@@ -99,8 +99,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
     NotifSettings settings,
     NotifSettingsNotifier notifier,
   ) {
+    final l10n = AppLocalizations.of(context);
     return [
-      Text('How many per day', style: theme.textTheme.titleMedium),
+      Text(l10n.notificationsPerDayLabel, style: theme.textTheme.titleMedium),
       Row(
         children: [
           Expanded(
@@ -109,20 +110,20 @@ class NotificationSettingsScreen extends ConsumerWidget {
               min: 1,
               max: 10,
               divisions: 9,
-              label: '${settings.perDay}×',
+              label: l10n.notificationsPerDayCount(settings.perDay),
               onChanged: (v) => notifier.setPerDay(v.round()),
             ),
           ),
           SizedBox(
             width: 56,
-            child: Text('${settings.perDay}×',
+            child: Text(l10n.notificationsPerDayCount(settings.perDay),
                 style: theme.textTheme.titleMedium,
                 textAlign: TextAlign.center),
           ),
         ],
       ),
       const SizedBox(height: 16),
-      Text('Between', style: theme.textTheme.titleMedium),
+      Text(l10n.notificationsBetween, style: theme.textTheme.titleMedium),
       const SizedBox(height: 8),
       Row(
         children: [
@@ -133,9 +134,9 @@ class NotificationSettingsScreen extends ConsumerWidget {
               label: Text(_formatMinutes(context, settings.windowStartMin)),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text('to'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text(l10n.notificationsWindowTo),
           ),
           Expanded(
             child: OutlinedButton.icon(
@@ -148,15 +149,17 @@ class NotificationSettingsScreen extends ConsumerWidget {
       ),
       const SizedBox(height: 20),
       Text(
-        'Quotes come from the categories in your mix. '
-        'Times vary a little day to day, on purpose — surprise is part '
-        'of the charm.',
+        l10n.notificationsSpreadHint,
         style: theme.textTheme.bodySmall,
       ),
     ];
   }
 
-  List<Widget> _mealControls(ThemeData theme, NotifSettings settings) {
+  List<Widget> _mealControls(
+    AppLocalizations l10n,
+    ThemeData theme,
+    NotifSettings settings,
+  ) {
     return [
       for (final meal in Meal.values) ...[
         _MealCard(meal: meal),
@@ -164,9 +167,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
       ],
       Text(
         settings.anyMealEnabled
-            ? 'A gentle nudge before each meal, and a kind word after dinner. '
-                'Times wiggle a few minutes day to day.'
-            : 'Turn on at least one meal to get reminders.',
+            ? l10n.notificationsMealHintOn
+            : l10n.notificationsMealHintOff,
         style: theme.textTheme.bodySmall,
       ),
     ];
@@ -178,10 +180,10 @@ class _MealCard extends ConsumerWidget {
 
   final Meal meal;
 
-  String get _label => switch (meal) {
-        Meal.breakfast => 'Breakfast',
-        Meal.lunch => 'Lunch',
-        Meal.dinner => 'Dinner',
+  String _label(AppLocalizations l10n) => switch (meal) {
+        Meal.breakfast => l10n.notificationsMealBreakfast,
+        Meal.lunch => l10n.notificationsMealLunch,
+        Meal.dinner => l10n.notificationsMealDinner,
       };
 
   IconData get _icon => switch (meal) {
@@ -208,8 +210,10 @@ class _MealCard extends ConsumerWidget {
       if (om.enabled && (minutes - om.timeMin).abs() < 120) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Keep meals at least 2 hours apart 🌱'),
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context).notificationsMealsApart,
+              ),
             ),
           );
         }
@@ -222,6 +226,7 @@ class _MealCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final m = ref.watch(notifSettingsProvider).meal(meal);
     final notifier = ref.read(notifSettingsProvider.notifier);
 
@@ -232,7 +237,7 @@ class _MealCard extends ConsumerWidget {
             value: m.enabled,
             onChanged: (v) => notifier.setMealEnabled(meal, v),
             secondary: Icon(_icon),
-            title: Text(_label, style: theme.textTheme.titleMedium),
+            title: Text(_label(l10n), style: theme.textTheme.titleMedium),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           ),
           if (m.enabled)

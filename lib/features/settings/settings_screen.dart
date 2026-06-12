@@ -8,6 +8,7 @@ import '../../core/prefs/prefs_repository.dart';
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/purchases/restore_flow.dart';
 import '../../data/content_importer.dart';
+import '../../l10n/app_localizations.dart';
 import '../paywall/paywall_data.dart';
 import '../paywall/paywall_screen.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -16,22 +17,20 @@ class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   Future<void> _resetAllData(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final first = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset everything?'),
-        content: const Text(
-          'Favorites, habits, streaks, and settings will all be erased. '
-          'This cannot be undone.',
-        ),
+        title: Text(l10n.settingsResetTitle),
+        content: Text(l10n.settingsResetBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.settingsResetCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Reset'),
+            child: Text(l10n.settingsResetConfirm),
           ),
         ],
       ),
@@ -41,16 +40,16 @@ class SettingsScreen extends ConsumerWidget {
     final second = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Absolutely sure?'),
-        content: const Text('Last chance — everything will be gone.'),
+        title: Text(l10n.settingsResetConfirmTitle),
+        content: Text(l10n.settingsResetConfirmBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep my data'),
+            child: Text(l10n.settingsResetKeep),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Yes, erase it all'),
+            child: Text(l10n.settingsResetEraseAll),
           ),
         ],
       ),
@@ -85,12 +84,13 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final themeMode = ref.watch(themeModeProvider);
     final isPremium = ref.watch(isPremiumProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
@@ -101,9 +101,8 @@ class SettingsScreen extends ConsumerWidget {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.workspace_premium_outlined),
-                    title: const Text('Veggie Premium'),
-                    subtitle:
-                        const Text('Unlock all categories & the full library'),
+                    title: Text(l10n.settingsPremiumTitle),
+                    subtitle: Text(l10n.settingsPremiumSubtitle),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () =>
                         showPaywall(context, PaywallVariant.defaultOffer),
@@ -111,7 +110,7 @@ class SettingsScreen extends ConsumerWidget {
                   const Divider(height: 1, indent: 56),
                   ListTile(
                     leading: const Icon(Icons.restore),
-                    title: const Text('Restore purchases'),
+                    title: Text(l10n.settingsRestorePurchases),
                     onTap: () => _restorePurchases(context, ref),
                   ),
                 ],
@@ -125,42 +124,42 @@ class SettingsScreen extends ConsumerWidget {
             child: isPremium
                 ? SwitchListTile(
                     secondary: const Icon(Icons.image_outlined),
-                    title: const Text('Photo backgrounds'),
-                    subtitle: const Text(
-                        'Category photos behind your daily quotes'),
+                    title: Text(l10n.settingsPhotoBackgrounds),
+                    subtitle:
+                        Text(l10n.settingsPhotoBackgroundsSubtitlePremium),
                     value: ref.watch(photoBackgroundsProvider),
                     onChanged: (v) =>
                         ref.read(photoBackgroundsProvider.notifier).set(v),
                   )
                 : ListTile(
                     leading: const Icon(Icons.image_outlined),
-                    title: const Text('Photo backgrounds'),
-                    subtitle:
-                        const Text('A Veggie Premium touch for your feed'),
+                    title: Text(l10n.settingsPhotoBackgrounds),
+                    subtitle: Text(l10n.settingsPhotoBackgroundsSubtitleFree),
                     trailing: const Switch(value: false, onChanged: null),
                     onTap: () =>
                         showPaywall(context, PaywallVariant.defaultOffer),
                   ),
           ),
           const SizedBox(height: 24),
-          Text('Appearance', style: Theme.of(context).textTheme.titleMedium),
+          Text(l10n.settingsAppearance,
+              style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 10),
           SegmentedButton<ThemeMode>(
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: ThemeMode.light,
-                label: Text('Light'),
-                icon: Icon(Icons.light_mode_outlined),
+                label: Text(l10n.settingsThemeLight),
+                icon: const Icon(Icons.light_mode_outlined),
               ),
               ButtonSegment(
                 value: ThemeMode.system,
-                label: Text('Auto'),
-                icon: Icon(Icons.brightness_auto_outlined),
+                label: Text(l10n.settingsThemeAuto),
+                icon: const Icon(Icons.brightness_auto_outlined),
               ),
               ButtonSegment(
                 value: ThemeMode.dark,
-                label: Text('Dark'),
-                icon: Icon(Icons.dark_mode_outlined),
+                label: Text(l10n.settingsThemeDark),
+                icon: const Icon(Icons.dark_mode_outlined),
               ),
             ],
             selected: {themeMode},
@@ -173,15 +172,15 @@ class SettingsScreen extends ConsumerWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.notifications_outlined),
-                  title: const Text('Daily notifications'),
+                  title: Text(l10n.settingsDailyNotifications),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.go('/journey/settings/notifications'),
                 ),
                 const Divider(height: 1, indent: 56),
                 ListTile(
                   leading: const Icon(Icons.grid_view_outlined),
-                  title: const Text('Content mix'),
-                  subtitle: const Text('Choose which categories you see'),
+                  title: Text(l10n.settingsContentMix),
+                  subtitle: Text(l10n.settingsContentMixSubtitle),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => context.go('/explore'),
                 ),
@@ -194,13 +193,12 @@ class SettingsScreen extends ConsumerWidget {
               children: [
                 ListTile(
                   leading: const Icon(Icons.info_outline),
-                  title: const Text('About Veggie'),
-                  subtitle: const Text('Open-source licenses & font credits'),
+                  title: Text(l10n.settingsAbout),
+                  subtitle: Text(l10n.settingsAboutSubtitle),
                   onTap: () => showLicensePage(
                     context: context,
                     applicationName: 'Veggie',
-                    applicationLegalese:
-                        'Daily vegan motivation.\nFonts: Fraunces & Inter (SIL OFL 1.1).',
+                    applicationLegalese: l10n.settingsAboutLegalese,
                   ),
                 ),
                 const Divider(height: 1, indent: 56),
@@ -210,7 +208,7 @@ class SettingsScreen extends ConsumerWidget {
                     color: Theme.of(context).colorScheme.error,
                   ),
                   title: Text(
-                    'Reset all data',
+                    l10n.settingsResetAllData,
                     style:
                         TextStyle(color: Theme.of(context).colorScheme.error),
                   ),

@@ -24,6 +24,8 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
+# Generated localizations (gen_l10n) — rebuilt from lib/l10n/*.arb by `generate: true`.
+/lib/l10n/app_localizations*.dart
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
