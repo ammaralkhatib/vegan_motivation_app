@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/settings/notification_prefs.dart';
 import '../db/database.dart';
 import '../prefs/prefs_repository.dart';
+import '../purchases/premium_gate.dart';
 import '../utils/date_utils.dart';
 import 'notification_scheduler.dart';
 import 'notification_service.dart';
@@ -32,7 +33,11 @@ class NotificationCoordinator {
     }
     if (!force && prefs.lastNotifScheduleDay == today) return;
 
-    final quotes = await _ref.read(databaseProvider).quoteDao.getQuotesInMix();
+    final unlocked = _ref.read(unlockedCategoryIdsProvider);
+    final quotes = await _ref
+        .read(databaseProvider)
+        .quoteDao
+        .getQuotesInMix(unlockedCategoryIds: unlocked);
     final plans = planSlots(
       perDay: settings.perDay,
       windowStartMin: settings.windowStartMin,

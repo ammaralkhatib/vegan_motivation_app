@@ -5,6 +5,7 @@ import '../core/db/database.dart';
 import '../core/notifications/notification_coordinator.dart';
 import '../core/notifications/notification_service.dart';
 import '../core/prefs/prefs_repository.dart';
+import '../core/purchases/premium_gate.dart';
 import '../core/widgetkit/home_widget_service.dart';
 import '../core/theme/app_theme.dart';
 import 'router.dart';
@@ -42,7 +43,10 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
     await ref.read(notificationCoordinatorProvider).reschedule();
 
     // Refresh the home-screen widget queue (no-op on desktop).
-    await HomeWidgetService.pushQueue(ref.read(databaseProvider));
+    await HomeWidgetService.pushQueue(
+      ref.read(databaseProvider),
+      unlockedCategoryIds: ref.read(unlockedCategoryIdsProvider),
+    );
   }
 
   @override

@@ -6,7 +6,9 @@ import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 
 import 'feed_widget_test.dart' show seededDb;
 import 'helpers.dart';
+import 'support/fake_purchase_service.dart';
 import 'package:vegan_motivation_app/core/db/database.dart';
+import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 
 Future<ProviderScope> appWith({required bool onboarded}) async {
   SharedPreferences.setMockInitialValues({'onboardingDone': onboarded});
@@ -16,6 +18,8 @@ Future<ProviderScope> appWith({required bool onboarded}) async {
     overrides: [
       prefsProvider.overrideWithValue(prefs),
       databaseProvider.overrideWithValue(db),
+      purchaseServiceProvider
+          .overrideWithValue(FakePurchaseService(initialPremium: true)),
     ],
     child: const VeggieApp(),
   );

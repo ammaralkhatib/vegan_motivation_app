@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vegan_motivation_app/core/db/database.dart';
+import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/quotes/feed_screen.dart';
 
 import 'helpers.dart';
+import 'support/fake_purchase_service.dart';
 
 Future<AppDatabase> seededDb() async {
   final db = AppDatabase.forTesting(NativeDatabase.memory());
@@ -30,7 +32,13 @@ Future<AppDatabase> seededDb() async {
 
 Widget app(AppDatabase db) {
   return ProviderScope(
-    overrides: [databaseProvider.overrideWithValue(db)],
+    overrides: [
+      databaseProvider.overrideWithValue(db),
+      // The seeded quote is 'why_vegan' (a free category); premium keeps the
+      // existing assertions independent of the gate.
+      purchaseServiceProvider
+          .overrideWithValue(FakePurchaseService(initialPremium: true)),
+    ],
     child: MaterialApp(
       theme: VeggieTheme.light(),
       home: const FeedScreen(),

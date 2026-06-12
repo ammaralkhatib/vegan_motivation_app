@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/db/database.dart';
+import '../../core/purchases/premium_gate.dart';
 import '../../core/utils/date_utils.dart';
 import '../../core/utils/seeded_shuffle.dart';
 
@@ -11,8 +12,11 @@ import '../../core/utils/seeded_shuffle.dart';
 /// swipes must not reshuffle the queue under their thumb.
 final feedQueueProvider = StreamProvider<List<int>>((ref) {
   final db = ref.watch(databaseProvider);
+  // Reactive to premium: when the unlocked set changes, the feed rebuilds.
+  final unlocked = ref.watch(unlockedCategoryIdsProvider);
   return db.quoteDao.watchCategories().asyncMap((categories) async {
-    final quotes = await db.quoteDao.getQuotesInMix();
+    final quotes =
+        await db.quoteDao.getQuotesInMix(unlockedCategoryIds: unlocked);
     final day = todayEpochDay();
     final shuffled = seededShuffle(quotes, day);
     // Light anti-repeat: quotes seen often sink. List.sort isn't stable, so

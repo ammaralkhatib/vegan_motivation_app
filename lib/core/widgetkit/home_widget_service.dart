@@ -25,14 +25,21 @@ class HomeWidgetService {
 
   /// Builds the queue from the quotes currently in the mix and hands it to
   /// the native widgets. Call on app start and whenever the mix changes.
-  static Future<void> pushQueue(AppDatabase db) async {
+  ///
+  /// [unlockedCategoryIds] applies the same premium gate as the feed, so a free
+  /// user's widget never surfaces a locked category's quote.
+  static Future<void> pushQueue(
+    AppDatabase db, {
+    Set<String>? unlockedCategoryIds,
+  }) async {
     if (!isSupported) return;
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       await HomeWidget.setAppGroupId(_appGroupId);
     }
 
-    final quotes = await db.quoteDao.getQuotesInMix();
+    final quotes =
+        await db.quoteDao.getQuotesInMix(unlockedCategoryIds: unlockedCategoryIds);
     if (quotes.isEmpty) return;
     final categories = {
       for (final c in await db.select(db.categories).get()) c.id: c,

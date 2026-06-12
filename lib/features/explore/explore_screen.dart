@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
+import '../../core/purchases/premium_gate.dart';
 import '../quotes/providers.dart';
 
 /// Browse categories, toggle which ones feed the daily mix, jump to
@@ -69,10 +70,14 @@ class _CategoryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final locked = !ref.watch(unlockedCategoryIdsProvider).contains(category.id);
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onTap: () => context.go('/explore/category/${category.id}'),
+        // Locked → show the premium prompt instead of opening the category.
+        onTap: locked
+            ? () => showPremiumSheet(context)
+            : () => context.go('/explore/category/${category.id}'),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
           child: Row(
@@ -92,23 +97,33 @@ class _CategoryCard extends ConsumerWidget {
                   ],
                 ),
               ),
-              Switch(
-                value: category.inMix,
-                onChanged: (value) async {
-                  final applied = await ref
-                      .read(databaseProvider)
-                      .quoteDao
-                      .setCategoryInMix(category.id, value);
-                  if (!applied && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('Keep at least one category in your mix 🌱'),
-                      ),
-                    );
-                  }
-                },
-              ),
+              if (locked)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Icon(
+                    Icons.lock_outline,
+                    size: 20,
+                    color: theme.colorScheme.outline,
+                  ),
+                )
+              else
+                Switch(
+                  value: category.inMix,
+                  onChanged: (value) async {
+                    final applied = await ref
+                        .read(databaseProvider)
+                        .quoteDao
+                        .setCategoryInMix(category.id, value);
+                    if (!applied && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content:
+                              Text('Keep at least one category in your mix 🌱'),
+                        ),
+                      );
+                    }
+                  },
+                ),
             ],
           ),
         ),

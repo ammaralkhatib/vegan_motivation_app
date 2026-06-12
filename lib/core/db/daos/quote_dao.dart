@@ -38,11 +38,18 @@ class QuoteDao extends DatabaseAccessor<AppDatabase> with _$QuoteDaoMixin {
     return (select(quotes)..where((q) => q.id.equals(id))).getSingleOrNull();
   }
 
-  Future<List<Quote>> getQuotesInMix() {
+  /// Quotes in the active mix. When [unlockedCategoryIds] is given, only quotes
+  /// from those categories are returned — the premium gate (CLAUDE.md §3). The
+  /// stored `inMix` flag is never touched, so a free user who had a premium
+  /// category switched on keeps it; it's just filtered out until they upgrade.
+  Future<List<Quote>> getQuotesInMix({Set<String>? unlockedCategoryIds}) {
     final query = select(quotes).join([
       innerJoin(categories, categories.id.equalsExp(quotes.categoryId)),
     ])
       ..where(categories.inMix.equals(true));
+    if (unlockedCategoryIds != null) {
+      query.where(categories.id.isIn(unlockedCategoryIds.toList()));
+    }
     return query.map((row) => row.readTable(quotes)).get();
   }
 
