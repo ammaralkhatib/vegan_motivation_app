@@ -93,6 +93,12 @@ Manual click-path (open item for Ammar):
   in-scope place the purchased product id is known; the rest of that file's change
   is the close-delay, as scoped.
 
+## Commit & push
+
+- **Commit(s):** `a5ac72a` — `feat(onboarding): conclusion screens + paywall polish + trial reminder`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`40a1d69..a5ac72a`).
+
 ## Deviations from prompt
 
 None.
