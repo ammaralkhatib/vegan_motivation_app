@@ -138,8 +138,26 @@ When Ammar hands you a prompt from `claude-prompts/<date>/`, follow it exactly, 
 Committed choices. Claude Code must respect these; if a prompt would break one, that's
 a bug in the prompt — note it in the report rather than silently complying.
 
-- **Offline-first, no backend, no accounts** (locked 2026-06-11). Everything lives
-  on-device. No login, no server, no analytics service.
+- **Offline-first, no backend, no accounts** (locked 2026-06-11, amended 2026-06-12).
+  Everything lives on-device. No login, no server, no analytics service.
+  **One exception: RevenueCat**, used only for subscription purchases. The app must
+  still work fully offline — last-known premium status is cached on-device and the
+  app never blocks on a network call.
+- **Monetization: RevenueCat, yearly-only** (locked 2026-06-12).
+  - One entitlement: `premium`. Premium unlocks all 6 quote categories + full
+    library; free tier keeps 2 categories. Habits, widgets, share, journey stay free.
+  - Three yearly products (Ammar creates them in App Store Connect / Play Console
+    and maps them in the RevenueCat dashboard):
+    `veggie_yearly_full` $49.99 with 7-day free trial, `veggie_yearly_50` $24.99,
+    `veggie_yearly_80` $9.99.
+  - Three RevenueCat offerings → three paywalls: `onboarding` (trial, end of
+    onboarding), `default` (50% off, shown on locked content / settings),
+    `discount` (80% off, shown **once** right after the onboarding paywall is
+    dismissed — "last chance").
+  - Discount framing rule: a crossed-out anchor price may only reference the real
+    $49.99 product — never an invented number.
+  - Unsupported platforms (Windows; desktop dev builds): skip the RevenueCat SDK
+    and treat premium as unlocked — these targets don't ship to users.
 - **State management: Riverpod. Database: drift. Navigation: go_router**
   (locked 2026-06-11). No refactors to other libraries.
 - **home_widget stays pinned below 0.8.x** (locked 2026-06-11). 0.8 pulls
@@ -152,7 +170,32 @@ a bug in the prompt — note it in the report rather than silently complying.
 
 ## 4. Current focus
 
-Still building features (as of 2026-06-11). Next up: to be decided with Ammar —
-candidates include more content categories, iOS widget polish, and release prep.
+**Monetization — RevenueCat + 3 paywalls** (started 2026-06-12). See locked
+decisions in §3. Phased prompts: (1) SDK + purchase service + cached premium
+state, (2) gate quote categories, (3) reusable paywall screen with 3 variants,
+(4) wire triggers (onboarding → trial paywall → one-time 80% offer; locked
+content → 50% paywall) + restore purchases in settings. Ammar does the
+dashboard side: RevenueCat account, store products, offerings, API keys.
+
+**Animated kawaii farm-animal characters — PAUSED 2026-06-12, phase 1 shipped.**
+Phase 1 done: 6 animals (cow, pig, sheep, chicken, duck, goat) × 3 frames
+(base/blink/happy) live in `assets/critters/`; `AnimatedCritter` widget
+(`lib/core/critters/`) bobs, blinks, tap-wiggles; each quote feed card shows its
+category's animal (commit `a5e560a`, prompt
+`claude-prompts/2026-06-12/001-animated-critter-feed.md`). Generated via
+Higgsfield Nano Banana Pro; master style sheet + per-animal frames are minimal
+edits of a base image so frames stay pixel-aligned (whole-image frame swap;
+layered puppet and AutoSprite were tested and rejected).
+
+**Future critter work (when Ammar resumes — keep this list):**
+
+- Remaining placements, one prompt each: habit check-off celebrations →
+  onboarding slides → journey dashboard.
+- Two more frames per animal, same minimal-edit rule: **ear flop** (ears
+  slightly lowered) and **mouth open / "moo"** (talking-cheering, for
+  onboarding).
+- Rules that still hold: assets bundled in `assets/` (offline-first), art must
+  be original kawaii style (no copies of existing sticker sets), happy frame =
+  tap + celebrations.
 
 <!-- keep this section current; use absolute dates -->
