@@ -96,8 +96,8 @@ and the `premium_gate_test` Explore harness) with the localization delegates.
 
 ## Commit & push
 
-- **Commit:** `<filled by stamp>` — `feat(l10n): migrate quotes, explore, journey and habits strings`
-- **Push:** `<filled by stamp>`
+- **Commit:** `f68c2ca` — `feat(l10n): migrate quotes, explore, journey and habits strings`
+- **Push:** `origin/main` — ok (`2995c78..f68c2ca`).
 
 ## Deviations from prompt
 
