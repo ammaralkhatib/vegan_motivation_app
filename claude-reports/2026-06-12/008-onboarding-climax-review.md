@@ -83,6 +83,12 @@ Manual click-path (open item for Ammar):
   (`009-onboarding-conclusion-paywall.md`); the notifications step stays the tail
   until then.
 
+## Commit & push
+
+- **Commit(s):** `3d86676` — `feat(onboarding): climax — first quote, day-1 streak, review prompt`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`7684af2..3d86676`).
+
 ## Deviations from prompt
 
 None.
