@@ -95,6 +95,12 @@ Manual click-path (for the owner):
   offer; locked content → 50% paywall) and replaces `premium_gate.dart`'s
   placeholder sheet with `showPaywall`.
 
+## Commit & push
+
+- **Commit(s):** `8b1b836` — `feat(paywall): paywall screen with trial/50/80 variants`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`006e570..8b1b836`).
+
 ## Deviations from prompt
 
 None.
