@@ -88,6 +88,11 @@ existing table is altered, so quotes/categories/habits and all user state
 (favorites, shownCount, mix) survive untouched. Fresh installs get the table via
 the default `onCreate`/`createAll`. Both paths are exercised by tests.
 
+## Commit & push
+
+- **Commit:** `68c58b8` — `feat(content): add quote translations table, importer and locale-aware display`
+- **Push:** `origin/main` — ok (`82aeb54..68c58b8`)
+
 ## Open items for the owner
 
 - None for this prompt. The German translations land next prompt as a
