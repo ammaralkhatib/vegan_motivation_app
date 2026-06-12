@@ -30,6 +30,18 @@ void main() {
     expect(container.read(isPremiumProvider), isFalse);
   });
 
+  // Guards the FORCE_PREMIUM wiring. Tests compile without the dart-define, so
+  // `PurchaseConfig.forcePremium` is the default `false` here — this confirms
+  // the flag's guard doesn't leak premium when it's off, i.e. real gating still
+  // drives `isPremiumProvider`. The `true` branch is fixed at compile time by
+  // the define, so it can't be exercised from a normal `flutter test` run.
+  test('FORCE_PREMIUM off: a free user is not forced premium', () {
+    final fake = FakePurchaseService(initialPremium: false);
+    final container = containerWith(fake);
+
+    expect(container.read(isPremiumProvider), isFalse);
+  });
+
   test('isPremiumProvider updates when the store reports a change', () async {
     final fake = FakePurchaseService(initialPremium: false);
     final container = containerWith(fake);

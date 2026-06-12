@@ -14,6 +14,17 @@ class PurchaseConfig {
   // TODO(ammar): paste real key from RevenueCat dashboard (Google Play).
   static const String googleApiKey = 'goog_TODO_REPLACE_WITH_REAL_KEY';
 
+  // --- Dev / testing switch ----------------------------------------------
+  /// Dev/testing only — forces premium ON for a single run, bypassing
+  /// RevenueCat and the cached status. Set it at launch with
+  /// `flutter run --dart-define=FORCE_PREMIUM=true`.
+  ///
+  /// Defaults to `false` in every normal build (the define is absent), so it
+  /// can never ship enabled by accident. It only affects in-memory state — it
+  /// never writes to the premium prefs cache, so turning the flag off returns
+  /// the app to its real (free) status on the next run.
+  static const bool forcePremium = bool.fromEnvironment('FORCE_PREMIUM');
+
   // --- Entitlement --------------------------------------------------------
   /// The single entitlement that unlocks premium. Active = user is premium.
   static const String premiumEntitlementId = 'premium';
