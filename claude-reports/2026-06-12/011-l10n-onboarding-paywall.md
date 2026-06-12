@@ -111,8 +111,8 @@ two harnesses still missing delegates after the migration —
 
 ## Commit & push
 
-- **Commit:** `<filled by stamp>` — `feat(l10n): migrate onboarding and paywall strings to ARB`
-- **Push:** `<filled by stamp>`
+- **Commit:** `613a2fe` — `feat(l10n): migrate onboarding and paywall strings to ARB`
+- **Push:** `origin/main` — ok (`c710cd3..613a2fe`).
 
 ## Deviations from prompt
 
