@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_copy.dart';
 import '../onboarding_widgets.dart';
 
@@ -31,38 +32,39 @@ class SnapshotStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final dips = dipsPerWeek < 0 ? 0 : dipsPerWeek;
     final commitmentFill = commitmentBarFill[commitmentLevel] ?? 0.5;
     final strength = firstGoal == null
-        ? 'showing up every day'
-        : goalPlainWords[firstGoal] ?? 'showing up every day';
+        ? l.onboardingSnapshotStrengthFallback
+        : goalPlainWords(l, firstGoal!);
 
     return InputStep(
       onContinue: onContinue,
       child: ListView(
         children: [
           const SizedBox(height: 8),
-          Text('✨ your motivation snapshot',
+          Text(l.onboardingSnapshotTitle,
               style: theme.textTheme.displaySmall),
           const SizedBox(height: 20),
           _BarCard(
-            label: 'current motivation',
+            label: l.onboardingSnapshotMotivation,
             fill: _motivationFill,
-            trailing: 'low → high',
+            trailing: l.onboardingSnapshotLowHigh,
           ),
           const SizedBox(height: 12),
           _ValueCard(
-            label: 'weekly dips',
-            value: '$dips days/week',
+            label: l.onboardingSnapshotWeeklyDips,
+            value: l.onboardingSnapshotDipsValue(dips),
           ),
           const SizedBox(height: 12),
           _BarCard(
-            label: 'commitment level',
+            label: l.onboardingSnapshotCommitment,
             fill: commitmentFill,
           ),
           const SizedBox(height: 12),
           _ValueCard(
-            label: 'strengths',
+            label: l.onboardingSnapshotStrengths,
             value: strength,
           ),
         ],

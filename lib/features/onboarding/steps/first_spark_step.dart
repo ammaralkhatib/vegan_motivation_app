@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../quotes/quote_card.dart';
 import '../first_spark.dart';
 import '../onboarding_widgets.dart';
@@ -23,17 +24,19 @@ class FirstSparkStep extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final category = sparkCategoryFor(motivationPick);
     final quoteId = ref.watch(firstSparkQuoteIdProvider(category)).valueOrNull;
-    final headline =
-        name.isEmpty ? 'here\'s your first spark' : 'here\'s your first spark, $name';
+    final headline = name.isEmpty
+        ? l.onboardingSparkHeadline
+        : l.onboardingSparkHeadlineNamed(name);
 
     return InputStep(
       onContinue: onContinue,
       child: ListView(
         children: [
           const SizedBox(height: 8),
-          _eyebrow(theme, 'built from your answers'),
+          _eyebrow(theme, l.onboardingSparkEyebrow),
           Text(headline, style: theme.textTheme.displaySmall),
           const SizedBox(height: 20),
           SizedBox(
@@ -44,10 +47,10 @@ class FirstSparkStep extends ConsumerWidget {
                   ? Container(
                       color: theme.colorScheme.surfaceContainerHighest,
                       alignment: Alignment.center,
-                      child: const Padding(
-                        padding: EdgeInsets.all(24),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
                         child: Text(
-                          'your sparks are getting ready…',
+                          l.onboardingSparkLoading,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -57,7 +60,7 @@ class FirstSparkStep extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'your quotes are saved for you — to keep your why strong.',
+            l.onboardingSparkBody,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onSurfaceVariant),

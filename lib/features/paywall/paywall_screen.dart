@@ -10,6 +10,7 @@ import '../../core/notifications/trial_reminder.dart';
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/purchases/purchase_service.dart';
 import '../../core/purchases/restore_flow.dart';
+import '../../l10n/app_localizations.dart';
 import 'paywall_data.dart';
 import 'paywall_providers.dart';
 
@@ -19,12 +20,61 @@ Future<void> showPaywall(BuildContext context, PaywallVariant variant) {
 }
 
 /// The benefits every variant lists.
-const _benefits = [
-  'All 6 quote categories',
-  'The full 508-quote library',
-  'Support the mission 🌱',
-  'Everything stays on your device',
-];
+List<String> _benefits(AppLocalizations l) => [
+      l.paywallBenefit1,
+      l.paywallBenefit2,
+      l.paywallBenefit3,
+      l.paywallBenefit4,
+    ];
+
+/// Headline copy, by variant.
+String _paywallTitle(AppLocalizations l, PaywallVariant v) => switch (v) {
+      PaywallVariant.onboarding => l.paywallOnboardingTitle,
+      PaywallVariant.defaultOffer => l.paywallDefaultTitle,
+      PaywallVariant.discount => l.paywallDiscountTitle,
+    };
+
+/// Primary-button copy, by variant.
+String _paywallCta(AppLocalizations l, PaywallVariant v) => switch (v) {
+      PaywallVariant.onboarding => l.paywallOnboardingCta,
+      PaywallVariant.defaultOffer => l.paywallDefaultCta,
+      PaywallVariant.discount => l.paywallDiscountCta,
+    };
+
+/// Discount badge — only shown when a real anchor price is present.
+String? _paywallBadge(AppLocalizations l, PaywallData d) {
+  if (d.anchorPriceString == null) return null;
+  return switch (d.variant) {
+    PaywallVariant.defaultOffer => l.paywallBadge50,
+    PaywallVariant.discount => l.paywallBadge80,
+    PaywallVariant.onboarding => null,
+  };
+}
+
+/// Localized free-trial duration, e.g. "7 days".
+String _trialDuration(AppLocalizations l, int count, TrialPeriodUnit unit) =>
+    switch (unit) {
+      TrialPeriodUnit.day => l.paywallTrialDurationDays(count),
+      TrialPeriodUnit.week => l.paywallTrialDurationWeeks(count),
+      TrialPeriodUnit.month => l.paywallTrialDurationMonths(count),
+      TrialPeriodUnit.year => l.paywallTrialDurationYears(count),
+    };
+
+/// The "{trial} free, then {price}/year" line, or null when there's no trial.
+String? _trialText(AppLocalizations l, PaywallData d) {
+  if (!d.hasTrial) return null;
+  final duration =
+      _trialDuration(l, d.trialPeriodCount!, d.trialPeriodUnit!);
+  return l.paywallTrialText(duration, d.priceString);
+}
+
+/// Supporting line under the price, by variant.
+String? _paywallSubtitle(AppLocalizations l, PaywallData d) => switch (d.variant) {
+      PaywallVariant.onboarding =>
+        d.hasTrial ? null : l.paywallPricePerYear(d.priceString),
+      PaywallVariant.defaultOffer => l.paywallPricePerYear(d.priceString),
+      PaywallVariant.discount => l.paywallDiscountUrgency,
+    };
 
 /// Full paywall screen: loads the offering, renders [PaywallView], and runs
 /// the purchase / restore flow. Degrades to a friendly retry state if the
@@ -102,7 +152,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         setState(() => _busy = false); // stay open, no message
       case PurchaseOutcome.error:
         setState(() => _busy = false);
-        _snack('Something went wrong — you were not charged.');
+        _snack(AppLocalizations.of(context).paywallPurchaseError);
     }
   }
 
@@ -170,7 +220,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     child: IconButton(
                       onPressed: _close,
                       icon: const Icon(Icons.close),
-                      tooltip: 'Close',
+                      tooltip: AppLocalizations.of(context).paywallClose,
                     ),
                   ),
                 ),
@@ -203,6 +253,7 @@ class PaywallView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(28, 56, 28, 28),
@@ -213,12 +264,12 @@ class PaywallView extends StatelessWidget {
             Icon(Icons.eco, size: 56, color: theme.colorScheme.primary),
             const SizedBox(height: 16),
             Text(
-              data.title,
+              _paywallTitle(l, data.variant),
               textAlign: TextAlign.center,
               style: theme.textTheme.displaySmall,
             ),
             const SizedBox(height: 24),
-            ..._benefits.map(
+            ..._benefits(l).map(
               (b) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
@@ -245,16 +296,16 @@ class PaywallView extends StatelessWidget {
                       width: 22,
                       child: CircularProgressIndicator(strokeWidth: 2.5),
                     )
-                  : Text(data.ctaLabel),
+                  : Text(_paywallCta(l, data.variant)),
             ),
             const SizedBox(height: 4),
             TextButton(
               onPressed: busy ? null : onRestore,
-              child: const Text('Restore purchases'),
+              child: Text(l.paywallRestore),
             ),
             const SizedBox(height: 8),
             Text(
-              'Cancel anytime in your store settings.',
+              l.paywallCancelAnytime,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodySmall
                   ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
@@ -274,9 +325,12 @@ class _PriceBlock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final badge = _paywallBadge(l, data);
+    final subtitle = _paywallSubtitle(l, data);
     return Column(
       children: [
-        if (data.badgeText != null) ...[
+        if (badge != null) ...[
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
@@ -284,7 +338,7 @@ class _PriceBlock extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              data.badgeText!,
+              badge,
               style: theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.onTertiaryContainer,
                 fontWeight: FontWeight.w700,
@@ -303,15 +357,15 @@ class _PriceBlock extends StatelessWidget {
           ),
         Text(
           // For the trial variant this carries the whole "X free, then …" line.
-          data.trialText ?? data.priceString,
+          _trialText(l, data) ?? data.priceString,
           textAlign: TextAlign.center,
           style: theme.textTheme.headlineSmall
               ?.copyWith(fontWeight: FontWeight.w700),
         ),
-        if (data.subtitle != null) ...[
+        if (subtitle != null) ...[
           const SizedBox(height: 4),
           Text(
-            data.subtitle!,
+            subtitle,
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
@@ -330,6 +384,7 @@ class _OffersUnavailable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -340,14 +395,14 @@ class _OffersUnavailable extends StatelessWidget {
                 size: 48, color: theme.colorScheme.onSurfaceVariant),
             const SizedBox(height: 16),
             Text(
-              "Can't load offers right now — check your connection.",
+              l.paywallOffersUnavailable,
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 20),
             FilledButton(
               onPressed: onRetry,
-              child: const Text('Retry'),
+              child: Text(l.paywallRetry),
             ),
           ],
         ),

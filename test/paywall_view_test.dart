@@ -3,11 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'support/paywall_fixtures.dart';
 
 Widget host(PaywallData data) => MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(body: PaywallView(data: data)),
     );
 
@@ -16,11 +19,9 @@ void main() {
       (tester) async {
     await tester.pumpWidget(host(testPaywallData(
       variant: PaywallVariant.onboarding,
-      title: 'Start your Veggie journey',
-      ctaLabel: 'Start free trial',
       priceString: r'$49.99',
-      subtitle: null,
-      trialText: r'7 days free, then $49.99/year',
+      trialPeriodCount: 7,
+      trialPeriodUnit: TrialPeriodUnit.day,
     )));
 
     expect(find.text('Start free trial'), findsOneWidget);
@@ -35,7 +36,6 @@ void main() {
       variant: PaywallVariant.defaultOffer,
       priceString: r'$24.99',
       anchorPriceString: r'$49.99',
-      badgeText: '50% OFF',
     )));
 
     expect(find.text('50% OFF'), findsOneWidget);
@@ -47,12 +47,8 @@ void main() {
       (tester) async {
     await tester.pumpWidget(host(testPaywallData(
       variant: PaywallVariant.discount,
-      title: 'A one-time gift for you',
-      ctaLabel: 'Claim my offer',
       priceString: r'$9.99',
-      subtitle: "This offer won't come back.",
       anchorPriceString: r'$49.99',
-      badgeText: '80% OFF — one-time offer',
     )));
 
     expect(find.text('80% OFF — one-time offer'), findsOneWidget);

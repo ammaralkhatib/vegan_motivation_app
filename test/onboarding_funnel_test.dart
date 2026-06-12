@@ -10,6 +10,7 @@ import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/paywall/onboarding_paywall_funnel.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'helpers.dart';
 import 'support/fake_purchase_service.dart';
@@ -80,6 +81,8 @@ Widget _app(PrefsRepository prefs, FakePurchaseService fake) => ProviderScope(
       ],
       child: MaterialApp.router(
         theme: VeggieTheme.light(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: _router(),
       ),
     );

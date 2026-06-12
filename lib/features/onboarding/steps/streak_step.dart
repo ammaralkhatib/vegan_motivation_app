@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/prefs/prefs_repository.dart';
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_widgets.dart';
 import '../review_prompter.dart';
 
@@ -73,6 +74,7 @@ class _StreakStepState extends ConsumerState<StreakStep> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return InputStep(
       onContinue: widget.onContinue,
       child: Stack(
@@ -84,7 +86,7 @@ class _StreakStepState extends ConsumerState<StreakStep> {
                 Text('🌱', style: theme.textTheme.displayLarge),
                 const SizedBox(height: 8),
                 Text(
-                  'day 1',
+                  l.onboardingStreakDay1,
                   style: theme.textTheme.displayLarge?.copyWith(
                     color: theme.colorScheme.primary,
                     fontWeight: FontWeight.w700,
@@ -92,14 +94,13 @@ class _StreakStepState extends ConsumerState<StreakStep> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'your streak starts today',
+                  l.onboardingStreakTitle,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'come back tomorrow to keep it alive — your next spark will '
-                  'be waiting.',
+                  l.onboardingStreakBody,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge
                       ?.copyWith(color: theme.colorScheme.onSurfaceVariant),

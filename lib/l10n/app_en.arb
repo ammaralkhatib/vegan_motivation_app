@@ -180,5 +180,804 @@
   "notificationsMealDinner": "Dinner",
   "@notificationsMealDinner": {
     "description": "Dinner meal card title."
+  },
+
+  "paywallOnboardingTitle": "Start your Veggie journey",
+  "@paywallOnboardingTitle": {
+    "description": "Headline on the end-of-onboarding trial paywall."
+  },
+  "paywallOnboardingCta": "Start free trial",
+  "@paywallOnboardingCta": {
+    "description": "Primary button on the trial paywall."
+  },
+  "paywallDefaultTitle": "Unlock Veggie Premium",
+  "@paywallDefaultTitle": {
+    "description": "Headline on the 50%-off (default) paywall."
+  },
+  "paywallDefaultCta": "Unlock Veggie Premium",
+  "@paywallDefaultCta": {
+    "description": "Primary button on the 50%-off paywall."
+  },
+  "paywallDiscountTitle": "A one-time gift for you",
+  "@paywallDiscountTitle": {
+    "description": "Headline on the 80%-off one-time paywall."
+  },
+  "paywallDiscountCta": "Claim my offer",
+  "@paywallDiscountCta": {
+    "description": "Primary button on the 80%-off paywall."
+  },
+  "paywallDiscountUrgency": "This offer won't come back.",
+  "@paywallDiscountUrgency": {
+    "description": "Subtitle urgency line on the 80%-off one-time paywall."
+  },
+  "paywallPricePerYear": "{price}/year",
+  "@paywallPricePerYear": {
+    "description": "Plain yearly price line. {price} is the store-formatted price, e.g. $49.99.",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "$49.99"
+      }
+    }
+  },
+  "paywallTrialText": "{trial} free, then {price}/year",
+  "@paywallTrialText": {
+    "description": "Trial pricing line. {trial} is a localized duration like '7 days'; {price} is the store-formatted yearly price.",
+    "placeholders": {
+      "trial": {
+        "type": "String",
+        "example": "7 days"
+      },
+      "price": {
+        "type": "String",
+        "example": "$49.99"
+      }
+    }
+  },
+  "paywallTrialDurationDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@paywallTrialDurationDays": {
+    "description": "Free-trial duration in days, composed into paywallTrialText.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paywallTrialDurationWeeks": "{count, plural, =1{1 week} other{{count} weeks}}",
+  "@paywallTrialDurationWeeks": {
+    "description": "Free-trial duration in weeks, composed into paywallTrialText.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paywallTrialDurationMonths": "{count, plural, =1{1 month} other{{count} months}}",
+  "@paywallTrialDurationMonths": {
+    "description": "Free-trial duration in months, composed into paywallTrialText.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paywallTrialDurationYears": "{count, plural, =1{1 year} other{{count} years}}",
+  "@paywallTrialDurationYears": {
+    "description": "Free-trial duration in years, composed into paywallTrialText.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paywallBadge50": "50% OFF",
+  "@paywallBadge50": {
+    "description": "Discount badge on the 50%-off paywall."
+  },
+  "paywallBadge80": "80% OFF — one-time offer",
+  "@paywallBadge80": {
+    "description": "Discount badge on the 80%-off one-time paywall."
+  },
+  "paywallBenefit1": "All 6 quote categories",
+  "@paywallBenefit1": {
+    "description": "Premium benefit bullet."
+  },
+  "paywallBenefit2": "The full 508-quote library",
+  "@paywallBenefit2": {
+    "description": "Premium benefit bullet."
+  },
+  "paywallBenefit3": "Support the mission 🌱",
+  "@paywallBenefit3": {
+    "description": "Premium benefit bullet."
+  },
+  "paywallBenefit4": "Everything stays on your device",
+  "@paywallBenefit4": {
+    "description": "Premium benefit bullet."
+  },
+  "paywallRestore": "Restore purchases",
+  "@paywallRestore": {
+    "description": "Restore-purchases text button on the paywall."
+  },
+  "paywallCancelAnytime": "Cancel anytime in your store settings.",
+  "@paywallCancelAnytime": {
+    "description": "Footnote under the purchase button."
+  },
+  "paywallPurchaseError": "Something went wrong — you were not charged.",
+  "@paywallPurchaseError": {
+    "description": "SnackBar shown when a purchase fails."
+  },
+  "paywallOffersUnavailable": "Can't load offers right now — check your connection.",
+  "@paywallOffersUnavailable": {
+    "description": "Shown when the store offering can't be loaded."
+  },
+  "paywallRetry": "Retry",
+  "@paywallRetry": {
+    "description": "Retry button on the offers-unavailable state."
+  },
+  "paywallClose": "Close",
+  "@paywallClose": {
+    "description": "Tooltip on the paywall close (X) button."
+  },
+
+  "onboardingContinue": "continue",
+  "@onboardingContinue": {
+    "description": "Default continue button on onboarding input steps."
+  },
+  "onboardingTapToContinue": "tap to continue →",
+  "@onboardingTapToContinue": {
+    "description": "Hint on whole-screen tap steps."
+  },
+  "onboardingWelcomeTagline": "your daily dose of vegan motivation",
+  "@onboardingWelcomeTagline": {
+    "description": "Tagline under the app name on the first welcome step."
+  },
+  "onboardingProblemHeadline": "ever feel your motivation fade, even when your reasons haven't?",
+  "@onboardingProblemHeadline": {
+    "description": "S2 headline. The word in onboardingProblemEmphasis is highlighted within it."
+  },
+  "onboardingProblemEmphasis": "motivation",
+  "@onboardingProblemEmphasis": {
+    "description": "The emphasized substring inside onboardingProblemHeadline."
+  },
+  "onboardingProblemBody": "you're not alone. cravings, social pressure, and busy days quietly pull people away from the path they chose.",
+  "@onboardingProblemBody": {
+    "description": "S2 body."
+  },
+  "onboardingSolutionHeadline": "veggie keeps your why in front of you",
+  "@onboardingSolutionHeadline": {
+    "description": "S3 headline. The word in onboardingSolutionEmphasis is highlighted within it."
+  },
+  "onboardingSolutionEmphasis": "why",
+  "@onboardingSolutionEmphasis": {
+    "description": "The emphasized substring inside onboardingSolutionHeadline."
+  },
+  "onboardingSolutionBody": "it's simple — every day, a small spark of motivation, made for you.",
+  "@onboardingSolutionBody": {
+    "description": "S3 body."
+  },
+  "onboardingNameEyebrow": "first things first",
+  "@onboardingNameEyebrow": {
+    "description": "Eyebrow above the name question."
+  },
+  "onboardingNameTitle": "what should we call you?",
+  "@onboardingNameTitle": {
+    "description": "Name question title."
+  },
+  "onboardingNameHint": "your name",
+  "@onboardingNameHint": {
+    "description": "Name text field hint."
+  },
+  "onboardingAgeTitle": "how old are you?",
+  "@onboardingAgeTitle": {
+    "description": "Age question title."
+  },
+  "onboardingDietTitle": "where are you on the path right now?",
+  "@onboardingDietTitle": {
+    "description": "Diet-status question title."
+  },
+  "onboardingDietVegan": "🌱 i'm vegan",
+  "@onboardingDietVegan": {
+    "description": "Diet option."
+  },
+  "onboardingDietMostly": "🥦 mostly plant-based",
+  "@onboardingDietMostly": {
+    "description": "Diet option."
+  },
+  "onboardingDietCuttingDown": "🍃 cutting down",
+  "@onboardingDietCuttingDown": {
+    "description": "Diet option."
+  },
+  "onboardingDietCurious": "👀 just curious",
+  "@onboardingDietCurious": {
+    "description": "Diet option."
+  },
+  "onboardingBridgeIntro": "it doesn't have to be this way",
+  "@onboardingBridgeIntro": {
+    "description": "S8 intro line."
+  },
+  "onboardingBridgeHeadline1": "do you have just 2 minutes a day?",
+  "@onboardingBridgeHeadline1": {
+    "description": "S8 headline. The phrase in onboardingBridgeHeadline1Emphasis is highlighted within it."
+  },
+  "onboardingBridgeHeadline1Emphasis": "2 minutes",
+  "@onboardingBridgeHeadline1Emphasis": {
+    "description": "Emphasized substring inside onboardingBridgeHeadline1."
+  },
+  "onboardingBridgeHeadline2": "let's build a plan for you",
+  "@onboardingBridgeHeadline2": {
+    "description": "S8 second headline. The word in onboardingBridgeHeadline2Emphasis is highlighted within it."
+  },
+  "onboardingBridgeHeadline2Emphasis": "you",
+  "@onboardingBridgeHeadline2Emphasis": {
+    "description": "Emphasized substring inside onboardingBridgeHeadline2."
+  },
+  "onboardingGoalsTitle": "what do you want from veggie?",
+  "@onboardingGoalsTitle": {
+    "description": "Goals multi-select title."
+  },
+  "onboardingChooseUpTo3": "choose up to 3",
+  "@onboardingChooseUpTo3": {
+    "description": "Subtitle on multi-select steps (goals, obstacles)."
+  },
+  "onboardingGoalDailyMotivation": "🔥 stay motivated every day",
+  "@onboardingGoalDailyMotivation": {
+    "description": "Goal option."
+  },
+  "onboardingGoalHabits": "🌱 build habits that stick",
+  "@onboardingGoalHabits": {
+    "description": "Goal option."
+  },
+  "onboardingGoalSocialStrength": "💪 stay strong in social situations",
+  "@onboardingGoalSocialStrength": {
+    "description": "Goal option."
+  },
+  "onboardingGoalReconnectWhy": "❤️ reconnect with my why",
+  "@onboardingGoalReconnectWhy": {
+    "description": "Goal option."
+  },
+  "onboardingGoalLessAlone": "🤝 feel less alone on this path",
+  "@onboardingGoalLessAlone": {
+    "description": "Goal option."
+  },
+  "onboardingGoalReflectionDailyMotivation": "a fresh spark every morning — your feed and reminders will keep the fire lit.",
+  "@onboardingGoalReflectionDailyMotivation": {
+    "description": "What the daily-motivation goal promises back to the user."
+  },
+  "onboardingGoalReflectionHabits": "gentle streaks and small wins, so good days turn into a way of life.",
+  "@onboardingGoalReflectionHabits": {
+    "description": "What the habits goal promises back to the user."
+  },
+  "onboardingGoalReflectionSocialStrength": "the right words for the hard moments — awkward dinner questions included.",
+  "@onboardingGoalReflectionSocialStrength": {
+    "description": "What the social-strength goal promises back to the user."
+  },
+  "onboardingGoalReflectionReconnectWhy": "we'll keep your reason close, especially on the days it feels far.",
+  "@onboardingGoalReflectionReconnectWhy": {
+    "description": "What the reconnect-why goal promises back to the user."
+  },
+  "onboardingGoalReflectionLessAlone": "you're part of something bigger — we'll remind you of the good you do.",
+  "@onboardingGoalReflectionLessAlone": {
+    "description": "What the less-alone goal promises back to the user."
+  },
+  "onboardingGoalPlainDailyMotivation": "to stay motivated every day",
+  "@onboardingGoalPlainDailyMotivation": {
+    "description": "Plain-words form of the daily-motivation goal ('you want ...')."
+  },
+  "onboardingGoalPlainHabits": "to build habits that stick",
+  "@onboardingGoalPlainHabits": {
+    "description": "Plain-words form of the habits goal."
+  },
+  "onboardingGoalPlainSocialStrength": "to stay strong in social situations",
+  "@onboardingGoalPlainSocialStrength": {
+    "description": "Plain-words form of the social-strength goal."
+  },
+  "onboardingGoalPlainReconnectWhy": "to reconnect with your why",
+  "@onboardingGoalPlainReconnectWhy": {
+    "description": "Plain-words form of the reconnect-why goal."
+  },
+  "onboardingGoalPlainLessAlone": "to feel less alone on this path",
+  "@onboardingGoalPlainLessAlone": {
+    "description": "Plain-words form of the less-alone goal."
+  },
+  "onboardingGoalsReflectionHeadline": "you're in the right place",
+  "@onboardingGoalsReflectionHeadline": {
+    "description": "S10 reassurance headline."
+  },
+  "onboardingGoalsReflectionBody": "every journey here starts with the same goals — veggie was built for exactly this.",
+  "@onboardingGoalsReflectionBody": {
+    "description": "S10 reassurance body."
+  },
+  "onboardingDipsTitle": "be honest — how many days a week does your motivation dip?",
+  "@onboardingDipsTitle": {
+    "description": "S11 dips slider title."
+  },
+  "onboardingDipsUnit": "{count, plural, =1{day a week} other{days a week}}",
+  "@onboardingDipsUnit": {
+    "description": "Unit label under the dips number (the number is shown separately).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingObstaclesTitle": "what gets in the way most?",
+  "@onboardingObstaclesTitle": {
+    "description": "S12 obstacles multi-select title."
+  },
+  "onboardingObstacleCravings": "🍕 cravings & convenience",
+  "@onboardingObstacleCravings": {
+    "description": "Obstacle option."
+  },
+  "onboardingObstacleSocialPressure": "🥂 social pressure",
+  "@onboardingObstacleSocialPressure": {
+    "description": "Obstacle option."
+  },
+  "onboardingObstacleFadingMotivation": "😮‍💨 motivation fades over time",
+  "@onboardingObstacleFadingMotivation": {
+    "description": "Obstacle option."
+  },
+  "onboardingObstacleAlone": "🧍 nobody around me gets it",
+  "@onboardingObstacleAlone": {
+    "description": "Obstacle option."
+  },
+  "onboardingObstacleBusyness": "⏰ busy life, no headspace",
+  "@onboardingObstacleBusyness": {
+    "description": "Obstacle option."
+  },
+  "onboardingObstaclePlainCravings": "cravings & convenience",
+  "@onboardingObstaclePlainCravings": {
+    "description": "Plain-words form of the cravings obstacle ('but ... keeps getting in the way')."
+  },
+  "onboardingObstaclePlainSocialPressure": "social pressure",
+  "@onboardingObstaclePlainSocialPressure": {
+    "description": "Plain-words form of the social-pressure obstacle."
+  },
+  "onboardingObstaclePlainFadingMotivation": "fading motivation",
+  "@onboardingObstaclePlainFadingMotivation": {
+    "description": "Plain-words form of the fading-motivation obstacle."
+  },
+  "onboardingObstaclePlainAlone": "feeling alone in it",
+  "@onboardingObstaclePlainAlone": {
+    "description": "Plain-words form of the alone obstacle."
+  },
+  "onboardingObstaclePlainBusyness": "a busy life",
+  "@onboardingObstaclePlainBusyness": {
+    "description": "Plain-words form of the busyness obstacle."
+  },
+  "onboardingWhyTitle": "and how's your connection to your why right now?",
+  "@onboardingWhyTitle": {
+    "description": "S13 why-relationship question title."
+  },
+  "onboardingWhyUpsDowns": "📈 it has its ups and downs",
+  "@onboardingWhyUpsDowns": {
+    "description": "Why-relationship option."
+  },
+  "onboardingWhyFading": "🍂 fading a bit lately",
+  "@onboardingWhyFading": {
+    "description": "Why-relationship option."
+  },
+  "onboardingWhyStarting": "🌱 just starting or rebuilding",
+  "@onboardingWhyStarting": {
+    "description": "Why-relationship option."
+  },
+  "onboardingWhyStrong": "💪 strong and steady",
+  "@onboardingWhyStrong": {
+    "description": "Why-relationship option."
+  },
+  "onboardingJourneyTitle": "when did your journey start?",
+  "@onboardingJourneyTitle": {
+    "description": "S14 vegan-since date question title."
+  },
+  "onboardingJourneyPickDate": "pick a date",
+  "@onboardingJourneyPickDate": {
+    "description": "Placeholder before a date is picked."
+  },
+  "onboardingJourneyToday": "today",
+  "@onboardingJourneyToday": {
+    "description": "Quick button to set the journey start to today."
+  },
+  "onboardingReflectionGoalLine": "you want {goal}",
+  "@onboardingReflectionGoalLine": {
+    "description": "S15 reflection line. {goal} is a plain-words goal phrase.",
+    "placeholders": {
+      "goal": {
+        "type": "String",
+        "example": "to build habits that stick"
+      }
+    }
+  },
+  "onboardingReflectionGoalFallback": "to keep your motivation strong",
+  "@onboardingReflectionGoalFallback": {
+    "description": "Goal phrase used when no goal was picked."
+  },
+  "onboardingReflectionObstacleLine": "but {obstacle} keeps getting in the way",
+  "@onboardingReflectionObstacleLine": {
+    "description": "S15 reflection line. {obstacle} is a plain-words obstacle phrase.",
+    "placeholders": {
+      "obstacle": {
+        "type": "String",
+        "example": "social pressure"
+      }
+    }
+  },
+  "onboardingReflectionObstacleFallback": "old habits",
+  "@onboardingReflectionObstacleFallback": {
+    "description": "Obstacle phrase used when no obstacle was picked."
+  },
+  "onboardingReflectionDips": "{count, plural, =1{your motivation dips {count} day a week} other{your motivation dips {count} days a week}}",
+  "@onboardingReflectionDips": {
+    "description": "S15 reflection line for how often motivation dips.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingReflectionDipsUnknown": "and some weeks test your motivation",
+  "@onboardingReflectionDipsUnknown": {
+    "description": "S15 reflection dips line when the dip count is unknown."
+  },
+  "onboardingReflectionClose": "veggie was made for exactly this moment.",
+  "@onboardingReflectionClose": {
+    "description": "S15 closing reflection line."
+  },
+  "onboardingMotivationEyebrow": "last one — to make the quotes feel right for you",
+  "@onboardingMotivationEyebrow": {
+    "description": "Eyebrow above the motivation question."
+  },
+  "onboardingMotivationTitle": "what moves you most?",
+  "@onboardingMotivationTitle": {
+    "description": "S16 motivation question title."
+  },
+  "onboardingMotivationAnimals": "🐮  For the animals",
+  "@onboardingMotivationAnimals": {
+    "description": "Motivation option."
+  },
+  "onboardingMotivationPlanet": "🌍  For the planet",
+  "@onboardingMotivationPlanet": {
+    "description": "Motivation option."
+  },
+  "onboardingMotivationHealth": "💪  For my health",
+  "@onboardingMotivationHealth": {
+    "description": "Motivation option."
+  },
+  "onboardingMotivationCurious": "✨  Just exploring",
+  "@onboardingMotivationCurious": {
+    "description": "Motivation option."
+  },
+  "onboardingChartTitle": "your motivation, with and without a daily spark",
+  "@onboardingChartTitle": {
+    "description": "S17 chart step title."
+  },
+  "onboardingChartBody": "small daily reminders beat willpower. that's the whole idea.",
+  "@onboardingChartBody": {
+    "description": "S17 chart step body."
+  },
+  "onboardingChartLegendWith": "with veggie",
+  "@onboardingChartLegendWith": {
+    "description": "Chart legend for the rising curve."
+  },
+  "onboardingChartLegendWillpower": "on willpower alone",
+  "@onboardingChartLegendWillpower": {
+    "description": "Chart legend for the sagging curve."
+  },
+  "onboardingSparkEyebrow": "built from your answers",
+  "@onboardingSparkEyebrow": {
+    "description": "Eyebrow on the first-spark step."
+  },
+  "onboardingSparkHeadline": "here's your first spark",
+  "@onboardingSparkHeadline": {
+    "description": "First-spark headline when no name was given."
+  },
+  "onboardingSparkHeadlineNamed": "here's your first spark, {name}",
+  "@onboardingSparkHeadlineNamed": {
+    "description": "First-spark headline with the user's name.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sam"
+      }
+    }
+  },
+  "onboardingSparkLoading": "your sparks are getting ready…",
+  "@onboardingSparkLoading": {
+    "description": "Placeholder while the first quote loads."
+  },
+  "onboardingSparkBody": "your quotes are saved for you — to keep your why strong.",
+  "@onboardingSparkBody": {
+    "description": "First-spark step body."
+  },
+  "onboardingStreakDay1": "day 1",
+  "@onboardingStreakDay1": {
+    "description": "Big day-1 label on the streak celebration."
+  },
+  "onboardingStreakTitle": "your streak starts today",
+  "@onboardingStreakTitle": {
+    "description": "Streak celebration title."
+  },
+  "onboardingStreakBody": "come back tomorrow to keep it alive — your next spark will be waiting.",
+  "@onboardingStreakBody": {
+    "description": "Streak celebration body."
+  },
+  "onboardingLoadingLine1": "reading your answers ✓",
+  "@onboardingLoadingLine1": {
+    "description": "Fake-loading checklist line."
+  },
+  "onboardingLoadingLine2": "shaping your daily mix ✓",
+  "@onboardingLoadingLine2": {
+    "description": "Fake-loading checklist line."
+  },
+  "onboardingLoadingLine3": "building your plan ✓",
+  "@onboardingLoadingLine3": {
+    "description": "Fake-loading checklist line."
+  },
+  "onboardingLoadingFooter": "building your motivation plan...",
+  "@onboardingLoadingFooter": {
+    "description": "Footer under the fake-loading spinner."
+  },
+  "onboardingPlanHeadlineBefore": "your unshakable habit arrives by ",
+  "@onboardingPlanHeadlineBefore": {
+    "description": "S22 plan headline fragment; an emphasized date follows it. Keep the trailing space."
+  },
+  "onboardingPlanHeadlineNamedBefore": "{name}, you'll have an unshakable habit by ",
+  "@onboardingPlanHeadlineNamedBefore": {
+    "description": "S22 plan headline fragment with the user's name; an emphasized date follows it. Keep the trailing space.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sam"
+      }
+    }
+  },
+  "onboardingPlanChip1": "daily spark",
+  "@onboardingPlanChip1": {
+    "description": "Plan summary chip."
+  },
+  "onboardingPlanChip2": "streaks that stick",
+  "@onboardingPlanChip2": {
+    "description": "Plan summary chip."
+  },
+  "onboardingPlanChip3": "impact you can see",
+  "@onboardingPlanChip3": {
+    "description": "Plan summary chip."
+  },
+  "onboardingPlanHow": "how we'll get you there:",
+  "@onboardingPlanHow": {
+    "description": "Plan summary section header."
+  },
+  "onboardingPlanCard1Title": "a personal spark, daily",
+  "@onboardingPlanCard1Title": {
+    "description": "Plan card title."
+  },
+  "onboardingPlanCard1Body": "no more hunting for motivation. quotes picked for your why, every morning.",
+  "@onboardingPlanCard1Body": {
+    "description": "Plan card body."
+  },
+  "onboardingPlanCard2Title": "proof of the good you do",
+  "@onboardingPlanCard2Title": {
+    "description": "Plan card title."
+  },
+  "onboardingPlanCard2Body": "watch your animal, CO₂ and water impact grow, day by day.",
+  "@onboardingPlanCard2Body": {
+    "description": "Plan card body."
+  },
+  "onboardingPlanCta": "begin my journey",
+  "@onboardingPlanCta": {
+    "description": "Plan summary CTA button."
+  },
+  "onboardingCommitmentTitle": "how committed are you to making this future happen?",
+  "@onboardingCommitmentTitle": {
+    "description": "S23 commitment question title."
+  },
+  "onboardingCommitmentExtreme": "🔥 extremely committed",
+  "@onboardingCommitmentExtreme": {
+    "description": "Commitment option."
+  },
+  "onboardingCommitmentVery": "💪 very committed",
+  "@onboardingCommitmentVery": {
+    "description": "Commitment option."
+  },
+  "onboardingCommitmentSomewhat": "🙂 somewhat committed",
+  "@onboardingCommitmentSomewhat": {
+    "description": "Commitment option."
+  },
+  "onboardingCommitmentLittle": "🌱 a little committed",
+  "@onboardingCommitmentLittle": {
+    "description": "Commitment option."
+  },
+  "onboardingCommitmentTrying": "👀 just trying it out",
+  "@onboardingCommitmentTrying": {
+    "description": "Commitment option."
+  },
+  "onboardingCommitmentResponseExtreme": "you're all-in — that's where change lives. let's turn that fire into a habit.",
+  "@onboardingCommitmentResponseExtreme": {
+    "description": "Response copy for the 'extreme' commitment answer."
+  },
+  "onboardingCommitmentResponseVery": "strong start. commitment like this is what carries people through the hard weeks.",
+  "@onboardingCommitmentResponseVery": {
+    "description": "Response copy for the 'very' commitment answer."
+  },
+  "onboardingCommitmentResponseSomewhat": "honest — and that's enough. small daily sparks will do the heavy lifting.",
+  "@onboardingCommitmentResponseSomewhat": {
+    "description": "Response copy for the 'somewhat' commitment answer."
+  },
+  "onboardingCommitmentResponseLittle": "every big change starts a little unsure. we'll keep it light and easy — just show up.",
+  "@onboardingCommitmentResponseLittle": {
+    "description": "Response copy for the 'little' commitment answer."
+  },
+  "onboardingCommitmentResponseTrying": "perfect — no pressure. try it for a few days and let the streak speak for itself.",
+  "@onboardingCommitmentResponseTrying": {
+    "description": "Response copy for the 'trying' commitment answer."
+  },
+  "onboardingCommitmentFallback": "let's build your habit, one spark at a time.",
+  "@onboardingCommitmentFallback": {
+    "description": "Commitment response used when no level was picked."
+  },
+  "onboardingCommitmentResponseCta": "done ✓",
+  "@onboardingCommitmentResponseCta": {
+    "description": "CTA on the commitment-response step."
+  },
+  "onboardingSnapshotTitle": "✨ your motivation snapshot",
+  "@onboardingSnapshotTitle": {
+    "description": "S25 snapshot step title."
+  },
+  "onboardingSnapshotMotivation": "current motivation",
+  "@onboardingSnapshotMotivation": {
+    "description": "Snapshot bar label."
+  },
+  "onboardingSnapshotLowHigh": "low → high",
+  "@onboardingSnapshotLowHigh": {
+    "description": "Snapshot motivation bar trailing scale label."
+  },
+  "onboardingSnapshotWeeklyDips": "weekly dips",
+  "@onboardingSnapshotWeeklyDips": {
+    "description": "Snapshot value-card label."
+  },
+  "onboardingSnapshotDipsValue": "{count, plural, =1{1 day/week} other{{count} days/week}}",
+  "@onboardingSnapshotDipsValue": {
+    "description": "Snapshot weekly-dips value.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingSnapshotCommitment": "commitment level",
+  "@onboardingSnapshotCommitment": {
+    "description": "Snapshot bar label."
+  },
+  "onboardingSnapshotStrengths": "strengths",
+  "@onboardingSnapshotStrengths": {
+    "description": "Snapshot value-card label."
+  },
+  "onboardingSnapshotStrengthFallback": "showing up every day",
+  "@onboardingSnapshotStrengthFallback": {
+    "description": "Snapshot strengths value when no goal was picked."
+  },
+  "onboardingNotifEyebrow": "this is how your plan reaches you",
+  "@onboardingNotifEyebrow": {
+    "description": "Eyebrow on the notifications step."
+  },
+  "onboardingNotifTitle": "daily sparks?",
+  "@onboardingNotifTitle": {
+    "description": "Notifications step title."
+  },
+  "onboardingNotifBody": "short bursts of motivation, delivered to your phone (and watch).",
+  "@onboardingNotifBody": {
+    "description": "Notifications step body."
+  },
+  "onboardingNotifToggle": "send me motivation",
+  "@onboardingNotifToggle": {
+    "description": "Notifications opt-in switch label."
+  },
+  "onboardingNotifPerDaySliderLabel": "{count}× per day",
+  "@onboardingNotifPerDaySliderLabel": {
+    "description": "Slider tooltip for notifications per day.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingNotifPerDayValue": "{count}× / day",
+  "@onboardingNotifPerDayValue": {
+    "description": "Compact per-day notification count next to the slider.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingSocialTitle": "veggie was made for people like you",
+  "@onboardingSocialTitle": {
+    "description": "S27 social-proof step title."
+  },
+  "onboardingSocialChip1": "508 hand-picked quotes",
+  "@onboardingSocialChip1": {
+    "description": "Social-proof chip."
+  },
+  "onboardingSocialChip2": "6 cheering critters",
+  "@onboardingSocialChip2": {
+    "description": "Social-proof chip."
+  },
+  "onboardingSocialChip3": "impact tracking built in",
+  "@onboardingSocialChip3": {
+    "description": "Social-proof chip."
+  },
+  "onboardingSocialBody": "no accounts. no ads. your journey stays on your phone.",
+  "@onboardingSocialBody": {
+    "description": "Social-proof step body."
+  },
+  "onboardingSocialCta": "join veggie 🌱",
+  "@onboardingSocialCta": {
+    "description": "Final onboarding CTA."
+  },
+  "onboardingBombshellSavedBefore": "{name}by staying on this path you'll save ~",
+  "@onboardingBombshellSavedBefore": {
+    "description": "Sits before an animated counting number. {name} is the user's name with a trailing comma+space, or empty.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sam, "
+      }
+    }
+  },
+  "onboardingBombshellSavedAfter": " animals",
+  "@onboardingBombshellSavedAfter": {
+    "description": "Sits after an animated counting number (animals saved). Keep the leading space."
+  },
+  "onboardingBombshellCo2Before": "that's ",
+  "@onboardingBombshellCo2Before": {
+    "description": "Sits before an animated counting number. Keep the trailing space."
+  },
+  "onboardingBombshellCo2After": " tonnes of CO₂",
+  "@onboardingBombshellCo2After": {
+    "description": "Sits after an animated counting number (CO₂ saved). Keep the leading space."
+  },
+  "onboardingBombshellWaterBefore": "and ",
+  "@onboardingBombshellWaterBefore": {
+    "description": "Sits before an animated counting number. Keep the trailing space."
+  },
+  "onboardingBombshellWaterAfter": " litres of water over your lifetime...",
+  "@onboardingBombshellWaterAfter": {
+    "description": "Sits after an animated counting number (water saved). Keep the leading space."
+  },
+  "onboardingBombshellPositiveClose": "what could matter more than protecting that?",
+  "@onboardingBombshellPositiveClose": {
+    "description": "Closing line of the positive bombshell."
+  },
+  "onboardingBombshellTakesBefore": "{name}the average diet takes ~",
+  "@onboardingBombshellTakesBefore": {
+    "description": "Sits before an animated counting number. {name} is the user's name with a trailing comma+space, or empty.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sam, "
+      }
+    }
+  },
+  "onboardingBombshellTakesAfter": " animal lives every year",
+  "@onboardingBombshellTakesAfter": {
+    "description": "Sits after an animated counting number (animal lives per year). Keep the leading space."
+  },
+  "onboardingBombshellLifetimeBefore": "that's ~",
+  "@onboardingBombshellLifetimeBefore": {
+    "description": "Sits before an animated counting number. Keep the trailing space."
+  },
+  "onboardingBombshellLifetimeAfter": " animals over a lifetime",
+  "@onboardingBombshellLifetimeAfter": {
+    "description": "Sits after an animated counting number (animals over a lifetime). Keep the leading space."
+  },
+  "onboardingBombshellNegCo2Before": "and ",
+  "@onboardingBombshellNegCo2Before": {
+    "description": "Sits before an animated counting number. Keep the trailing space."
+  },
+  "onboardingBombshellNegCo2After": " tonnes of CO₂...",
+  "@onboardingBombshellNegCo2After": {
+    "description": "Sits after an animated counting number (CO₂ in the negative framing). Keep the leading space."
+  },
+  "onboardingBombshellNegativeClose": "how many of them could you spare?",
+  "@onboardingBombshellNegativeClose": {
+    "description": "Closing line of the negative bombshell."
   }
 }

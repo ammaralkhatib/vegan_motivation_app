@@ -7,6 +7,7 @@ import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_providers.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'support/fake_purchase_service.dart';
 import 'support/paywall_fixtures.dart';
@@ -21,6 +22,8 @@ Widget harness({
     overrides: overrides,
     child: MaterialApp(
       theme: VeggieTheme.light(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: Scaffold(
         body: Builder(
           builder: (context) => Center(

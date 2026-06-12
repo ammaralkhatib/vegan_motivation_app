@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
+
 /// S17 — a simple two-curve chart: motivation rising "with veggie" vs sagging
 /// "on willpower alone". Pure CustomPaint, no chart package.
 class MotivationChart extends StatelessWidget {
@@ -8,6 +10,7 @@ class MotivationChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -24,12 +27,12 @@ class MotivationChart extends StatelessWidget {
         const SizedBox(height: 16),
         _Legend(
           color: theme.colorScheme.primary,
-          label: 'with veggie',
+          label: l.onboardingChartLegendWith,
         ),
         const SizedBox(height: 6),
         _Legend(
           color: theme.colorScheme.outline,
-          label: 'on willpower alone',
+          label: l.onboardingChartLegendWillpower,
         ),
       ],
     );

@@ -5,7 +5,7 @@ import 'support/paywall_fixtures.dart';
 
 void main() {
   group('buildPaywallData — onboarding', () {
-    test('uses the real free-trial period when present', () {
+    test('captures the real free-trial period when present', () {
       final offering = testOffering(
         'onboarding',
         package: testPackage(product: testStoreProduct(intro: trial7Days)),
@@ -13,24 +13,25 @@ void main() {
 
       final data = buildPaywallData(PaywallVariant.onboarding, offering)!;
 
-      expect(data.ctaLabel, 'Start free trial');
-      expect(data.trialText, '7 days free, then \$49.99/year');
-      expect(data.badgeText, isNull);
+      expect(data.hasTrial, isTrue);
+      expect(data.trialPeriodCount, 7);
+      expect(data.trialPeriodUnit, TrialPeriodUnit.day);
       expect(data.anchorPriceString, isNull);
     });
 
-    test('falls back to plain price when the product has no trial', () {
+    test('has no trial period when the product has no trial', () {
       final offering = testOffering('onboarding'); // no intro price
 
       final data = buildPaywallData(PaywallVariant.onboarding, offering)!;
 
-      expect(data.trialText, isNull);
-      expect(data.subtitle, '\$49.99/year');
+      expect(data.hasTrial, isFalse);
+      expect(data.trialPeriodCount, isNull);
+      expect(data.priceString, r'$49.99');
     });
   });
 
   group('buildPaywallData — discount variants', () {
-    test('defaultOffer shows the 50% badge and the real crossed-out anchor', () {
+    test('defaultOffer keeps the discounted price and the real anchor', () {
       final offering = testOffering(
         'default',
         package: testPackage(
@@ -46,11 +47,10 @@ void main() {
 
       expect(data.priceString, r'$24.99');
       expect(data.anchorPriceString, r'$49.99');
-      expect(data.badgeText, '50% OFF');
-      expect(data.ctaLabel, 'Unlock Veggie Premium');
+      expect(data.hasTrial, isFalse);
     });
 
-    test('discount shows the 80% one-time badge and urgency copy', () {
+    test('discount keeps the discounted price and the real anchor', () {
       final offering = testOffering(
         'discount',
         package: testPackage(
@@ -64,12 +64,11 @@ void main() {
         anchorPriceString: r'$49.99',
       )!;
 
-      expect(data.badgeText, '80% OFF — one-time offer');
-      expect(data.subtitle, "This offer won't come back.");
-      expect(data.ctaLabel, 'Claim my offer');
+      expect(data.priceString, r'$9.99');
+      expect(data.anchorPriceString, r'$49.99');
     });
 
-    test('hides the badge and anchor when the full price is unavailable', () {
+    test('drops the anchor when the full price is unavailable', () {
       final offering = testOffering('default');
 
       final data = buildPaywallData(
@@ -79,7 +78,6 @@ void main() {
       )!;
 
       expect(data.anchorPriceString, isNull);
-      expect(data.badgeText, isNull);
     });
   });
 

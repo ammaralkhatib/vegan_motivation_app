@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../data/impact_estimates.dart';
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_widgets.dart';
 
 /// S7 — the personalized "bombshell" impact stat. Lines fade in one by one;
@@ -36,6 +37,7 @@ class BombshellStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final yearsLeft = math.max(5, 80 - ageMidpoint(ageRange)).toDouble();
     final namePrefix = name.isEmpty ? '' : '$name, ';
 
@@ -49,57 +51,57 @@ class BombshellStep extends StatelessWidget {
         ? <Widget>[
             _numberLine(
               context,
-              before: '${namePrefix}by staying on this path you\'ll save ~',
+              before: l.onboardingBombshellSavedBefore(namePrefix),
               value: ImpactEstimates.animalsPerDay * 365 * yearsLeft,
-              after: ' animals',
+              after: l.onboardingBombshellSavedAfter,
               body: body,
               bold: bold,
             ),
             _numberLine(
               context,
-              before: 'that\'s ',
+              before: l.onboardingBombshellCo2Before,
               value: ImpactEstimates.co2KgPerDay * 365 * yearsLeft / 1000,
-              after: ' tonnes of CO₂',
+              after: l.onboardingBombshellCo2After,
               body: body,
               bold: bold,
             ),
             _numberLine(
               context,
-              before: 'and ',
+              before: l.onboardingBombshellWaterBefore,
               value: ImpactEstimates.waterLitresPerDay * 365 * yearsLeft,
-              after: ' litres of water over your lifetime...',
+              after: l.onboardingBombshellWaterAfter,
               body: body,
               bold: bold,
             ),
-            Text('what could matter more than protecting that?',
+            Text(l.onboardingBombshellPositiveClose,
                 textAlign: TextAlign.center, style: body),
           ]
         : <Widget>[
             _numberLine(
               context,
-              before: '${namePrefix}the average diet takes ~',
+              before: l.onboardingBombshellTakesBefore(namePrefix),
               value: ImpactEstimates.animalsPerDay * 365,
-              after: ' animal lives every year',
+              after: l.onboardingBombshellTakesAfter,
               body: body,
               bold: bold,
             ),
             _numberLine(
               context,
-              before: 'that\'s ~',
+              before: l.onboardingBombshellLifetimeBefore,
               value: ImpactEstimates.animalsPerDay * 365 * yearsLeft,
-              after: ' animals over a lifetime',
+              after: l.onboardingBombshellLifetimeAfter,
               body: body,
               bold: bold,
             ),
             _numberLine(
               context,
-              before: 'and ',
+              before: l.onboardingBombshellNegCo2Before,
               value: ImpactEstimates.co2KgPerDay * 365 * yearsLeft / 1000,
-              after: ' tonnes of CO₂...',
+              after: l.onboardingBombshellNegCo2After,
               body: body,
               bold: bold,
             ),
-            Text('how many of them could you spare?',
+            Text(l.onboardingBombshellNegativeClose,
                 textAlign: TextAlign.center, style: body),
           ];
 

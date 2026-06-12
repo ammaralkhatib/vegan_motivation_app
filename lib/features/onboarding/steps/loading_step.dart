@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_widgets.dart';
 
 /// S21 — a fake-loading transition that builds anticipation. When it becomes
@@ -28,12 +29,6 @@ class _LoadingStepState extends State<LoadingStep>
   )..addStatusListener((status) {
       if (status == AnimationStatus.completed) widget.onDone();
     });
-
-  static const _lines = [
-    'reading your answers ✓',
-    'shaping your daily mix ✓',
-    'building your plan ✓',
-  ];
 
   bool _started = false;
 
@@ -73,6 +68,12 @@ class _LoadingStepState extends State<LoadingStep>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    final lines = [
+      l.onboardingLoadingLine1,
+      l.onboardingLoadingLine2,
+      l.onboardingLoadingLine3,
+    ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(28, 12, 28, 28),
       child: AnimatedBuilder(
@@ -98,18 +99,18 @@ class _LoadingStepState extends State<LoadingStep>
                 ),
               ),
               const SizedBox(height: 28),
-              for (var i = 0; i < _lines.length; i++)
+              for (var i = 0; i < lines.length; i++)
                 AnimatedOpacity(
-                  opacity: t >= (i + 1) / (_lines.length + 1) ? 1 : 0,
+                  opacity: t >= (i + 1) / (lines.length + 1) ? 1 : 0,
                   duration: const Duration(milliseconds: 250),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Text(_lines[i], style: theme.textTheme.bodyLarge),
+                    child: Text(lines[i], style: theme.textTheme.bodyLarge),
                   ),
                 ),
               const SizedBox(height: 24),
               Text(
-                'building your motivation plan...',
+                l.onboardingLoadingFooter,
                 style: theme.textTheme.bodyMedium
                     ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
               ),

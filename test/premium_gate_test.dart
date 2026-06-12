@@ -9,6 +9,7 @@ import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/purchases/premium_gate.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
+import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/explore/explore_screen.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
@@ -173,6 +174,8 @@ void main() {
         ],
         child: MaterialApp.router(
           theme: VeggieTheme.light(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           routerConfig: router,
         ),
       ));

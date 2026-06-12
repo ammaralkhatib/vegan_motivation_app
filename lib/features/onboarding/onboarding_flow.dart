@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../core/notifications/notification_service.dart';
 import '../../core/prefs/prefs_repository.dart';
+import '../../l10n/app_localizations.dart';
 import '../journey/providers.dart';
 import '../paywall/onboarding_paywall_funnel.dart';
 import '../settings/notification_prefs.dart';
@@ -45,25 +46,32 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   double _perDay = 3;
   int _page = 0;
 
+  // Age ranges are numeric tokens, locale-independent — not localized.
   static const _ageRanges = ['14–24', '25–34', '35–44', '45–54', '55+'];
-  static const _dietOptions = [
-    ('vegan', '🌱 i\'m vegan'),
-    ('mostly', '🥦 mostly plant-based'),
-    ('cutting_down', '🍃 cutting down'),
-    ('curious', '👀 just curious'),
-  ];
-  static const _whyOptions = [
-    ('ups_downs', '📈 it has its ups and downs'),
-    ('fading', '🍂 fading a bit lately'),
-    ('starting', '🌱 just starting or rebuilding'),
-    ('strong', '💪 strong and steady'),
-  ];
-  static const _motivationOptions = [
-    ('animals', '🐮  For the animals'),
-    ('planet', '🌍  For the planet'),
-    ('health', '💪  For my health'),
-    ('curious', '✨  Just exploring'),
-  ];
+  static const _dietIds = ['vegan', 'mostly', 'cutting_down', 'curious'];
+  static const _whyIds = ['ups_downs', 'fading', 'starting', 'strong'];
+  static const _motivationIds = ['animals', 'planet', 'health', 'curious'];
+
+  String _dietLabel(AppLocalizations l, String id) => switch (id) {
+        'vegan' => l.onboardingDietVegan,
+        'mostly' => l.onboardingDietMostly,
+        'cutting_down' => l.onboardingDietCuttingDown,
+        _ => l.onboardingDietCurious,
+      };
+
+  String _whyLabel(AppLocalizations l, String id) => switch (id) {
+        'ups_downs' => l.onboardingWhyUpsDowns,
+        'fading' => l.onboardingWhyFading,
+        'starting' => l.onboardingWhyStarting,
+        _ => l.onboardingWhyStrong,
+      };
+
+  String _motivationLabel(AppLocalizations l, String id) => switch (id) {
+        'animals' => l.onboardingMotivationAnimals,
+        'planet' => l.onboardingMotivationPlanet,
+        'health' => l.onboardingMotivationHealth,
+        _ => l.onboardingMotivationCurious,
+      };
 
   bool get _showJourneyStep =>
       _dietStatus == 'vegan' || _dietStatus == 'mostly';
@@ -236,23 +244,26 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         ),
       );
 
-  /// Headline with one bolded, primary-colored word/phrase.
-  Widget _boldHeadline(ThemeData theme, List<(String, bool)> parts) {
+  /// Headline that bolds the [emphasis] substring inside [full]. The full
+  /// sentence lives in one ARB key so translators can reorder it; the emphasis
+  /// word is its own key and is highlighted wherever it lands.
+  Widget _boldHeadline(ThemeData theme, String full, String emphasis) {
+    final boldStyle = TextStyle(
+      color: theme.colorScheme.primary,
+      fontWeight: FontWeight.w700,
+    );
+    final i = full.indexOf(emphasis);
+    final spans = <TextSpan>[];
+    if (i < 0) {
+      spans.add(TextSpan(text: full));
+    } else {
+      if (i > 0) spans.add(TextSpan(text: full.substring(0, i)));
+      spans.add(TextSpan(text: emphasis, style: boldStyle));
+      final rest = full.substring(i + emphasis.length);
+      if (rest.isNotEmpty) spans.add(TextSpan(text: rest));
+    }
     return Text.rich(
-      TextSpan(
-        children: [
-          for (final (text, isBold) in parts)
-            TextSpan(
-              text: text,
-              style: isBold
-                  ? TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    )
-                  : null,
-            ),
-        ],
-      ),
+      TextSpan(children: spans),
       textAlign: TextAlign.center,
       style: theme.textTheme.headlineMedium,
     );
@@ -267,144 +278,147 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   // --- Steps ----------------------------------------------------------------
 
-  Widget _welcome(ThemeData theme) => TapStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.eco, size: 72, color: theme.colorScheme.primary),
-            const SizedBox(height: 24),
-            Text('Veggie', style: theme.textTheme.displayLarge),
-            const SizedBox(height: 12),
-            _body(theme, 'your daily dose of vegan motivation'),
-          ],
-        ),
-      );
+  Widget _welcome(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return TapStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.eco, size: 72, color: theme.colorScheme.primary),
+          const SizedBox(height: 24),
+          // Brand name — intentionally not localized.
+          Text('Veggie', style: theme.textTheme.displayLarge),
+          const SizedBox(height: 12),
+          _body(theme, l.onboardingWelcomeTagline),
+        ],
+      ),
+    );
+  }
 
-  Widget _problem(ThemeData theme) => TapStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _boldHeadline(theme, const [
-              ('ever feel your ', false),
-              ('motivation', true),
-              (' fade, even when your reasons haven\'t?', false),
-            ]),
-            const SizedBox(height: 20),
-            _body(
-              theme,
-              'you\'re not alone. cravings, social pressure, and busy days '
-              'quietly pull people away from the path they chose.',
-            ),
-          ],
-        ),
-      );
+  Widget _problem(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return TapStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _boldHeadline(
+              theme, l.onboardingProblemHeadline, l.onboardingProblemEmphasis),
+          const SizedBox(height: 20),
+          _body(theme, l.onboardingProblemBody),
+        ],
+      ),
+    );
+  }
 
-  Widget _solution(ThemeData theme) => TapStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _boldHeadline(theme, const [
-              ('veggie keeps your ', false),
-              ('why', true),
-              (' in front of you', false),
-            ]),
-            const SizedBox(height: 20),
-            _body(
-              theme,
-              'it\'s simple — every day, a small spark of motivation, made '
-              'for you.',
-            ),
-          ],
-        ),
-      );
+  Widget _solution(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return TapStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _boldHeadline(theme, l.onboardingSolutionHeadline,
+              l.onboardingSolutionEmphasis),
+          const SizedBox(height: 20),
+          _body(theme, l.onboardingSolutionBody),
+        ],
+      ),
+    );
+  }
 
-  Widget _name(ThemeData theme) => InputStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _eyebrow(theme, 'first things first'),
-            Text('what should we call you?',
-                style: theme.textTheme.displaySmall),
-            const SizedBox(height: 24),
-            TextField(
-              controller: _nameController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                hintText: 'your name',
-                border: OutlineInputBorder(),
-              ),
-              onSubmitted: (_) => _next(),
-              onChanged: (_) => setState(() {}),
+  Widget _name(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _eyebrow(theme, l.onboardingNameEyebrow),
+          Text(l.onboardingNameTitle, style: theme.textTheme.displaySmall),
+          const SizedBox(height: 24),
+          TextField(
+            controller: _nameController,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(
+              hintText: l.onboardingNameHint,
+              border: const OutlineInputBorder(),
             ),
-          ],
-        ),
-      );
+            onSubmitted: (_) => _next(),
+            onChanged: (_) => setState(() {}),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _age(ThemeData theme) => InputStep(
         onContinue: _next,
         enabled: _ageRange != null,
         child: _singleSelectList(
           theme,
-          title: 'how old are you?',
+          title: AppLocalizations.of(context).onboardingAgeTitle,
           options: [for (final r in _ageRanges) (r, r)],
           selected: _ageRange,
           onPick: (id) => setState(() => _ageRange = id),
         ),
       );
 
-  Widget _diet(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _dietStatus != null,
-        child: _singleSelectList(
-          theme,
-          title: 'where are you on the path right now?',
-          options: _dietOptions,
-          selected: _dietStatus,
-          onPick: (id) => setState(() => _dietStatus = id),
-        ),
-      );
+  Widget _diet(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _dietStatus != null,
+      child: _singleSelectList(
+        theme,
+        title: l.onboardingDietTitle,
+        options: [for (final id in _dietIds) (id, _dietLabel(l, id))],
+        selected: _dietStatus,
+        onPick: (id) => setState(() => _dietStatus = id),
+      ),
+    );
+  }
 
-  Widget _bridge(ThemeData theme) => TapStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('it doesn\'t have to be this way',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.titleLarge),
-            const SizedBox(height: 20),
-            _boldHeadline(theme, const [
-              ('do you have just ', false),
-              ('2 minutes', true),
-              (' a day?', false),
-            ]),
-            const SizedBox(height: 20),
-            _boldHeadline(theme, const [
-              ('let\'s build a plan for ', false),
-              ('you', true),
-            ]),
-          ],
-        ),
-      );
+  Widget _bridge(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return TapStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(l.onboardingBridgeIntro,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleLarge),
+          const SizedBox(height: 20),
+          _boldHeadline(theme, l.onboardingBridgeHeadline1,
+              l.onboardingBridgeHeadline1Emphasis),
+          const SizedBox(height: 20),
+          _boldHeadline(theme, l.onboardingBridgeHeadline2,
+              l.onboardingBridgeHeadline2Emphasis),
+        ],
+      ),
+    );
+  }
 
-  Widget _goalsStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _goals.isNotEmpty,
-        child: _multiSelectList(
-          theme,
-          title: 'what do you want from veggie?',
-          subtitle: 'choose up to 3',
-          options: goalOptions,
-          selected: _goals,
-        ),
-      );
+  Widget _goalsStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _goals.isNotEmpty,
+      child: _multiSelectList(
+        theme,
+        title: l.onboardingGoalsTitle,
+        subtitle: l.onboardingChooseUpTo3,
+        options: [for (final id in goalIds) (id, goalLabel(l, id))],
+        selected: _goals,
+      ),
+    );
+  }
 
   Widget _goalsReflection(ThemeData theme) {
+    final l = AppLocalizations.of(context);
     final picked = _goals.toList();
     return TapStep(
       onContinue: _next,
@@ -416,7 +430,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  goalReflections[id] ?? '',
+                  goalReflection(l, id),
                   style: theme.textTheme.bodyLarge,
                 ),
               ),
@@ -425,7 +439,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           Text.rich(
             TextSpan(children: [
               TextSpan(
-                text: 'you\'re in the right place',
+                text: l.onboardingGoalsReflectionHeadline,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: theme.colorScheme.primary,
@@ -435,222 +449,236 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
-          _body(
-            theme,
-            'every journey here starts with the same goals — veggie was built '
-            'for exactly this.',
+          _body(theme, l.onboardingGoalsReflectionBody),
+        ],
+      ),
+    );
+  }
+
+  Widget _dipsStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            l.onboardingDipsTitle,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            '$_dips',
+            style: theme.textTheme.displayLarge
+                ?.copyWith(color: theme.colorScheme.primary),
+          ),
+          Text(l.onboardingDipsUnit(_dips), style: theme.textTheme.bodyMedium),
+          Slider(
+            value: _dips.toDouble(),
+            min: 0,
+            max: 7,
+            divisions: 7,
+            label: '$_dips',
+            onChanged: (v) => setState(() => _dips = v.round()),
           ),
         ],
       ),
     );
   }
 
-  Widget _dipsStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'be honest — how many days a week does your motivation dip?',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              '$_dips',
-              style: theme.textTheme.displayLarge
-                  ?.copyWith(color: theme.colorScheme.primary),
-            ),
-            Text('${_dips == 1 ? 'day' : 'days'} a week',
-                style: theme.textTheme.bodyMedium),
-            Slider(
-              value: _dips.toDouble(),
-              min: 0,
-              max: 7,
-              divisions: 7,
-              label: '$_dips',
-              onChanged: (v) => setState(() => _dips = v.round()),
-            ),
-          ],
-        ),
-      );
+  Widget _obstaclesStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _obstacles.isNotEmpty,
+      child: _multiSelectList(
+        theme,
+        title: l.onboardingObstaclesTitle,
+        subtitle: l.onboardingChooseUpTo3,
+        options: [for (final id in obstacleIds) (id, obstacleLabel(l, id))],
+        selected: _obstacles,
+      ),
+    );
+  }
 
-  Widget _obstaclesStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _obstacles.isNotEmpty,
-        child: _multiSelectList(
-          theme,
-          title: 'what gets in the way most?',
-          subtitle: 'choose up to 3',
-          options: obstacleOptions,
-          selected: _obstacles,
-        ),
-      );
+  Widget _whyStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _whyRelationship != null,
+      child: _singleSelectList(
+        theme,
+        title: l.onboardingWhyTitle,
+        options: [for (final id in _whyIds) (id, _whyLabel(l, id))],
+        selected: _whyRelationship,
+        onPick: (id) => setState(() => _whyRelationship = id),
+      ),
+    );
+  }
 
-  Widget _whyStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _whyRelationship != null,
-        child: _singleSelectList(
-          theme,
-          title: 'and how\'s your connection to your why right now?',
-          options: _whyOptions,
-          selected: _whyRelationship,
-          onPick: (id) => setState(() => _whyRelationship = id),
-        ),
-      );
-
-  Widget _journeyStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _veganSince != null,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('when did your journey start?',
-                style: theme.textTheme.displaySmall),
-            const SizedBox(height: 24),
-            Card(
-              color: _veganSince != null
-                  ? theme.colorScheme.primaryContainer
-                  : null,
-              child: ListTile(
-                leading: const Text('🌱', style: TextStyle(fontSize: 24)),
-                title: Text(
-                  _veganSince == null
-                      ? 'pick a date'
-                      : DateFormat('MMM d, y').format(_veganSince!),
-                ),
-                onTap: () async {
-                  final picked = await showDatePicker(
-                    context: context,
-                    initialDate: _veganSince ?? DateTime.now(),
-                    firstDate: DateTime(1970),
-                    lastDate: DateTime.now(),
-                  );
-                  if (picked != null) setState(() => _veganSince = picked);
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+  Widget _journeyStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _veganSince != null,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l.onboardingJourneyTitle,
+              style: theme.textTheme.displaySmall),
+          const SizedBox(height: 24),
+          Card(
+            color: _veganSince != null
+                ? theme.colorScheme.primaryContainer
+                : null,
+            child: ListTile(
+              leading: const Text('🌱', style: TextStyle(fontSize: 24)),
+              title: Text(
+                _veganSince == null
+                    ? l.onboardingJourneyPickDate
+                    : DateFormat('MMM d, y').format(_veganSince!),
+              ),
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: _veganSince ?? DateTime.now(),
+                  firstDate: DateTime(1970),
+                  lastDate: DateTime.now(),
+                );
+                if (picked != null) setState(() => _veganSince = picked);
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
             ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: () => setState(() => _veganSince = DateTime.now()),
-                icon: const Icon(Icons.today),
-                label: const Text('today'),
-              ),
+          ),
+          const SizedBox(height: 10),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () => setState(() => _veganSince = DateTime.now()),
+              icon: const Icon(Icons.today),
+              label: Text(l.onboardingJourneyToday),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget _motivationStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _motivation != null,
-        child: ListView(
-          children: [
-            const SizedBox(height: 8),
-            _eyebrow(theme, 'last one — to make the quotes feel right for you'),
-            Text('what moves you most?', style: theme.textTheme.displaySmall),
-            const SizedBox(height: 20),
-            for (final (id, label) in _motivationOptions)
-              ChoiceCard(
-                label: label,
-                selected: _motivation == id,
-                onTap: () => setState(() => _motivation = id),
-              ),
-          ],
-        ),
-      );
+  Widget _motivationStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _motivation != null,
+      child: ListView(
+        children: [
+          const SizedBox(height: 8),
+          _eyebrow(theme, l.onboardingMotivationEyebrow),
+          Text(l.onboardingMotivationTitle,
+              style: theme.textTheme.displaySmall),
+          const SizedBox(height: 20),
+          for (final id in _motivationIds)
+            ChoiceCard(
+              label: _motivationLabel(l, id),
+              selected: _motivation == id,
+              onTap: () => setState(() => _motivation = id),
+            ),
+        ],
+      ),
+    );
+  }
 
-  Widget _chartStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        child: ListView(
-          children: [
-            const SizedBox(height: 8),
-            Text(
-              'your motivation, with and without a daily spark',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 24),
-            const MotivationChart(),
-            const SizedBox(height: 20),
-            _body(
-              theme,
-              'small daily reminders beat willpower. that\'s the whole idea.',
-            ),
-          ],
-        ),
-      );
+  Widget _chartStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      child: ListView(
+        children: [
+          const SizedBox(height: 8),
+          Text(
+            l.onboardingChartTitle,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 24),
+          const MotivationChart(),
+          const SizedBox(height: 20),
+          _body(theme, l.onboardingChartBody),
+        ],
+      ),
+    );
+  }
 
-  Widget _notificationsStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        cta: 'continue',
-        child: ListView(
-          children: [
-            const SizedBox(height: 8),
-            _eyebrow(theme, 'this is how your plan reaches you'),
-            Text('daily sparks?', style: theme.textTheme.displaySmall),
-            const SizedBox(height: 8),
-            _body(
-              theme,
-              'short bursts of motivation, delivered to your phone (and watch).',
-            ),
-            const SizedBox(height: 16),
-            SwitchListTile(
-              value: _wantsNotifications,
-              onChanged: (v) => setState(() => _wantsNotifications = v),
-              title: const Text('send me motivation'),
-              contentPadding: EdgeInsets.zero,
-            ),
-            if (_wantsNotifications)
-              Row(
-                children: [
-                  Expanded(
-                    child: Slider(
-                      value: _perDay,
-                      min: 1,
-                      max: 10,
-                      divisions: 9,
-                      label: '${_perDay.round()}× per day',
-                      onChanged: (v) => setState(() => _perDay = v),
-                    ),
+  Widget _notificationsStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      child: ListView(
+        children: [
+          const SizedBox(height: 8),
+          _eyebrow(theme, l.onboardingNotifEyebrow),
+          Text(l.onboardingNotifTitle, style: theme.textTheme.displaySmall),
+          const SizedBox(height: 8),
+          _body(theme, l.onboardingNotifBody),
+          const SizedBox(height: 16),
+          SwitchListTile(
+            value: _wantsNotifications,
+            onChanged: (v) => setState(() => _wantsNotifications = v),
+            title: Text(l.onboardingNotifToggle),
+            contentPadding: EdgeInsets.zero,
+          ),
+          if (_wantsNotifications)
+            Row(
+              children: [
+                Expanded(
+                  child: Slider(
+                    value: _perDay,
+                    min: 1,
+                    max: 10,
+                    divisions: 9,
+                    label:
+                        l.onboardingNotifPerDaySliderLabel(_perDay.round()),
+                    onChanged: (v) => setState(() => _perDay = v),
                   ),
-                  SizedBox(
-                    width: 70,
-                    child: Text('${_perDay.round()}× / day',
-                        style: theme.textTheme.labelMedium),
-                  ),
-                ],
-              ),
-          ],
-        ),
-      );
+                ),
+                SizedBox(
+                  width: 70,
+                  child: Text(l.onboardingNotifPerDayValue(_perDay.round()),
+                      style: theme.textTheme.labelMedium),
+                ),
+              ],
+            ),
+        ],
+      ),
+    );
+  }
 
-  Widget _commitmentStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        enabled: _commitment != null,
-        child: _singleSelectList(
-          theme,
-          title: 'how committed are you to making this future happen?',
-          options: commitmentOptions,
-          selected: _commitment,
-          onPick: (id) => setState(() => _commitment = id),
-        ),
-      );
+  Widget _commitmentStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      enabled: _commitment != null,
+      child: _singleSelectList(
+        theme,
+        title: l.onboardingCommitmentTitle,
+        options: [for (final id in commitmentIds) (id, commitmentLabel(l, id))],
+        selected: _commitment,
+        onPick: (id) => setState(() => _commitment = id),
+      ),
+    );
+  }
 
   Widget _commitmentResponse(ThemeData theme) {
-    final copy = commitmentResponses[_commitment] ??
-        'let\'s build your habit, one spark at a time.';
+    final l = AppLocalizations.of(context);
+    final copy = commitmentResponse(l, _commitment);
     return ColoredBox(
       color: theme.colorScheme.primaryContainer,
       child: InputStep(
         onContinue: _next,
-        cta: 'done ✓',
+        cta: l.onboardingCommitmentResponseCta,
         child: Center(
           child: Text(
             copy,
@@ -663,39 +691,38 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
-  Widget _socialProofStep(ThemeData theme) => InputStep(
-        onContinue: _next,
-        cta: 'join veggie 🌱',
-        child: ListView(
-          children: [
-            const SizedBox(height: 8),
-            Text('veggie was made for people like you',
-                style: theme.textTheme.displaySmall),
-            const SizedBox(height: 20),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final c in const [
-                  '508 hand-picked quotes',
-                  '6 cheering critters',
-                  'impact tracking built in',
-                ])
-                  Chip(
-                    label: Text(c),
-                    backgroundColor: theme.colorScheme.primaryContainer,
-                    side: BorderSide.none,
-                  ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            _body(
-              theme,
-              'no accounts. no ads. your journey stays on your phone.',
-            ),
-          ],
-        ),
-      );
+  Widget _socialProofStep(ThemeData theme) {
+    final l = AppLocalizations.of(context);
+    return InputStep(
+      onContinue: _next,
+      cta: l.onboardingSocialCta,
+      child: ListView(
+        children: [
+          const SizedBox(height: 8),
+          Text(l.onboardingSocialTitle, style: theme.textTheme.displaySmall),
+          const SizedBox(height: 20),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final c in [
+                l.onboardingSocialChip1,
+                l.onboardingSocialChip2,
+                l.onboardingSocialChip3,
+              ])
+                Chip(
+                  label: Text(c),
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  side: BorderSide.none,
+                ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _body(theme, l.onboardingSocialBody),
+        ],
+      ),
+    );
+  }
 
   // --- Selection helpers ----------------------------------------------------
 

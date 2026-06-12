@@ -47,26 +47,22 @@ Offering testOffering(
   );
 }
 
-/// A ready-made [PaywallData] for view/screen tests.
+/// A ready-made [PaywallData] for view/screen tests. Display copy now lives in
+/// the widget layer (resolved from [variant] via l10n), so this only carries
+/// store facts: price, optional anchor, and an optional trial period.
 PaywallData testPaywallData({
   PaywallVariant variant = PaywallVariant.defaultOffer,
-  String title = 'Unlock Veggie Premium',
-  String ctaLabel = 'Unlock Veggie Premium',
   String priceString = r'$24.99',
-  String? subtitle = r'$24.99/year',
   String? anchorPriceString,
-  String? trialText,
-  String? badgeText,
+  int? trialPeriodCount,
+  TrialPeriodUnit? trialPeriodUnit,
 }) {
   return PaywallData(
     variant: variant,
-    title: title,
-    ctaLabel: ctaLabel,
     priceString: priceString,
     package: testPackage(),
-    subtitle: subtitle,
     anchorPriceString: anchorPriceString,
-    trialText: trialText,
-    badgeText: badgeText,
+    trialPeriodCount: trialPeriodCount,
+    trialPeriodUnit: trialPeriodUnit,
   );
 }

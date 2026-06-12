@@ -29,32 +29,30 @@ enum PaywallVariant {
       );
 }
 
-/// Everything the paywall *screen* needs to render — already resolved from the
-/// store. The screen renders only this, so widget tests build it by hand and
-/// never touch real SDK types (002 showed those are painful to fake).
+/// Free-trial period unit, decoupled from the RevenueCat SDK enum so the
+/// widget layer can localize it without importing the store SDK.
+enum TrialPeriodUnit { day, week, month, year }
+
+/// Everything the paywall *screen* needs to render — resolved from the store,
+/// but **string-free of copy**. Prices come straight from the store
+/// ([priceString], [anchorPriceString]); the trial is kept as a raw
+/// count + unit. All display copy (title, CTA, badge, subtitle, trial line) is
+/// resolved from [variant] in the widget layer via AppLocalizations, so no
+/// English lives in the data layer (UI-strings-only l10n, CLAUDE.md §1).
 ///
-/// Prices and trial text always come from the store ([priceString],
-/// [anchorPriceString], [trialText]); only copy is hard-coded.
+/// The screen renders only this, so widget tests build it by hand and never
+/// touch real SDK types (002 showed those are painful to fake).
 class PaywallData {
   const PaywallData({
     required this.variant,
-    required this.title,
-    required this.ctaLabel,
     required this.priceString,
     required this.package,
-    this.subtitle,
     this.anchorPriceString,
-    this.trialText,
-    this.badgeText,
+    this.trialPeriodCount,
+    this.trialPeriodUnit,
   });
 
   final PaywallVariant variant;
-
-  /// Headline copy.
-  final String title;
-
-  /// Primary button label.
-  final String ctaLabel;
 
   /// Real, localized price of the product being sold (e.g. "$24.99").
   final String priceString;
@@ -62,17 +60,15 @@ class PaywallData {
   /// The package the CTA buys.
   final Package package;
 
-  /// Optional supporting line (e.g. discount urgency, or plain "$X/year").
-  final String? subtitle;
-
   /// Optional crossed-out anchor price — only ever the real full price.
   final String? anchorPriceString;
 
-  /// Optional trial line, e.g. "7 days free, then $49.99/year".
-  final String? trialText;
+  /// Free-trial length, or null when the product has no free trial. The pair is
+  /// formatted (and pluralized) in the widget layer.
+  final int? trialPeriodCount;
+  final TrialPeriodUnit? trialPeriodUnit;
 
-  /// Optional badge, e.g. "50% OFF".
-  final String? badgeText;
+  bool get hasTrial => trialPeriodCount != null && trialPeriodUnit != null;
 }
 
 /// Builds [PaywallData] from a RevenueCat [offering]. Returns null if the
@@ -91,37 +87,21 @@ PaywallData? buildPaywallData(
 
   switch (variant) {
     case PaywallVariant.onboarding:
-      final trial = _freeTrialText(package.storeProduct);
+      final trial = _freeTrialPeriod(package.storeProduct);
       return PaywallData(
         variant: variant,
-        title: 'Start your Veggie journey',
-        ctaLabel: 'Start free trial',
         priceString: price,
         package: package,
-        trialText: trial != null ? '$trial free, then $price/year' : null,
-        subtitle: trial == null ? '$price/year' : null,
+        trialPeriodCount: trial?.$1,
+        trialPeriodUnit: trial?.$2,
       );
     case PaywallVariant.defaultOffer:
-      return PaywallData(
-        variant: variant,
-        title: 'Unlock Veggie Premium',
-        ctaLabel: 'Unlock Veggie Premium',
-        priceString: price,
-        package: package,
-        subtitle: '$price/year',
-        anchorPriceString: anchorPriceString,
-        badgeText: anchorPriceString != null ? '50% OFF' : null,
-      );
     case PaywallVariant.discount:
       return PaywallData(
         variant: variant,
-        title: 'A one-time gift for you',
-        ctaLabel: 'Claim my offer',
         priceString: price,
         package: package,
-        subtitle: "This offer won't come back.",
         anchorPriceString: anchorPriceString,
-        badgeText: anchorPriceString != null ? '80% OFF — one-time offer' : null,
       );
   }
 }
@@ -139,19 +119,18 @@ Package? _annualOrFirst(Offering offering) =>
         ? offering.availablePackages.first
         : null);
 
-/// Returns trial duration text ("7 days") when the product has a *free*
-/// introductory phase, else null — so we never promise a trial the store
-/// won't honor.
-String? _freeTrialText(StoreProduct product) {
+/// Returns the trial duration as a (count, unit) pair when the product has a
+/// *free* introductory phase, else null — so we never promise a trial the
+/// store won't honor. The pair is localized in the widget layer.
+(int, TrialPeriodUnit)? _freeTrialPeriod(StoreProduct product) {
   final intro = product.introductoryPrice;
   if (intro == null || intro.price != 0) return null;
-  final n = intro.periodNumberOfUnits;
   final unit = switch (intro.periodUnit) {
-    PeriodUnit.day => n == 1 ? 'day' : 'days',
-    PeriodUnit.week => n == 1 ? 'week' : 'weeks',
-    PeriodUnit.month => n == 1 ? 'month' : 'months',
-    PeriodUnit.year => n == 1 ? 'year' : 'years',
-    PeriodUnit.unknown => 'days',
+    PeriodUnit.day => TrialPeriodUnit.day,
+    PeriodUnit.week => TrialPeriodUnit.week,
+    PeriodUnit.month => TrialPeriodUnit.month,
+    PeriodUnit.year => TrialPeriodUnit.year,
+    PeriodUnit.unknown => TrialPeriodUnit.day,
   };
-  return '$n $unit';
+  return (intro.periodNumberOfUnits, unit);
 }

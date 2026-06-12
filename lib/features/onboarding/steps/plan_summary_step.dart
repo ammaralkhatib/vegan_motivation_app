@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_widgets.dart';
 
 /// S22 — the personalized 30-day plan summary.
@@ -17,6 +18,7 @@ class PlanSummaryStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final date = DateFormat('MMMM d, y')
         .format(DateTime.now().add(const Duration(days: 30)));
 
@@ -24,27 +26,24 @@ class PlanSummaryStep extends StatelessWidget {
       color: theme.colorScheme.primary,
       fontWeight: FontWeight.w700,
     );
-    final headline = name.isEmpty
-        ? Text.rich(
-            TextSpan(children: [
-              const TextSpan(text: 'your unshakable habit arrives by '),
-              TextSpan(text: date, style: bold),
-            ]),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall,
-          )
-        : Text.rich(
-            TextSpan(children: [
-              TextSpan(text: '$name, you\'ll have an unshakable habit by '),
-              TextSpan(text: date, style: bold),
-            ]),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall,
-          );
+    // The headline ends with an emphasized date, so the before-text is one ARB
+    // key and the bold date is appended as its own span.
+    final headline = Text.rich(
+      TextSpan(children: [
+        TextSpan(
+          text: name.isEmpty
+              ? l.onboardingPlanHeadlineBefore
+              : l.onboardingPlanHeadlineNamedBefore(name),
+        ),
+        TextSpan(text: date, style: bold),
+      ]),
+      textAlign: TextAlign.center,
+      style: theme.textTheme.headlineSmall,
+    );
 
     return InputStep(
       onContinue: onContinue,
-      cta: 'begin my journey',
+      cta: l.onboardingPlanCta,
       child: ListView(
         children: [
           const SizedBox(height: 8),
@@ -54,27 +53,25 @@ class PlanSummaryStep extends StatelessWidget {
             alignment: WrapAlignment.center,
             spacing: 8,
             runSpacing: 8,
-            children: const [
-              _Chip('daily spark'),
-              _Chip('streaks that stick'),
-              _Chip('impact you can see'),
+            children: [
+              _Chip(l.onboardingPlanChip1),
+              _Chip(l.onboardingPlanChip2),
+              _Chip(l.onboardingPlanChip3),
             ],
           ),
           const SizedBox(height: 24),
-          Text('how we\'ll get you there:',
-              style: theme.textTheme.titleMedium),
+          Text(l.onboardingPlanHow, style: theme.textTheme.titleMedium),
           const SizedBox(height: 12),
-          const _PlanCard(
+          _PlanCard(
             emoji: '✨',
-            title: 'a personal spark, daily',
-            body: 'no more hunting for motivation. quotes picked for your why, '
-                'every morning.',
+            title: l.onboardingPlanCard1Title,
+            body: l.onboardingPlanCard1Body,
           ),
           const SizedBox(height: 12),
-          const _PlanCard(
+          _PlanCard(
             emoji: '📈',
-            title: 'proof of the good you do',
-            body: 'watch your animal, CO₂ and water impact grow, day by day.',
+            title: l.onboardingPlanCard2Title,
+            body: l.onboardingPlanCard2Body,
           ),
         ],
       ),

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 /// Shared building blocks for the story onboarding flow.
 
 /// True when the platform asks for reduced motion — animations collapse to
@@ -65,7 +67,7 @@ class TapStep extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                'tap to continue →',
+                AppLocalizations.of(context).onboardingTapToContinue,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -85,16 +87,19 @@ class InputStep extends StatelessWidget {
     required this.onContinue,
     required this.child,
     this.enabled = true,
-    this.cta = 'continue',
+    this.cta,
   });
 
   final VoidCallback onContinue;
   final Widget child;
   final bool enabled;
-  final String cta;
+
+  /// Button label; defaults to the localized "continue" when null.
+  final String? cta;
 
   @override
   Widget build(BuildContext context) {
+    final label = cta ?? AppLocalizations.of(context).onboardingContinue;
     return Padding(
       padding: const EdgeInsets.fromLTRB(28, 12, 28, 28),
       child: Column(
@@ -104,7 +109,7 @@ class InputStep extends StatelessWidget {
           const SizedBox(height: 12),
           FilledButton(
             onPressed: enabled ? onContinue : null,
-            child: Text(cta),
+            child: Text(label),
           ),
         ],
       ),

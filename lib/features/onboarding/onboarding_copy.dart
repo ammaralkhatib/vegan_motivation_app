@@ -1,85 +1,32 @@
-/// Static copy maps for the onboarding story, shared across steps.
+/// Onboarding option ids (stable, persisted) and their localized copy.
+///
+/// Ids are the contract with prefs and downstream logic — they never change.
+/// All user-visible text is resolved through [AppLocalizations] here, so the
+/// data layer stays string-free (UI-strings-only l10n, CLAUDE.md §1).
 library;
 
-/// S9 goal options: (id, label).
-const goalOptions = [
-  ('daily_motivation', '🔥 stay motivated every day'),
-  ('habits', '🌱 build habits that stick'),
-  ('social_strength', '💪 stay strong in social situations'),
-  ('reconnect_why', '❤️ reconnect with my why'),
-  ('less_alone', '🤝 feel less alone on this path'),
+import '../../l10n/app_localizations.dart';
+
+/// S9 goal ids, in display order.
+const goalIds = [
+  'daily_motivation',
+  'habits',
+  'social_strength',
+  'reconnect_why',
+  'less_alone',
 ];
 
-/// S10 — what each picked goal promises back to the user.
-const goalReflections = {
-  'daily_motivation':
-      'a fresh spark every morning — your feed and reminders will keep the '
-          'fire lit.',
-  'habits':
-      'gentle streaks and small wins, so good days turn into a way of life.',
-  'social_strength':
-      'the right words for the hard moments — awkward dinner questions '
-          'included.',
-  'reconnect_why':
-      'we\'ll keep your reason close, especially on the days it feels far.',
-  'less_alone':
-      'you\'re part of something bigger — we\'ll remind you of the good you do.',
-};
-
-/// S15 — first goal in plain words ("you want ...").
-const goalPlainWords = {
-  'daily_motivation': 'to stay motivated every day',
-  'habits': 'to build habits that stick',
-  'social_strength': 'to stay strong in social situations',
-  'reconnect_why': 'to reconnect with your why',
-  'less_alone': 'to feel less alone on this path',
-};
-
-/// S12 obstacle options: (id, label).
-const obstacleOptions = [
-  ('cravings', '🍕 cravings & convenience'),
-  ('social_pressure', '🥂 social pressure'),
-  ('fading_motivation', '😮‍💨 motivation fades over time'),
-  ('alone', '🧍 nobody around me gets it'),
-  ('busyness', '⏰ busy life, no headspace'),
+/// S12 obstacle ids, in display order.
+const obstacleIds = [
+  'cravings',
+  'social_pressure',
+  'fading_motivation',
+  'alone',
+  'busyness',
 ];
 
-/// S15 — first obstacle in plain words ("but ... keeps getting in the way").
-const obstaclePlainWords = {
-  'cravings': 'cravings & convenience',
-  'social_pressure': 'social pressure',
-  'fading_motivation': 'fading motivation',
-  'alone': 'feeling alone in it',
-  'busyness': 'a busy life',
-};
-
-/// S23 commitment options: (id, label).
-const commitmentOptions = [
-  ('extreme', '🔥 extremely committed'),
-  ('very', '💪 very committed'),
-  ('somewhat', '🙂 somewhat committed'),
-  ('little', '🌱 a little committed'),
-  ('trying', '👀 just trying it out'),
-];
-
-/// S24 — response copy tailored to the commitment answer.
-const commitmentResponses = {
-  'extreme':
-      "you're all-in — that's where change lives. let's turn that fire into a "
-          'habit.',
-  'very':
-      'strong start. commitment like this is what carries people through the '
-          'hard weeks.',
-  'somewhat':
-      "honest — and that's enough. small daily sparks will do the heavy "
-          'lifting.',
-  'little':
-      "every big change starts a little unsure. we'll keep it light and easy "
-          '— just show up.',
-  'trying':
-      'perfect — no pressure. try it for a few days and let the streak speak '
-          'for itself.',
-};
+/// S23 commitment ids, in display order.
+const commitmentIds = ['extreme', 'very', 'somewhat', 'little', 'trying'];
 
 /// S25 — how full the commitment bar reads, per level (0–1).
 const commitmentBarFill = {
@@ -89,3 +36,70 @@ const commitmentBarFill = {
   'little': 0.4,
   'trying': 0.2,
 };
+
+/// S9 — goal choice label.
+String goalLabel(AppLocalizations l, String id) => switch (id) {
+      'daily_motivation' => l.onboardingGoalDailyMotivation,
+      'habits' => l.onboardingGoalHabits,
+      'social_strength' => l.onboardingGoalSocialStrength,
+      'reconnect_why' => l.onboardingGoalReconnectWhy,
+      _ => l.onboardingGoalLessAlone,
+    };
+
+/// S10 — what each picked goal promises back to the user.
+String goalReflection(AppLocalizations l, String id) => switch (id) {
+      'daily_motivation' => l.onboardingGoalReflectionDailyMotivation,
+      'habits' => l.onboardingGoalReflectionHabits,
+      'social_strength' => l.onboardingGoalReflectionSocialStrength,
+      'reconnect_why' => l.onboardingGoalReflectionReconnectWhy,
+      'less_alone' => l.onboardingGoalReflectionLessAlone,
+      _ => '',
+    };
+
+/// S15 / S25 — first goal in plain words ("you want ...").
+String goalPlainWords(AppLocalizations l, String id) => switch (id) {
+      'daily_motivation' => l.onboardingGoalPlainDailyMotivation,
+      'habits' => l.onboardingGoalPlainHabits,
+      'social_strength' => l.onboardingGoalPlainSocialStrength,
+      'reconnect_why' => l.onboardingGoalPlainReconnectWhy,
+      'less_alone' => l.onboardingGoalPlainLessAlone,
+      _ => l.onboardingReflectionGoalFallback,
+    };
+
+/// S12 — obstacle choice label.
+String obstacleLabel(AppLocalizations l, String id) => switch (id) {
+      'cravings' => l.onboardingObstacleCravings,
+      'social_pressure' => l.onboardingObstacleSocialPressure,
+      'fading_motivation' => l.onboardingObstacleFadingMotivation,
+      'alone' => l.onboardingObstacleAlone,
+      _ => l.onboardingObstacleBusyness,
+    };
+
+/// S15 — first obstacle in plain words ("but ... keeps getting in the way").
+String obstaclePlainWords(AppLocalizations l, String id) => switch (id) {
+      'cravings' => l.onboardingObstaclePlainCravings,
+      'social_pressure' => l.onboardingObstaclePlainSocialPressure,
+      'fading_motivation' => l.onboardingObstaclePlainFadingMotivation,
+      'alone' => l.onboardingObstaclePlainAlone,
+      _ => l.onboardingObstaclePlainBusyness,
+    };
+
+/// S23 — commitment choice label.
+String commitmentLabel(AppLocalizations l, String id) => switch (id) {
+      'extreme' => l.onboardingCommitmentExtreme,
+      'very' => l.onboardingCommitmentVery,
+      'somewhat' => l.onboardingCommitmentSomewhat,
+      'little' => l.onboardingCommitmentLittle,
+      _ => l.onboardingCommitmentTrying,
+    };
+
+/// S24 — response copy tailored to the commitment answer. Falls back to a
+/// generic line when nothing was picked.
+String commitmentResponse(AppLocalizations l, String? id) => switch (id) {
+      'extreme' => l.onboardingCommitmentResponseExtreme,
+      'very' => l.onboardingCommitmentResponseVery,
+      'somewhat' => l.onboardingCommitmentResponseSomewhat,
+      'little' => l.onboardingCommitmentResponseLittle,
+      'trying' => l.onboardingCommitmentResponseTrying,
+      _ => l.onboardingCommitmentFallback,
+    };

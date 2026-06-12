@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../onboarding_copy.dart';
 import '../onboarding_widgets.dart';
 
@@ -22,24 +23,24 @@ class FinalReflectionStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
     final style = theme.textTheme.titleLarge;
 
     final goalPhrase = goals.isEmpty
-        ? 'to keep your motivation strong'
-        : goalPlainWords[goals.first] ?? 'to keep your motivation strong';
+        ? l.onboardingReflectionGoalFallback
+        : goalPlainWords(l, goals.first);
     final obstaclePhrase = obstacles.isEmpty
-        ? 'old habits'
-        : obstaclePlainWords[obstacles.first] ?? 'old habits';
+        ? l.onboardingReflectionObstacleFallback
+        : obstaclePlainWords(l, obstacles.first);
     final dipsLine = dipsPerWeek < 0
-        ? 'and some weeks test your motivation'
-        : 'your motivation dips $dipsPerWeek '
-            '${dipsPerWeek == 1 ? 'day' : 'days'} a week';
+        ? l.onboardingReflectionDipsUnknown
+        : l.onboardingReflectionDips(dipsPerWeek);
 
     final lines = <String>[
-      'you want $goalPhrase',
-      'but $obstaclePhrase keeps getting in the way',
+      l.onboardingReflectionGoalLine(goalPhrase),
+      l.onboardingReflectionObstacleLine(obstaclePhrase),
       dipsLine,
-      'veggie was made for exactly this moment.',
+      l.onboardingReflectionClose,
     ];
 
     return TapStep(
