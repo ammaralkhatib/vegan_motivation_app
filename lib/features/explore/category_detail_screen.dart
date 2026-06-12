@@ -27,7 +27,6 @@ class CategoryDetailScreen extends ConsumerWidget {
     final quotes = ref.watch(_categoryQuotesProvider(categoryId));
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
           category == null

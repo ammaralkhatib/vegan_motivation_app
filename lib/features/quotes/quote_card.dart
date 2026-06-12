@@ -230,15 +230,16 @@ class _CardContent extends StatelessWidget {
             ),
           ),
         ],
-        const Spacer(flex: 2),
-        // No critter competing with a photo; gradient cards keep it.
+        // Critter sits directly under the quote text. The leading gap renders
+        // only when the critter does. No critter competing with a photo card.
         if (!onPhoto) ...[
+          const SizedBox(height: 24),
           AnimatedCritter(
             critter: Critter.forCategory(quote.categoryId),
-            size: 96,
+            size: 140,
           ),
-          const SizedBox(height: 12),
         ],
+        const Spacer(flex: 2),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

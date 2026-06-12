@@ -26,7 +26,7 @@ class VeggieShell extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: _CornerButton(
-                    icon: Icons.favorite_outline,
+                    icon: Icons.person_outline,
                     label: l.shellTabJourney,
                     onTap: () => context.push('/journey'),
                   ),

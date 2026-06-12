@@ -46,7 +46,6 @@ class NotificationSettingsScreen extends ConsumerWidget {
     final notifier = ref.read(notifSettingsProvider.notifier);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(title: Text(l10n.notificationsTitle)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),

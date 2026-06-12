@@ -101,7 +101,6 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(_isNew ? l.habitsEditNewTitle : l.habitsEditTitle),
         actions: [

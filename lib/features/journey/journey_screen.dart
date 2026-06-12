@@ -54,18 +54,28 @@ class JourneyScreen extends ConsumerWidget {
     final journey = ref.watch(journeyProvider);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close),
           tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-          onPressed: () => context.pop(),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go('/today'),
         ),
         title: Text(l.journeyTitle),
       ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
+          // Today's date, localized to the app language — moved here off the
+          // feed (prompt 016).
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString())
+                  .format(DateTime.now()),
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ),
           if (journey.veganSince != null)
             ..._veganJourney(context, ref, journey)
           else

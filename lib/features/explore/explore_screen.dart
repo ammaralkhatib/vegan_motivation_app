@@ -20,17 +20,17 @@ class ExploreScreen extends ConsumerWidget {
     final counts = ref.watch(quoteCountsProvider).valueOrNull ?? const {};
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close),
           tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-          onPressed: () => context.pop(),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go('/today'),
         ),
         title: Text(l.exploreTitle),
         actions: [
           IconButton(
-            onPressed: () => context.go('/explore/favorites'),
+            onPressed: () => context.push('/explore/favorites'),
             icon: const Icon(Icons.favorite_outline),
             tooltip: l.exploreFavoritesTooltip,
           ),
@@ -87,7 +87,7 @@ class _CategoryCard extends ConsumerWidget {
         // Locked → show the premium prompt instead of opening the category.
         onTap: locked
             ? () => showPremiumPaywall(context)
-            : () => context.go('/explore/category/${category.id}'),
+            : () => context.push('/explore/category/${category.id}'),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
           child: Row(

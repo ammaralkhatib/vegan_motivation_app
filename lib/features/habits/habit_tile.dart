@@ -37,7 +37,7 @@ class HabitTile extends ConsumerWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onLongPress: () => context.go('/habits/edit/${habit.id}'),
+        onLongPress: () => context.push('/habits/edit/${habit.id}'),
         onTap: () => _toggle(ref, today),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 16, 16),

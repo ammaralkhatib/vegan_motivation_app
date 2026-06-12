@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/app/app.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
+import 'package:vegan_motivation_app/features/explore/explore_screen.dart';
+import 'package:vegan_motivation_app/features/explore/favorites_screen.dart';
 import 'package:vegan_motivation_app/features/habits/habits_screen.dart';
 
 import 'feed_widget_test.dart' show seededDb;
@@ -60,6 +62,37 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(HabitsScreen), findsNothing);
     expect(find.byTooltip('Habits'), findsOneWidget);
+
+    await unmountAndFlush(tester);
+  });
+
+  testWidgets('Explore → Favorites → back → X still returns to the feed '
+      '(no navigation dead end)', (tester) async {
+    disableCritterAnimations(tester);
+    await tester.pumpWidget(await appWith(onboarded: true));
+    await tester.pumpAndSettle();
+
+    // Feed → Explore sheet.
+    await tester.tap(find.byTooltip('Explore'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ExploreScreen), findsOneWidget);
+
+    // Explore → Favorites (pushed, so /today stays underneath).
+    await tester.tap(find.byTooltip('Favorites'));
+    await tester.pumpAndSettle();
+    expect(find.byType(FavoritesScreen), findsOneWidget);
+
+    // Back to Explore.
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.byType(FavoritesScreen), findsNothing);
+    expect(find.byType(ExploreScreen), findsOneWidget);
+
+    // The X is not a dead end any more — it lands back on the feed.
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+    expect(find.byType(ExploreScreen), findsNothing);
+    expect(find.byTooltip('Explore'), findsOneWidget);
 
     await unmountAndFlush(tester);
   });

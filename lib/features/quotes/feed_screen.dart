@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../core/db/database.dart';
 import '../../l10n/app_localizations.dart';
@@ -70,31 +69,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     final id = ids[index % ids.length];
                     return QuoteCard(quoteId: id, onShare: _share);
                   },
-                ),
-              ),
-              // Date header overlay.
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          DateFormat('EEEE, MMM d').format(DateTime.now()),
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
-                        const Spacer(),
-                        Icon(
-                          Icons.eco,
-                          size: 18,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ),
             ],

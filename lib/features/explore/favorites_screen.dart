@@ -18,7 +18,6 @@ class FavoritesScreen extends ConsumerWidget {
     final favorites = ref.watch(favoritesProvider);
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       appBar: AppBar(title: Text(l.favoritesTitle)),
       body: favorites.when(
         loading: () => const Center(child: CircularProgressIndicator()),
