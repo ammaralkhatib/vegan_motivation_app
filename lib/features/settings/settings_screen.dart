@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
 import '../../core/prefs/prefs_repository.dart';
+import '../../core/purchases/purchase_providers.dart';
 import '../../data/content_importer.dart';
+import '../paywall/paywall_data.dart';
+import '../paywall/paywall_screen.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class SettingsScreen extends ConsumerWidget {
@@ -75,6 +78,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final isPremium = ref.watch(isPremiumProvider);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -82,6 +86,21 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
+          // Hidden once the user is premium — nothing left to sell.
+          if (!isPremium) ...[
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.workspace_premium_outlined),
+                title: const Text('Veggie Premium'),
+                subtitle:
+                    const Text('Unlock all categories & the full library'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () =>
+                    showPaywall(context, PaywallVariant.defaultOffer),
+              ),
+            ),
+            const SizedBox(height: 24),
+          ],
           Text('Appearance', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 10),
           SegmentedButton<ThemeMode>(
