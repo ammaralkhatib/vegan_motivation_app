@@ -98,6 +98,12 @@ Manual click-path (open item for Ammar):
 - Manual on-device check of real fired notifications (above) — can't be verified
   in CI.
 
+## Commit & push
+
+- **Commit(s):** `7db732e` — `feat(notifications): meal-time mode with smart slot pattern`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`dafa458..7db732e`).
+
 ## Deviations from prompt
 
 None.
