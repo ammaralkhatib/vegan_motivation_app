@@ -90,6 +90,12 @@ Manual click-path (for the owner):
 - Still depends on the placeholder API keys from prompt 002 — gating itself needs
   no network (it only reads cached premium status), so this works offline today.
 
+## Commit & push
+
+- **Commit(s):** `69d7d14` — `feat(purchases): gate quote categories behind premium`
+  (this report's SHA stamp is a tiny follow-up `docs` commit).
+- **Push:** `origin/main` — ok (`5b3c9c6..69d7d14`).
+
 ## Deviations from prompt
 
 None.
