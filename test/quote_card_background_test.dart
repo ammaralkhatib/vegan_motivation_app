@@ -11,6 +11,7 @@ import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
+import 'package:vegan_motivation_app/core/critters/animated_critter.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/quotes/quote_card.dart';
 
@@ -122,6 +123,38 @@ void main() {
 
     expect(find.byKey(_photoKey), findsNothing);
 
+    await unmountAndFlush(tester);
+  });
+
+  testWidgets('photo card hides the critter; gradient card keeps it + no shadow',
+      (tester) async {
+    disableCritterAnimations(tester);
+    final db = await seededDb();
+    addTearDown(db.close);
+
+    // Photo card: no critter, and the quote text carries a shadow.
+    await tester.pumpWidget(await card(
+      db: db,
+      premium: true,
+      photoOn: true,
+      manifest: _withImages,
+    ));
+    await tester.pumpAndSettle();
+    expect(find.byType(AnimatedCritter), findsNothing);
+    expect(tester.widget<Text>(find.text(_quoteText)).style?.shadows,
+        isNotEmpty);
+    await unmountAndFlush(tester);
+
+    // Gradient card: critter present, and no shadow on the text.
+    await tester.pumpWidget(await card(
+      db: db,
+      premium: true,
+      photoOn: false,
+      manifest: _withImages,
+    ));
+    await tester.pumpAndSettle();
+    expect(find.byType(AnimatedCritter), findsOneWidget);
+    expect(tester.widget<Text>(find.text(_quoteText)).style?.shadows, isNull);
     await unmountAndFlush(tester);
   });
 

@@ -66,9 +66,19 @@ class VeggieShell extends StatelessWidget {
       );
     }
 
+    // Today (index 0) gets a full-screen feed behind a see-through bar; other
+    // tabs keep the solid bar and a non-extended body (unchanged).
+    final onToday = navigationShell.currentIndex == 0;
+    final theme = Theme.of(context);
+
     return Scaffold(
+      extendBody: onToday,
       body: navigationShell,
       bottomNavigationBar: NavigationBar(
+        backgroundColor:
+            onToday ? theme.colorScheme.surface.withValues(alpha: 0.7) : null,
+        surfaceTintColor: onToday ? Colors.transparent : null,
+        elevation: onToday ? 0 : null,
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch,
         destinations: [

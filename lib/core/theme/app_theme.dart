@@ -32,12 +32,12 @@ class VeggieAccents extends ThemeExtension<VeggieAccents> {
     ],
     celebration: VeggiePalette.coral,
     categoryTints: {
-      'why_vegan': Color(0xFFE8F0E4),
-      'quick_tips': Color(0xFFF3EFDF),
-      'youre_awesome': Color(0xFFFBE9E1),
-      'facts': Color(0xFFE6EEEE),
-      'staying_strong': Color(0xFFF0E9E0),
-      'milestones': Color(0xFFF7EBDD),
+      'why_vegan': Color(0xFFCBE6C2), // green
+      'quick_tips': Color(0xFFE9E2A6), // yellow-olive
+      'youre_awesome': Color(0xFFF8CFC6), // warm pink/coral
+      'facts': Color(0xFFBFE2E6), // teal/blue
+      'staying_strong': Color(0xFFEBCFAF), // earthy orange/brown
+      'milestones': Color(0xFFF6DCA0), // golden amber
     },
   );
 
@@ -51,12 +51,12 @@ class VeggieAccents extends ThemeExtension<VeggieAccents> {
     ],
     celebration: VeggiePalette.coralDark,
     categoryTints: {
-      'why_vegan': Color(0xFF16201A),
-      'quick_tips': Color(0xFF1E1F16),
-      'youre_awesome': Color(0xFF251B17),
-      'facts': Color(0xFF15201F),
-      'staying_strong': Color(0xFF211D16),
-      'milestones': Color(0xFF241E14),
+      'why_vegan': Color(0xFF1C3A28), // green
+      'quick_tips': Color(0xFF34330F), // yellow-olive
+      'youre_awesome': Color(0xFF3F231D), // warm pink/coral
+      'facts': Color(0xFF123537), // teal/blue
+      'staying_strong': Color(0xFF3A280F), // earthy orange/brown
+      'milestones': Color(0xFF3E2E0B), // golden amber
     },
   );
 

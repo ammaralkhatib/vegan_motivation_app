@@ -119,21 +119,30 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
           ],
-          // Premium-only: photo backgrounds on the feed (default on).
-          if (isPremium) ...[
-            Card(
-              child: SwitchListTile(
-                secondary: const Icon(Icons.image_outlined),
-                title: const Text('Photo backgrounds'),
-                subtitle:
-                    const Text('Category photos behind your daily quotes'),
-                value: ref.watch(photoBackgroundsProvider),
-                onChanged: (v) =>
-                    ref.read(photoBackgroundsProvider.notifier).set(v),
-              ),
-            ),
-            const SizedBox(height: 24),
-          ],
+          // Photo backgrounds: a live switch for premium; for free users a
+          // dimmed, off switch whose row opens the 50%-off paywall.
+          Card(
+            child: isPremium
+                ? SwitchListTile(
+                    secondary: const Icon(Icons.image_outlined),
+                    title: const Text('Photo backgrounds'),
+                    subtitle: const Text(
+                        'Category photos behind your daily quotes'),
+                    value: ref.watch(photoBackgroundsProvider),
+                    onChanged: (v) =>
+                        ref.read(photoBackgroundsProvider.notifier).set(v),
+                  )
+                : ListTile(
+                    leading: const Icon(Icons.image_outlined),
+                    title: const Text('Photo backgrounds'),
+                    subtitle:
+                        const Text('A Veggie Premium touch for your feed'),
+                    trailing: const Switch(value: false, onChanged: null),
+                    onTap: () =>
+                        showPaywall(context, PaywallVariant.defaultOffer),
+                  ),
+          ),
+          const SizedBox(height: 24),
           Text('Appearance', style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 10),
           SegmentedButton<ThemeMode>(

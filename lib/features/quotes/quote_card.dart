@@ -69,21 +69,105 @@ class QuoteCard extends ConsumerWidget {
       return DecoratedBox(decoration: gradient, child: content);
     }
 
-    // Premium: full-bleed photo + scrim + the usual content (light-on-dark).
+    // Premium: full-bleed photo (slow Ken Burns) + scrim + content.
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
-          imagePath,
+        _KenBurnsPhoto(
           key: const Key('quoteCardPhoto'),
-          fit: BoxFit.cover,
-          // Any decode/load failure → fall back to the gradient. The scrim
-          // still sits on top, so light text stays readable either way.
-          errorBuilder: (_, _, _) => DecoratedBox(decoration: gradient),
+          imagePath: imagePath,
+          quoteId: quote.id,
+          fallback: DecoratedBox(decoration: gradient),
         ),
         const DecoratedBox(decoration: _photoScrim),
         content,
       ],
+    );
+  }
+}
+
+/// One of eight deterministic Ken Burns moves: (zoom in | out) × 4 corners.
+typedef KenBurnsVariant = ({bool zoomIn, Alignment corner});
+
+const _kenBurnsCorners = [
+  Alignment.topLeft,
+  Alignment.topRight,
+  Alignment.bottomLeft,
+  Alignment.bottomRight,
+];
+
+/// Deterministic per quote, so a given quote always drifts the same way.
+KenBurnsVariant kenBurnsVariant(int quoteId) {
+  final v = quoteId % 8;
+  return (zoomIn: v < 4, corner: _kenBurnsCorners[v % 4]);
+}
+
+/// Slowly scales (1.0↔1.08) and drifts a cover photo toward a corner over ~14s.
+/// Forward-only; recreated per page so each swipe restarts the motion. Static
+/// under reduced motion.
+class _KenBurnsPhoto extends StatefulWidget {
+  const _KenBurnsPhoto({
+    super.key,
+    required this.imagePath,
+    required this.quoteId,
+    required this.fallback,
+  });
+
+  final String imagePath;
+  final int quoteId;
+  final Widget fallback;
+
+  @override
+  State<_KenBurnsPhoto> createState() => _KenBurnsPhotoState();
+}
+
+class _KenBurnsPhotoState extends State<_KenBurnsPhoto>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 14),
+  );
+  late final Animation<double> _curved =
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
+  bool _started = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduceMotion =
+        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    if (!reduceMotion && !_started) {
+      _started = true;
+      _controller.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final variant = kenBurnsVariant(widget.quoteId);
+    final image = Image.asset(
+      widget.imagePath,
+      fit: BoxFit.cover,
+      // Decode/load failure → the gradient fallback; the scrim still covers it.
+      errorBuilder: (_, _, _) => widget.fallback,
+    );
+    return AnimatedBuilder(
+      animation: _curved,
+      child: image,
+      builder: (context, child) {
+        final t = _curved.value;
+        // Always cover (scale ≥ 1.0), drifting toward the variant's corner.
+        final scale = variant.zoomIn ? 1.0 + 0.08 * t : 1.08 - 0.08 * t;
+        final align = Alignment.lerp(Alignment.center, variant.corner, t)!;
+        return Transform.scale(scale: scale, alignment: align, child: child);
+      },
     );
   }
 }
@@ -105,9 +189,13 @@ class _CardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isLong = quote.body.length > 120;
-    // On a photo the scrim guarantees a dark backdrop → force light text.
+    // On a photo the scrim guarantees a dark backdrop → force light text, and
+    // lift it off the image with a soft shadow.
     final bodyColor = onPhoto ? Colors.white : null;
     final authorColor = onPhoto ? Colors.white70 : null;
+    const photoShadows = [
+      Shadow(blurRadius: 12, color: Colors.black54, offset: Offset(0, 2)),
+    ];
 
     return Column(
       children: [
@@ -121,21 +209,28 @@ class _CardContent extends StatelessWidget {
           style: theme.textTheme.displayMedium?.copyWith(
             fontSize: isLong ? 24 : 30,
             color: bodyColor,
+            shadows: onPhoto ? photoShadows : null,
           ),
         ),
         if (quote.author != null) ...[
           const SizedBox(height: 16),
           Text(
             '— ${quote.author}',
-            style: theme.textTheme.bodyMedium?.copyWith(color: authorColor),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: authorColor,
+              shadows: onPhoto ? photoShadows : null,
+            ),
           ),
         ],
         const Spacer(flex: 2),
-        AnimatedCritter(
-          critter: Critter.forCategory(quote.categoryId),
-          size: 96,
-        ),
-        const SizedBox(height: 12),
+        // No critter competing with a photo; gradient cards keep it.
+        if (!onPhoto) ...[
+          AnimatedCritter(
+            critter: Critter.forCategory(quote.categoryId),
+            size: 96,
+          ),
+          const SizedBox(height: 12),
+        ],
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
