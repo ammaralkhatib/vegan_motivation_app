@@ -76,7 +76,7 @@ class _CategoryCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(20),
         // Locked → show the premium prompt instead of opening the category.
         onTap: locked
-            ? () => showPremiumSheet(context)
+            ? () => showPremiumPaywall(context)
             : () => context.go('/explore/category/${category.id}'),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),

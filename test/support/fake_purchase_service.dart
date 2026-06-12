@@ -4,16 +4,20 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_service.dart';
 
 /// In-memory [PurchaseService] for tests — no real SDK, no network. Drive
-/// premium changes with [emitPremium] and stub purchase/restore results.
+/// premium changes with [emitPremium], stub purchase/restore results, and
+/// script [getOffering] via [offerings].
 ///
-/// Reusable by later paywall prompts: inject it via
+/// Inject it with
 /// `purchaseServiceProvider.overrideWithValue(FakePurchaseService(...))`.
 class FakePurchaseService implements PurchaseService {
   FakePurchaseService({
     bool initialPremium = false,
     this.purchaseResult = PurchaseOutcome.success,
     this.restoreResult = PurchaseOutcome.success,
-  }) : _isPremium = initialPremium;
+    this.restoreGrantsPremium = true,
+    Map<String, Offering>? offerings,
+  })  : _isPremium = initialPremium,
+        offerings = offerings ?? const {};
 
   bool _isPremium;
   final _controller = StreamController<bool>.broadcast();
@@ -24,7 +28,15 @@ class FakePurchaseService implements PurchaseService {
   /// What [restorePurchases] returns. Set per test.
   PurchaseOutcome restoreResult;
 
-  /// Call counters, handy for asserting wiring in later prompts.
+  /// Whether a successful [restorePurchases] also makes the user premium.
+  /// Lets tests model "restored a subscription" vs "nothing to restore".
+  bool restoreGrantsPremium;
+
+  /// Offerings returned by [getOffering], keyed by id. Empty → null (the
+  /// paywall's offline/retry state).
+  final Map<String, Offering> offerings;
+
+  /// Call counters, handy for asserting wiring.
   int initCalls = 0;
   int restoreCalls = 0;
 
@@ -46,7 +58,7 @@ class FakePurchaseService implements PurchaseService {
   }
 
   @override
-  Future<Offering?> getOffering(String id) async => null;
+  Future<Offering?> getOffering(String id) async => offerings[id];
 
   @override
   Future<PurchaseOutcome> purchase(Package package) async {
@@ -57,7 +69,9 @@ class FakePurchaseService implements PurchaseService {
   @override
   Future<PurchaseOutcome> restorePurchases() async {
     restoreCalls++;
-    if (restoreResult == PurchaseOutcome.success) emitPremium(true);
+    if (restoreResult == PurchaseOutcome.success && restoreGrantsPremium) {
+      emitPremium(true);
+    }
     return restoreResult;
   }
 

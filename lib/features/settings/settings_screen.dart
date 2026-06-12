@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/db/database.dart';
 import '../../core/prefs/prefs_repository.dart';
 import '../../core/purchases/purchase_providers.dart';
+import '../../core/purchases/restore_flow.dart';
 import '../../data/content_importer.dart';
 import '../paywall/paywall_data.dart';
 import '../paywall/paywall_screen.dart';
@@ -75,6 +76,12 @@ class SettingsScreen extends ConsumerWidget {
     if (context.mounted) context.go('/onboarding');
   }
 
+  Future<void> _restorePurchases(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final result = await performRestore(ref.read(purchaseServiceProvider));
+    messenger.showSnackBar(SnackBar(content: Text(restoreMessage(result))));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
@@ -86,17 +93,27 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
-          // Hidden once the user is premium — nothing left to sell.
+          // Hidden once the user is premium — nothing left to sell / restore.
           if (!isPremium) ...[
             Card(
-              child: ListTile(
-                leading: const Icon(Icons.workspace_premium_outlined),
-                title: const Text('Veggie Premium'),
-                subtitle:
-                    const Text('Unlock all categories & the full library'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () =>
-                    showPaywall(context, PaywallVariant.defaultOffer),
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.workspace_premium_outlined),
+                    title: const Text('Veggie Premium'),
+                    subtitle:
+                        const Text('Unlock all categories & the full library'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () =>
+                        showPaywall(context, PaywallVariant.defaultOffer),
+                  ),
+                  const Divider(height: 1, indent: 56),
+                  ListTile(
+                    leading: const Icon(Icons.restore),
+                    title: const Text('Restore purchases'),
+                    onTap: () => _restorePurchases(context, ref),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 24),

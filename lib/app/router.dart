@@ -24,8 +24,14 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/today',
     redirect: (context, state) {
       final inOnboarding = state.matchedLocation == '/onboarding';
+      // Force a not-yet-onboarded user into onboarding.
       if (!prefs.onboardingDone && !inOnboarding) return '/onboarding';
-      if (prefs.onboardingDone && inOnboarding) return '/today';
+      // Deliberately NO auto-bounce off /onboarding once done: the end-of-
+      // onboarding paywall funnel sets onboardingDone, then pushes paywalls on
+      // top of /onboarding and pops back here between them. An auto-bounce to
+      // /today would tear the funnel down mid-sequence. _finish() navigates to
+      // /today explicitly once the funnel completes. Nothing else routes a
+      // finished user to /onboarding (reset clears the flag first).
       return null;
     },
     routes: [

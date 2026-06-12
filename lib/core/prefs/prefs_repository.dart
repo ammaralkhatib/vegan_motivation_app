@@ -23,6 +23,7 @@ class PrefsRepository {
   static const _kContentVersion = 'contentVersion';
   static const _kLastNotifScheduleDay = 'lastNotifScheduleDay';
   static const _kPremiumCached = 'premiumCached';
+  static const _kDiscountOfferShown = 'discountOfferShown';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -94,6 +95,12 @@ class PrefsRepository {
   bool get premiumCached => _prefs.getBool(_kPremiumCached) ?? false;
   Future<void> setPremiumCached(bool value) =>
       _prefs.setBool(_kPremiumCached, value);
+
+  /// Whether the one-time 80%-off "last chance" offer has ever been shown.
+  /// Once true it stays true forever — the discount paywall never repeats.
+  bool get discountOfferShown => _prefs.getBool(_kDiscountOfferShown) ?? false;
+  Future<void> setDiscountOfferShown(bool value) =>
+      _prefs.setBool(_kDiscountOfferShown, value);
 
   /// Wipes everything (used by "reset all data").
   Future<void> clear() => _prefs.clear();

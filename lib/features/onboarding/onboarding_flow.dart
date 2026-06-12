@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../core/notifications/notification_service.dart';
 import '../../core/prefs/prefs_repository.dart';
 import '../journey/providers.dart';
+import '../paywall/onboarding_paywall_funnel.dart';
 import '../settings/notification_prefs.dart';
 
 /// Warm 5-step first-run flow. Every step is skippable.
@@ -65,7 +66,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     await notif.setEnabled(_wantsNotifications);
     await notif.setPerDay(_perDay.round());
     await ref.read(themeModeProvider.notifier).set(_themeMode);
+    // Mark onboarding done BEFORE the paywall funnel — closing a paywall must
+    // never dump the user back into onboarding, even after a crash.
     await prefs.setOnboardingDone(true);
+    if (!mounted) return;
+
+    await runOnboardingPaywallFunnel(context, ref);
 
     if (mounted) context.go('/today');
   }

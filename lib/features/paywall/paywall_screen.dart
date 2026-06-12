@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/purchases/purchase_providers.dart';
 import '../../core/purchases/purchase_service.dart';
+import '../../core/purchases/restore_flow.dart';
 import 'paywall_data.dart';
 import 'paywall_providers.dart';
 
@@ -68,16 +69,12 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Future<void> _restore() async {
     if (_busy) return;
     setState(() => _busy = true);
-    await ref.read(purchaseServiceProvider).restorePurchases();
+    final result =
+        await performRestore(ref.read(purchaseServiceProvider));
     if (!mounted) return;
-    final premium = ref.read(isPremiumProvider);
     setState(() => _busy = false);
-    if (premium) {
-      _snack('Welcome back!');
-      _close();
-    } else {
-      _snack('No previous purchase found.');
-    }
+    _snack(restoreMessage(result));
+    if (result == RestoreResult.restored) _close();
   }
 
   void _snack(String message) {

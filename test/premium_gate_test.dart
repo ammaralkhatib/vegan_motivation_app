@@ -4,15 +4,19 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vegan_motivation_app/core/db/database.dart';
 import 'package:vegan_motivation_app/core/purchases/premium_gate.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/explore/explore_screen.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
 
 import 'helpers.dart';
 import 'support/fake_purchase_service.dart';
+import 'support/paywall_fixtures.dart';
 
 /// Two free categories + one premium one, each with a quote.
 Future<AppDatabase> seededDb() async {
@@ -124,27 +128,71 @@ void main() {
   });
 
   group('Explore screen', () {
-    testWidgets('free user: premium category shows a lock and opens the sheet',
+    testWidgets('free user: premium category shows a lock and opens the paywall',
         (tester) async {
       final db = await seededDb();
       addTearDown(db.close);
 
-      await tester.pumpWidget(exploreApp(db, premium: false));
+      final router = GoRouter(
+        initialLocation: '/explore',
+        routes: [
+          GoRoute(
+            path: '/explore',
+            builder: (context, state) => const ExploreScreen(),
+          ),
+          GoRoute(
+            path: '/explore/category/:id',
+            builder: (context, state) =>
+                const Scaffold(body: Text('CATEGORY DETAIL')),
+          ),
+          GoRoute(
+            path: '/paywall/:variant',
+            builder: (context, state) => PaywallScreen(
+              variant: PaywallVariant.fromName(state.pathParameters['variant']),
+            ),
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(ProviderScope(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          purchaseServiceProvider.overrideWithValue(FakePurchaseService(
+            initialPremium: false,
+            offerings: {
+              'default': testOffering(
+                'default',
+                package: testPackage(
+                  product:
+                      testStoreProduct(priceString: r'$24.99', price: 24.99),
+                ),
+              ),
+              'onboarding': testOffering('onboarding'),
+            },
+          )),
+        ],
+        child: MaterialApp.router(
+          theme: VeggieTheme.light(),
+          routerConfig: router,
+        ),
+      ));
       await tester.pumpAndSettle();
 
       // Two free categories show a Switch; the premium one shows a lock.
       expect(find.byType(Switch), findsNWidgets(2));
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);
 
-      // Tapping the locked card opens the premium sheet, not the detail screen.
+      // Tapping the locked card opens the 50%-off paywall, not the detail.
       await tester.tap(find.text('Quick Tips'));
       await tester.pumpAndSettle();
+      expect(find.text('CATEGORY DETAIL'), findsNothing);
+      expect(find.text('50% OFF'), findsOneWidget);
       expect(
-        find.text('This category is part of Veggie Premium'),
+        find.widgetWithText(FilledButton, 'Unlock Veggie Premium'),
         findsOneWidget,
       );
 
-      await tester.tap(find.text('OK'));
+      await tester.tap(find.byIcon(Icons.close));
       await tester.pumpAndSettle();
       await unmountAndFlush(tester);
     });
