@@ -22,6 +22,7 @@ class PrefsRepository {
   static const _kNotifWindowEnd = 'notifWindowEnd';
   static const _kContentVersion = 'contentVersion';
   static const _kLastNotifScheduleDay = 'lastNotifScheduleDay';
+  static const _kPremiumCached = 'premiumCached';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -86,6 +87,13 @@ class PrefsRepository {
   int get lastNotifScheduleDay => _prefs.getInt(_kLastNotifScheduleDay) ?? -1;
   Future<void> setLastNotifScheduleDay(int value) =>
       _prefs.setInt(_kLastNotifScheduleDay, value);
+
+  /// Last-known premium status, cached on-device so the app knows the answer
+  /// instantly and offline, before RevenueCat is reached. Defaults to false
+  /// (free) on a fresh install.
+  bool get premiumCached => _prefs.getBool(_kPremiumCached) ?? false;
+  Future<void> setPremiumCached(bool value) =>
+      _prefs.setBool(_kPremiumCached, value);
 
   /// Wipes everything (used by "reset all data").
   Future<void> clear() => _prefs.clear();

@@ -11,6 +11,8 @@ import 'app/app.dart';
 import 'core/db/database.dart';
 import 'core/notifications/notification_service.dart';
 import 'core/prefs/prefs_repository.dart';
+import 'core/purchases/purchase_providers.dart';
+import 'core/purchases/purchase_service.dart';
 import 'data/content_importer.dart';
 
 bool get _isDesktop =>
@@ -43,11 +45,21 @@ Future<void> main() async {
   await _importContentIfNeeded(db, prefs);
   await NotificationService.instance.init();
 
+  // Purchases: seeded from the on-device cache immediately; the SDK is
+  // configured in the background so the first frame never waits on the network.
+  final purchaseService = RevenueCatPurchaseService(prefs);
+  unawaited(
+    purchaseService.init().catchError(
+      (Object e) => debugPrint('Purchase init error: $e'),
+    ),
+  );
+
   runApp(
     ProviderScope(
       overrides: [
         prefsProvider.overrideWithValue(prefs),
         databaseProvider.overrideWithValue(db),
+        purchaseServiceProvider.overrideWithValue(purchaseService),
       ],
       child: const VeggieApp(),
     ),
