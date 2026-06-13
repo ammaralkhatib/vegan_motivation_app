@@ -15,7 +15,7 @@
         android:textColor="#5C6B60"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="🌱 Veggie" />
+        android:text="🌱 VeganKit" />
 
     <TextView
         android:id="@+id/widget_quote_text"

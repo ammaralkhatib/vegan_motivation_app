@@ -75,7 +75,7 @@ class NotificationService {
         requestSoundPermission: false,
       ),
       windows: WindowsInitializationSettings(
-        appName: 'Veggie',
+        appName: 'VeganKit',
         appUserModelId: 'io.develooper.vegankit',
         guid: 'a3a1cb53-7a51-4d70-9b35-2a72b1b0c8e1',
       ),
@@ -153,7 +153,7 @@ class NotificationService {
     for (final plan in plans) {
       await _plugin.zonedSchedule(
         plan.notificationId,
-        'Veggie 🌱',
+        'VeganKit 🌱',
         // Full quote in the plain body — Apple Watch / Wear OS mirror it.
         plan.body,
         tz.TZDateTime.from(plan.fireAt, tz.local),

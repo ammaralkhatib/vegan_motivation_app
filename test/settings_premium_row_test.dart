@@ -31,18 +31,18 @@ Future<Widget> settingsApp({required bool premium}) async {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('free user sees the Veggie Premium row', (tester) async {
+  testWidgets('free user sees the VeganKit Premium row', (tester) async {
     await tester.pumpWidget(await settingsApp(premium: false));
     await tester.pumpAndSettle();
 
-    expect(find.text('Veggie Premium'), findsOneWidget);
+    expect(find.text('VeganKit Premium'), findsOneWidget);
   });
 
-  testWidgets('premium user does not see the Veggie Premium row',
+  testWidgets('premium user does not see the VeganKit Premium row',
       (tester) async {
     await tester.pumpWidget(await settingsApp(premium: true));
     await tester.pumpAndSettle();
 
-    expect(find.text('Veggie Premium'), findsNothing);
+    expect(find.text('VeganKit Premium'), findsNothing);
   });
 }

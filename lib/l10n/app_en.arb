@@ -6,7 +6,7 @@
     "description": "App bar title for the settings screen."
   },
 
-  "settingsPremiumTitle": "Veggie Premium",
+  "settingsPremiumTitle": "VeganKit Premium",
   "@settingsPremiumTitle": {
     "description": "Title of the premium upsell row in settings."
   },
@@ -27,7 +27,7 @@
   "@settingsPhotoBackgroundsSubtitlePremium": {
     "description": "Subtitle shown for premium users on the photo backgrounds toggle."
   },
-  "settingsPhotoBackgroundsSubtitleFree": "A Veggie Premium touch for your feed",
+  "settingsPhotoBackgroundsSubtitleFree": "A VeganKit Premium touch for your feed",
   "@settingsPhotoBackgroundsSubtitleFree": {
     "description": "Subtitle shown for free users on the photo backgrounds row."
   },
@@ -70,7 +70,7 @@
     "description": "Language option that follows the phone's language. Other options are language endonyms and are never translated."
   },
 
-  "settingsAbout": "About Veggie",
+  "settingsAbout": "About VeganKit",
   "@settingsAbout": {
     "description": "Row opening the open-source license page."
   },
@@ -190,7 +190,7 @@
     "description": "Dinner meal card title."
   },
 
-  "paywallOnboardingTitle": "Start your Veggie journey",
+  "paywallOnboardingTitle": "Start your VeganKit journey",
   "@paywallOnboardingTitle": {
     "description": "Headline on the end-of-onboarding trial paywall."
   },
@@ -198,11 +198,11 @@
   "@paywallOnboardingCta": {
     "description": "Primary button on the trial paywall."
   },
-  "paywallDefaultTitle": "Unlock Veggie Premium",
+  "paywallDefaultTitle": "Unlock VeganKit Premium",
   "@paywallDefaultTitle": {
     "description": "Headline on the 50%-off (default) paywall."
   },
-  "paywallDefaultCta": "Unlock Veggie Premium",
+  "paywallDefaultCta": "Unlock VeganKit Premium",
   "@paywallDefaultCta": {
     "description": "Primary button on the 50%-off paywall."
   },
@@ -351,7 +351,7 @@
   "@onboardingProblemBody": {
     "description": "S2 body."
   },
-  "onboardingSolutionHeadline": "veggie keeps your why in front of you",
+  "onboardingSolutionHeadline": "VeganKit keeps your why in front of you",
   "@onboardingSolutionHeadline": {
     "description": "S3 headline. The word in onboardingSolutionEmphasis is highlighted within it."
   },
@@ -419,7 +419,7 @@
   "@onboardingBridgeHeadline2Emphasis": {
     "description": "Emphasized substring inside onboardingBridgeHeadline2."
   },
-  "onboardingGoalsTitle": "what do you want from veggie?",
+  "onboardingGoalsTitle": "what do you want from VeganKit?",
   "@onboardingGoalsTitle": {
     "description": "Goals multi-select title."
   },
@@ -491,7 +491,7 @@
   "@onboardingGoalsReflectionHeadline": {
     "description": "S10 reassurance headline."
   },
-  "onboardingGoalsReflectionBody": "every journey here starts with the same goals — veggie was built for exactly this.",
+  "onboardingGoalsReflectionBody": "every journey here starts with the same goals — VeganKit was built for exactly this.",
   "@onboardingGoalsReflectionBody": {
     "description": "S10 reassurance body."
   },
@@ -625,7 +625,7 @@
   "@onboardingReflectionDipsUnknown": {
     "description": "S15 reflection dips line when the dip count is unknown."
   },
-  "onboardingReflectionClose": "veggie was made for exactly this moment.",
+  "onboardingReflectionClose": "VeganKit was made for exactly this moment.",
   "@onboardingReflectionClose": {
     "description": "S15 closing reflection line."
   },
@@ -661,7 +661,7 @@
   "@onboardingChartBody": {
     "description": "S17 chart step body."
   },
-  "onboardingChartLegendWith": "with veggie",
+  "onboardingChartLegendWith": "with VeganKit",
   "@onboardingChartLegendWith": {
     "description": "Chart legend for the rising curve."
   },
@@ -896,7 +896,7 @@
       }
     }
   },
-  "onboardingSocialTitle": "veggie was made for people like you",
+  "onboardingSocialTitle": "VeganKit was made for people like you",
   "@onboardingSocialTitle": {
     "description": "S27 social-proof step title."
   },
@@ -916,7 +916,7 @@
   "@onboardingSocialBody": {
     "description": "Social-proof step body."
   },
-  "onboardingSocialCta": "join veggie 🌱",
+  "onboardingSocialCta": "join VeganKit 🌱",
   "@onboardingSocialCta": {
     "description": "Final onboarding CTA."
   },

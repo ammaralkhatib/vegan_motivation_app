@@ -288,7 +288,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           Icon(Icons.eco, size: 72, color: theme.colorScheme.primary),
           const SizedBox(height: 24),
           // Brand name — intentionally not localized.
-          Text('Veggie', style: theme.textTheme.displayLarge),
+          Text('VeganKit', style: theme.textTheme.displayLarge),
           const SizedBox(height: 12),
           _body(theme, l.onboardingWelcomeTagline),
         ],

@@ -101,7 +101,7 @@ void main() {
     await tester.pumpWidget(await appWith(onboarded: false));
     await tester.pumpAndSettle();
 
-    expect(find.text('Veggie'), findsOneWidget);
+    expect(find.text('VeganKit'), findsOneWidget);
     expect(find.text('your daily dose of vegan motivation'), findsOneWidget);
 
     await unmountAndFlush(tester);

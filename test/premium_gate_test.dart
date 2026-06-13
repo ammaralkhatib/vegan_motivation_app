@@ -193,7 +193,7 @@ void main() {
       expect(find.text('CATEGORY DETAIL'), findsNothing);
       expect(find.text('50% OFF'), findsOneWidget);
       expect(
-        find.widgetWithText(FilledButton, 'Unlock Veggie Premium'),
+        find.widgetWithText(FilledButton, 'Unlock VeganKit Premium'),
         findsOneWidget,
       );
 

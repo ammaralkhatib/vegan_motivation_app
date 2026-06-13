@@ -1,5 +1,5 @@
 name: vegan_motivation_app
-description: "Veggie — daily vegan motivation, quotes, and habit tracking. Offline-first, no account needed."
+description: "VeganKit — daily vegan motivation, quotes, and habit tracking. Offline-first, no account needed."
 publish_to: 'none'
 
 version: 1.0.0+1

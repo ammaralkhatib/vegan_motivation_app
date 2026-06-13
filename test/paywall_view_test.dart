@@ -40,7 +40,7 @@ void main() {
 
     expect(find.text('50% OFF'), findsOneWidget);
     expect(find.text(r'$49.99'), findsOneWidget); // the anchor
-    expect(find.text('Unlock Veggie Premium'), findsWidgets);
+    expect(find.text('Unlock VeganKit Premium'), findsWidgets);
   });
 
   testWidgets('discount shows the one-time badge and urgency copy',

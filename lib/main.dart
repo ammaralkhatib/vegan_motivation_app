@@ -30,7 +30,7 @@ Future<void> main() async {
       size: Size(1100, 800),
       minimumSize: Size(380, 650),
       center: true,
-      title: 'Veggie',
+      title: 'VeganKit',
     );
     unawaited(windowManager.waitUntilReadyToShow(options, () async {
       await windowManager.show();

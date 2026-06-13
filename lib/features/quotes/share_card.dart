@@ -85,7 +85,7 @@ class ShareCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    'Veggie',
+                    'VeganKit',
                     style: TextStyle(
                       fontFamily: 'Fraunces',
                       fontSize: 14,

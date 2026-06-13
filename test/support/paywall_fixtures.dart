@@ -15,7 +15,7 @@ StoreProduct testStoreProduct({
   return StoreProduct(
     'veggie_yearly_full',
     'Full price yearly',
-    'Veggie Premium',
+    'VeganKit Premium',
     price,
     priceString,
     'USD',

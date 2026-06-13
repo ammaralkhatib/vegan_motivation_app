@@ -77,7 +77,7 @@ void main() {
     await openPaywall(tester);
 
     await tester.tap(
-      find.widgetWithText(FilledButton, 'Unlock Veggie Premium'),
+      find.widgetWithText(FilledButton, 'Unlock VeganKit Premium'),
     );
     await tester.pump(); // purchase() future
     await tester.pump(); // outcome handled, confetti starts
@@ -101,7 +101,7 @@ void main() {
     await openPaywall(tester);
 
     await tester.tap(
-      find.widgetWithText(FilledButton, 'Unlock Veggie Premium'),
+      find.widgetWithText(FilledButton, 'Unlock VeganKit Premium'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
@@ -124,7 +124,7 @@ void main() {
     await openPaywall(tester);
 
     await tester.tap(
-      find.widgetWithText(FilledButton, 'Unlock Veggie Premium'),
+      find.widgetWithText(FilledButton, 'Unlock VeganKit Premium'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 700));

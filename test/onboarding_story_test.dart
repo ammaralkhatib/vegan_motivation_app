@@ -158,7 +158,7 @@ extension _Drive on WidgetTester {
     await tapContinue('done ✓'); // S24 → S25 snapshot
     await tapContinue(); // S25 → S26 notifications
     await tapContinue(); // S26 → S27 social proof
-    await tapContinue('join veggie 🌱'); // S27 → finish
+    await tapContinue('join VeganKit 🌱'); // S27 → finish
   }
 }
 
@@ -252,7 +252,7 @@ void main() {
     // Next is S15, not the journey-date step.
     expect(find.text('when did your journey start?'), findsNothing);
     expect(
-      find.textContaining('veggie was made for exactly this moment'),
+      find.textContaining('VeganKit was made for exactly this moment'),
       findsOneWidget,
     );
 

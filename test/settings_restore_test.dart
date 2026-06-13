@@ -44,7 +44,7 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('Veggie Premium'), findsNothing);
+    expect(find.text('VeganKit Premium'), findsNothing);
     expect(find.text('Restore purchases'), findsNothing);
   });
 

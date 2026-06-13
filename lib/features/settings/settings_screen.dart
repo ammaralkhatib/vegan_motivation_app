@@ -291,7 +291,7 @@ class SettingsScreen extends ConsumerWidget {
                   subtitle: Text(l10n.settingsAboutSubtitle),
                   onTap: () => showLicensePage(
                     context: context,
-                    applicationName: 'Veggie',
+                    applicationName: 'VeganKit',
                     applicationLegalese: l10n.settingsAboutLegalese,
                   ),
                 ),
