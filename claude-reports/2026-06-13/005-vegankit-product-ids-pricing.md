@@ -51,8 +51,8 @@ Self-correction: none needed — clean on first run.
 
 ## Commit & push
 
-- **Commit:** `<sha>` — `chore(purchases): rename product ids to vegankit_ and re-anchor pricing to $29.99`
-- **Push:** `origin/main` — see below.
+- **Commit:** `cf90234` — `chore(purchases): rename product ids to vegankit_ and re-anchor pricing to $29.99`
+- **Push:** `origin/main` — ok (`24c7b45..cf90234`).
 
 ## Open items for the owner
 
