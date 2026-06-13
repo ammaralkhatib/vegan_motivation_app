@@ -70,8 +70,8 @@ the App Group matches end-to-end).
 
 ## Commit & push
 
-- **Commit:** `<sha>` — `chore: rename app id to io.develooper.vegankit`
-- **Push:** `origin/main` — see below.
+- **Commit:** `115a84c` — `chore: rename app id to io.develooper.vegankit`
+- **Push:** `origin/main` — ok (`91c8fe9..115a84c`).
 
 ## Open items for the owner
 
