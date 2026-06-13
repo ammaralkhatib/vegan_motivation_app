@@ -81,8 +81,8 @@ card, and a notification all read "VeganKit".
 
 ## Commit & push
 
-- **Commit:** `<sha>` — `chore: rename display name to VeganKit`
-- **Push:** `origin/main` — see below.
+- **Commit:** `29b9dc7` — `chore: rename display name to VeganKit`
+- **Push:** `origin/main` — ok (`0ebe053..29b9dc7`).
 
 ## Open items for the owner
 
