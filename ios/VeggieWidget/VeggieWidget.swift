@@ -19,7 +19,7 @@ struct QuoteEntry: TimelineEntry {
 
 struct VeggieTimelineProvider: TimelineProvider {
     /// Must match HomeWidgetService._appGroupId on the Dart side.
-    static let appGroup = "group.com.ammarkhatib.veggie"
+    static let appGroup = "group.io.develooper.vegankit"
     static let queueKey = "quote_queue"
 
     func placeholder(in context: Context) -> QuoteEntry { .placeholder }

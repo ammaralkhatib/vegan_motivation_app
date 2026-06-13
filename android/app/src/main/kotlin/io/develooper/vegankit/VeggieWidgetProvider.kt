@@ -1,4 +1,4 @@
-package com.ammarkhatib.veggie
+package io.develooper.vegankit
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager

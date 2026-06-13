@@ -76,7 +76,7 @@ class NotificationService {
       ),
       windows: WindowsInitializationSettings(
         appName: 'Veggie',
-        appUserModelId: 'com.ammarkhatib.veggie',
+        appUserModelId: 'io.develooper.vegankit',
         guid: 'a3a1cb53-7a51-4d70-9b35-2a72b1b0c8e1',
       ),
     );

@@ -9,7 +9,7 @@ The Dart side and all Swift sources are ready. Creating a Widget Extension
 2. **File → New → Target… → Widget Extension**
    - Product Name: `VeggieWidget` (must match exactly — the Dart side calls
      `HomeWidget.updateWidget(iOSName: 'VeggieWidget')`)
-   - Bundle id should become `com.ammarkhatib.veggie.VeggieWidget`
+   - Bundle id should become `io.develooper.vegankit.VeggieWidget`
    - Uncheck "Include Configuration App Intent" (we use a StaticConfiguration)
    - When asked, do NOT activate the scheme for "Run" — keep Runner as the
      main scheme. (Activating is also fine, just switch back.)
@@ -19,7 +19,7 @@ The Dart side and all Swift sources are ready. Creating a Widget Extension
    "VeggieWidget" target membership).
 4. **App Groups** (both targets):
    - Runner target → Signing & Capabilities → + Capability → App Groups →
-     add `group.com.ammarkhatib.veggie`
+     add `group.io.develooper.vegankit`
      (the prepared `ios/Runner/Runner.entitlements` already contains it; if
      Xcode created a new entitlements file, merge or point Code Signing
      Entitlements at the prepared one)

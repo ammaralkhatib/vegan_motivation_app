@@ -14,7 +14,7 @@ import '../utils/seeded_shuffle.dart';
 /// entry matching the current local epoch-day, so even a stale refresh shows
 /// the right quote for the day.
 class HomeWidgetService {
-  static const _appGroupId = 'group.com.ammarkhatib.veggie';
+  static const _appGroupId = 'group.io.develooper.vegankit';
   static const _androidProvider = 'VeggieWidgetProvider';
   static const _iosWidgetName = 'VeggieWidget';
   static const queueKey = 'quote_queue';
