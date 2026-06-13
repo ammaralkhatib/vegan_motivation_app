@@ -62,8 +62,8 @@ Manual click-path: n/a (build config change).
 
 ## Commit & push
 
-- **Commit(s):** `<sha>` — `build(android): wire release signing via key.properties`
-- **Push:** `origin/main` — `<result>`
+- **Commit(s):** `39b4844` — `build(android): wire release signing via key.properties`
+- **Push:** `origin/main` — ok (`67db4e5..39b4844`)
 
 Confirmed `git status` shows no `key.properties` / `*.jks` / `*.keystore` staged.
 
