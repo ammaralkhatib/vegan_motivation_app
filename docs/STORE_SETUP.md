@@ -1,4 +1,4 @@
-# Veggie Premium — Store & RevenueCat Setup Guide
+# VeganKit Premium — Store & RevenueCat Setup Guide
 
 Step-by-step guide for setting up the subscriptions in **App Store Connect**
 (Apple), **Google Play Console**, and the **RevenueCat dashboard**. The app
@@ -51,7 +51,7 @@ looks for these exact names (`lib/core/purchases/purchase_config.dart`).
 ## Part 1 — RevenueCat: project and apps
 
 1. Sign up at https://app.revenuecat.com (free until the app earns real money).
-2. Create a **Project** → name it `Veggie`.
+2. Create a **Project** → name it `VeganKit`.
 3. In the project, go to **Apps** (Project settings → Apps) → **+ New app**:
    - **App Store**: bundle ID `io.develooper.vegankit`.
    - **Play Store**: package name `io.develooper.vegankit`.
@@ -64,9 +64,9 @@ looks for these exact names (`lib/core/purchases/purchase_config.dart`).
 
 ### 2a. Create the subscription group
 
-1. Go to https://appstoreconnect.apple.com → **My Apps** → Veggie.
+1. Go to https://appstoreconnect.apple.com → **My Apps** → VeganKit.
 2. In the left menu: **Monetization → Subscriptions**.
-3. Click **Create** under Subscription Groups → name it `Veggie Premium`.
+3. Click **Create** under Subscription Groups → name it `VeganKit Premium`.
    (A group = subscriptions a user can switch between. All 3 go in this one
    group, so a user can only have one at a time — which is what we want.)
 
@@ -74,14 +74,14 @@ looks for these exact names (`lib/core/purchases/purchase_config.dart`).
 
 For each row of the table above, inside the group click **Create**:
 
-1. **Reference name:** e.g. `Veggie Yearly Full` (only you see this).
+1. **Reference name:** e.g. `VeganKit Yearly Full` (only you see this).
 2. **Product ID:** exactly `veggie_yearly_full` / `veggie_yearly_50` /
    `veggie_yearly_80`. ⚠️ Cannot be changed later.
 3. **Subscription duration:** 1 year.
 4. **Price:** click **Add Subscription Price** → pick USA → $49.99 / $24.99 /
    $9.99. Apple fills in other countries automatically — accept the defaults.
 5. **Localization:** add an English display name + short description, e.g.
-   "Veggie Premium — all categories, full quote library."
+   "VeganKit Premium — all categories, full quote library."
 6. **Review information:** add a screenshot of your paywall (any size Apple
    accepts; this is only for Apple's reviewers) — you can do this later, but
    it's required before app review.
@@ -112,11 +112,11 @@ help text next to each field):
 
 ### 3a. Create the 3 subscriptions
 
-1. Go to https://play.google.com/console → Veggie app.
+1. Go to https://play.google.com/console → VeganKit app.
 2. Left menu: **Monetize → Products → Subscriptions** → **Create
    subscription**.
 3. **Product ID:** exactly `veggie_yearly_full` (then `_50`, `_80`).
-   ⚠️ Cannot be changed later. **Name:** e.g. "Veggie Premium (Full)".
+   ⚠️ Cannot be changed later. **Name:** e.g. "VeganKit Premium (Full)".
 4. Inside the new subscription, click **Add base plan**:
    - **Base plan ID:** `yearly` ⚠️ (Google forbids underscores here — use
      exactly `yearly`, with no prefix).
@@ -232,7 +232,7 @@ each offering by name), but set `default` as current to be tidy.
 ## Checklist (the short version)
 
 - [ ] Part 0: agreements + payment profiles signed in both consoles
-- [ ] Part 1: RevenueCat project `Veggie` with both apps
+- [ ] Part 1: RevenueCat project `VeganKit` with both apps
 - [ ] Part 3c first (it's slow): Google service credentials JSON uploaded
 - [ ] Part 2: 3 Apple subscriptions + trial + In-App Purchase Key + shared secret
 - [ ] Part 3: 3 Google subscriptions (base plan `yearly`, activated!) + trial offer
