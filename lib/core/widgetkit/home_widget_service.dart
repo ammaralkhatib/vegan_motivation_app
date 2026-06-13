@@ -15,8 +15,8 @@ import '../utils/seeded_shuffle.dart';
 /// the right quote for the day.
 class HomeWidgetService {
   static const _appGroupId = 'group.io.develooper.vegankit';
-  static const _androidProvider = 'VeggieWidgetProvider';
-  static const _iosWidgetName = 'VeggieWidget';
+  static const _androidProvider = 'VeganKitWidgetProvider';
+  static const _iosWidgetName = 'VeganKitWidget';
   static const queueKey = 'quote_queue';
 
   static bool get isSupported =>

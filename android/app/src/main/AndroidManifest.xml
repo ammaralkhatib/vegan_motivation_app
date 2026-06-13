@@ -29,14 +29,14 @@
         </activity>
         <!-- Daily quote home-screen widget. -->
         <receiver
-            android:name=".VeggieWidgetProvider"
+            android:name=".VeganKitWidgetProvider"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/veggie_widget_info" />
+                android:resource="@xml/vegankit_widget_info" />
         </receiver>
         <!-- Re-register scheduled notifications after reboot / app update. -->
         <receiver

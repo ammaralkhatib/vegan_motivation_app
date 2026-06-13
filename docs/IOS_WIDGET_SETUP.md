@@ -7,24 +7,24 @@ The Dart side and all Swift sources are ready. Creating a Widget Extension
 
 1. `open ios/Runner.xcworkspace`
 2. **File → New → Target… → Widget Extension**
-   - Product Name: `VeggieWidget` (must match exactly — the Dart side calls
-     `HomeWidget.updateWidget(iOSName: 'VeggieWidget')`)
-   - Bundle id should become `io.develooper.vegankit.VeggieWidget`
+   - Product Name: `VeganKitWidget` (must match exactly — the Dart side calls
+     `HomeWidget.updateWidget(iOSName: 'VeganKitWidget')`)
+   - Bundle id should become `io.develooper.vegankit.VeganKitWidget`
    - Uncheck "Include Configuration App Intent" (we use a StaticConfiguration)
    - When asked, do NOT activate the scheme for "Run" — keep Runner as the
      main scheme. (Activating is also fine, just switch back.)
-3. Xcode generates a `VeggieWidget/` group with boilerplate Swift files.
+3. Xcode generates a `VeganKitWidget/` group with boilerplate Swift files.
    **Delete the generated `.swift` files** and drag in the prepared
-   [`ios/VeggieWidget/VeggieWidget.swift`](VeggieWidget.swift) (check
-   "VeggieWidget" target membership).
+   [`ios/VeganKitWidget/VeganKitWidget.swift`](VeganKitWidget.swift) (check
+   "VeganKitWidget" target membership).
 4. **App Groups** (both targets):
    - Runner target → Signing & Capabilities → + Capability → App Groups →
      add `group.io.develooper.vegankit`
      (the prepared `ios/Runner/Runner.entitlements` already contains it; if
      Xcode created a new entitlements file, merge or point Code Signing
      Entitlements at the prepared one)
-   - VeggieWidget target → same capability, same group
-     (prepared file: `ios/VeggieWidget/VeggieWidget.entitlements`)
+   - VeganKitWidget target → same capability, same group
+     (prepared file: `ios/VeganKitWidget/VeganKitWidget.entitlements`)
 5. Set the widget target's iOS Deployment Target to match Runner (e.g. 17.0;
    `containerBackground(for:)` needs iOS 17+).
 6. Build & run Runner on a device/simulator, open the app once (this writes
