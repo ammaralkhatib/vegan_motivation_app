@@ -4,12 +4,12 @@ import 'package:vegan_motivation_app/core/notifications/trial_reminder.dart';
 void main() {
   group('shouldScheduleTrialReminder', () {
     test('schedules for the trial product only', () {
-      expect(shouldScheduleTrialReminder('veggie_yearly_full'), isTrue);
+      expect(shouldScheduleTrialReminder('vegankit_yearly_full'), isTrue);
     });
 
     test('does not schedule for the 50% / 80% discount products', () {
-      expect(shouldScheduleTrialReminder('veggie_yearly_50'), isFalse);
-      expect(shouldScheduleTrialReminder('veggie_yearly_80'), isFalse);
+      expect(shouldScheduleTrialReminder('vegankit_yearly_50'), isFalse);
+      expect(shouldScheduleTrialReminder('vegankit_yearly_80'), isFalse);
       expect(shouldScheduleTrialReminder('anything_else'), isFalse);
     });
   });

@@ -13,7 +13,7 @@ StoreProduct testStoreProduct({
   IntroductoryPrice? intro,
 }) {
   return StoreProduct(
-    'veggie_yearly_full',
+    'vegankit_yearly_full',
     'Full price yearly',
     'VeganKit Premium',
     price,

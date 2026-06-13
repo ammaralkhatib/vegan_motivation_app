@@ -17,9 +17,9 @@ RevenueCat about them:
 
 | What the user sees | Apple product ID | Google product ID | Price |
 |---|---|---|---|
-| Full price + 7-day free trial | `veggie_yearly_full` | `veggie_yearly_full` (base plan `yearly`) | $49.99/year |
-| 50% off | `veggie_yearly_50` | `veggie_yearly_50` (base plan `yearly`) | $24.99/year |
-| 80% off "last chance" | `veggie_yearly_80` | `veggie_yearly_80` (base plan `yearly`) | $9.99/year |
+| Full price + 7-day free trial | `vegankit_yearly_full` | `vegankit_yearly_full` (base plan `yearly`) | $29.99/year |
+| 50% off | `vegankit_yearly_50` | `vegankit_yearly_50` (base plan `yearly`) | $14.99/year |
+| 80% off "last chance" | `vegankit_yearly_80` | `vegankit_yearly_80` (base plan `yearly`) | $5.99/year |
 
 In RevenueCat these connect to:
 
@@ -75,11 +75,11 @@ looks for these exact names (`lib/core/purchases/purchase_config.dart`).
 For each row of the table above, inside the group click **Create**:
 
 1. **Reference name:** e.g. `VeganKit Yearly Full` (only you see this).
-2. **Product ID:** exactly `veggie_yearly_full` / `veggie_yearly_50` /
-   `veggie_yearly_80`. ⚠️ Cannot be changed later.
+2. **Product ID:** exactly `vegankit_yearly_full` / `vegankit_yearly_50` /
+   `vegankit_yearly_80`. ⚠️ Cannot be changed later.
 3. **Subscription duration:** 1 year.
-4. **Price:** click **Add Subscription Price** → pick USA → $49.99 / $24.99 /
-   $9.99. Apple fills in other countries automatically — accept the defaults.
+4. **Price:** click **Add Subscription Price** → pick USA → $29.99 / $14.99 /
+   $5.99. Apple fills in other countries automatically — accept the defaults.
 5. **Localization:** add an English display name + short description, e.g.
    "VeganKit Premium — all categories, full quote library."
 6. **Review information:** add a screenshot of your paywall (any size Apple
@@ -88,7 +88,7 @@ For each row of the table above, inside the group click **Create**:
 
 ### 2c. Add the 7-day free trial (only on the full-price one)
 
-1. Open `veggie_yearly_full` → **Subscription Prices** →
+1. Open `vegankit_yearly_full` → **Subscription Prices** →
    **Introductory Offers** (click **+** / "Set Up Introductory Offer").
 2. Countries: all. Start/end date: no end date.
 3. Type: **Free trial**, duration: **1 week**. Save.
@@ -115,20 +115,20 @@ help text next to each field):
 1. Go to https://play.google.com/console → VeganKit app.
 2. Left menu: **Monetize → Products → Subscriptions** → **Create
    subscription**.
-3. **Product ID:** exactly `veggie_yearly_full` (then `_50`, `_80`).
+3. **Product ID:** exactly `vegankit_yearly_full` (then `_50`, `_80`).
    ⚠️ Cannot be changed later. **Name:** e.g. "VeganKit Premium (Full)".
 4. Inside the new subscription, click **Add base plan**:
    - **Base plan ID:** `yearly` ⚠️ (Google forbids underscores here — use
      exactly `yearly`, with no prefix).
    - Type: auto-renewing, billing period: **yearly**.
-   - **Price:** set USA to $49.99 / $24.99 / $9.99 → use "Set prices" to let
+   - **Price:** set USA to $29.99 / $14.99 / $5.99 → use "Set prices" to let
      Google convert other countries.
    - **Activate** the base plan (it starts as a draft — don't forget this).
 5. Repeat for all 3 subscriptions.
 
 ### 3b. Add the 7-day free trial (only on the full-price one)
 
-1. Open `veggie_yearly_full` → base plan `yearly` → **Add offer**.
+1. Open `vegankit_yearly_full` → base plan `yearly` → **Add offer**.
 2. **Offer ID:** `free-trial` (hyphens, not underscores).
 3. Eligibility: **New customer acquisition** → "Never had this subscription".
 4. Add phase: **Free trial**, 7 days. Save and **Activate** the offer.
@@ -155,10 +155,10 @@ RevenueCat needs a "service account" (a robot login) to check purchases:
 1. RevenueCat → **Product catalog** (or "Products") → **+ New** /
    **Import**. If the store credentials work, RevenueCat can import them
    automatically — otherwise add manually:
-   - Apple products: `veggie_yearly_full`, `veggie_yearly_50`,
-     `veggie_yearly_80`.
+   - Apple products: `vegankit_yearly_full`, `vegankit_yearly_50`,
+     `vegankit_yearly_80`.
    - Google products: same IDs, each with base plan `yearly` (RevenueCat
-     shows them as `veggie_yearly_full:yearly` etc. — that's normal).
+     shows them as `vegankit_yearly_full:yearly` etc. — that's normal).
 
 ### 4b. Create the entitlement
 
@@ -173,9 +173,9 @@ RevenueCat needs a "service account" (a robot login) to check purchases:
 
 | Offering identifier | Add one package | Containing (Apple + Google) |
 |---|---|---|
-| `onboarding` | type **Annual** | `veggie_yearly_full` (+ `:yearly`) |
-| `default` | type **Annual** | `veggie_yearly_50` (+ `:yearly`) |
-| `discount` | type **Annual** | `veggie_yearly_80` (+ `:yearly`) |
+| `onboarding` | type **Annual** | `vegankit_yearly_full` (+ `:yearly`) |
+| `default` | type **Annual** | `vegankit_yearly_50` (+ `:yearly`) |
+| `discount` | type **Annual** | `vegankit_yearly_80` (+ `:yearly`) |
 
 ⚠️ Identifiers exactly as written — the app asks for these by name. For the
 Google product inside `onboarding`, make sure the **free-trial offer** is the

@@ -107,7 +107,7 @@ PaywallData? buildPaywallData(
 }
 
 /// The full price string for the anchor, read from a full-price [offering]
-/// (the `onboarding` offering sells the $49.99 product). Null if unavailable.
+/// (the `onboarding` offering sells the $29.99 product). Null if unavailable.
 String? anchorPriceFrom(Offering? offering) {
   if (offering == null) return null;
   return _annualOrFirst(offering)?.storeProduct.priceString;

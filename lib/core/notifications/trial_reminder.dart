@@ -4,7 +4,7 @@ library;
 
 /// RevenueCat product id for the full-price yearly product that carries the
 /// 7-day free trial (CLAUDE.md §3). Only this product triggers the reminder.
-const String trialProductId = 'veggie_yearly_full';
+const String trialProductId = 'vegankit_yearly_full';
 
 /// Reserved notification id for the trial reminder. Sits far above the daily
 /// quote ids (spread < ~1.6M, meal mode 100M–101.6M) so it can never collide.
