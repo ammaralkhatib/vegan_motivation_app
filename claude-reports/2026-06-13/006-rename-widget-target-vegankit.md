@@ -80,8 +80,10 @@ no Drift schema change → no `build_runner`).
 
 ## Commit & push
 
-- **Commit:** `<sha>` — `refactor(widget): rename widget target VeggieWidget → VeganKitWidget`
-- **Push:** `origin/main` — see below
+- **Commit:** `3228da3` — `refactor(widget): rename widget target VeggieWidget → VeganKitWidget`
+  (SHA recorded in a small follow-up `docs` commit, matching the repo's existing
+  pattern — e.g. commit `30d6332` for the 005 report.)
+- **Push:** `origin/main` — ok
 
 ## Open items for the owner
 
