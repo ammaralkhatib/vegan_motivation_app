@@ -79,8 +79,8 @@ Manual click-path for Ammar (device/emulator):
 
 ## Commit & push
 
-- **Commit(s):** `<sha>` — `feat(habits): add optional daily habit reminders`
-- **Push:** `origin/main` — `<result>`
+- **Commit(s):** `f511ecb` — `feat(habits): add optional daily habit reminders`
+- **Push:** `origin/main` — ok (`0aead40..f511ecb`)
 
 ## Open items for the owner
 
