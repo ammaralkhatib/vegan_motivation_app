@@ -1338,6 +1338,18 @@
   "@habitsSaveButton": {
     "description": "Save button when editing a habit."
   },
+  "habitsReminderSectionTitle": "Daily reminder",
+  "@habitsReminderSectionTitle": {
+    "description": "Title of the per-habit daily reminder toggle."
+  },
+  "habitsReminderSubtitle": "Get a nudge at the same time each day",
+  "@habitsReminderSubtitle": {
+    "description": "Subtitle of the per-habit daily reminder toggle."
+  },
+  "habitsReminderSetTime": "Set time",
+  "@habitsReminderSetTime": {
+    "description": "Button to pick the daily reminder time."
+  },
 
   "shellTabHabits": "Habits",
   "@shellTabHabits": {
@@ -1392,6 +1404,10 @@
   "notificationTrialBody": "you won't be charged until then — cancel anytime in your store settings, or do nothing to keep your sparks coming.",
   "@notificationTrialBody": {
     "description": "Body of the trial-ending reminder notification."
+  },
+  "notificationHabitBody": "Time for your habit 🌱",
+  "@notificationHabitBody": {
+    "description": "Body of a daily habit reminder notification."
   },
 
   "habitsPresetPlantBasedDay": "Ate fully plant-based today",

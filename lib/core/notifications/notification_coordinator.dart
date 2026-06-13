@@ -19,6 +19,10 @@ class NotificationCoordinator {
 
   final Ref _ref;
 
+  /// iOS caps pending local notifications at 64. We truncate the quote schedule
+  /// to this many so trial (1) + per-habit reminders (the rest) still fit.
+  static const int maxQuotePending = 50;
+
   Future<void> reschedule({bool force = false}) async {
     final service = NotificationService.instance;
     if (!service.isSupportedPlatform) return;
@@ -71,8 +75,32 @@ class NotificationCoordinator {
           quotes: schedulable,
         ),
     };
-    await service.scheduleAll(plans, languageCode: locale);
+    // Keep quotes + trial + habit reminders under the iOS 64 pending cap by
+    // sending the soonest [maxQuotePending] quote slots only.
+    final capped = [...plans]..sort((a, b) => a.fireAt.compareTo(b.fireAt));
+    final limited =
+        capped.length > maxQuotePending ? capped.sublist(0, maxQuotePending) : capped;
+    await service.scheduleAll(limited, languageCode: locale);
     await prefs.setLastNotifScheduleDay(today);
+  }
+
+  /// Rebuilds every active habit's daily reminder. Runs alongside the quote
+  /// reschedule (app launch + resume). Cheap and idempotent.
+  Future<void> rescheduleHabits() async {
+    final service = NotificationService.instance;
+    if (!service.isSupportedPlatform) return;
+    final habits = await _ref.read(databaseProvider).habitDao.getActiveHabits();
+    final reminders = [
+      for (final h in habits)
+        if (h.reminderMinutes != null)
+          (
+            id: h.id,
+            name: h.name,
+            emoji: h.emoji,
+            reminderMinutes: h.reminderMinutes!,
+          ),
+    ];
+    await service.rescheduleAllHabitReminders(reminders);
   }
 
   List<MealConfig> _enabledMeals(NotifSettings s) => [

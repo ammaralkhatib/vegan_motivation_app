@@ -300,6 +300,9 @@
   "habitsPickEmoji": "Elige un emoji",
   "habitsAddButton": "Añadir hábito",
   "habitsSaveButton": "Guardar cambios",
+  "habitsReminderSectionTitle": "Recordatorio diario",
+  "habitsReminderSubtitle": "Recibe un aviso a la misma hora cada día",
+  "habitsReminderSetTime": "Elegir hora",
 
   "shellTabHabits": "Hábitos",
   "shellTabExplore": "Explorar",
@@ -316,6 +319,7 @@
   "notificationChannelDescription": "Tu dosis diaria de ánimo vegetal",
   "notificationTrialTitle": "tu prueba gratuita termina mañana",
   "notificationTrialBody": "no se te cobrará hasta entonces: cancela cuando quieras en los ajustes de tu tienda, o no hagas nada para seguir recibiendo tus chispas.",
+  "notificationHabitBody": "Es hora de tu hábito 🌱",
 
   "habitsPresetPlantBasedDay": "Comí 100 % vegetal hoy",
   "habitsPresetNewRecipe": "Probé una nueva receta vegana",

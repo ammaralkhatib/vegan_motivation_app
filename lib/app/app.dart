@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/db/database.dart';
 import '../core/locale/locale_provider.dart';
@@ -32,17 +33,20 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
     final router = ref.read(routerProvider);
     final service = NotificationService.instance;
 
-    // Notification taps → the tapped quote.
-    service.onTap = (payload) => router.go('/quote/$payload');
+    // Notification taps → habit reminder opens Habits; everything else is a
+    // quote id and opens that quote.
+    service.onTap = (payload) => _routeNotification(router, payload);
 
     // App launched from a notification while terminated?
     final launchPayload = await service.launchPayload();
     if (launchPayload != null && launchPayload.isNotEmpty) {
-      router.go('/quote/$launchPayload');
+      _routeNotification(router, launchPayload);
     }
 
     // Activates the settings listener + does the daily refresh.
-    await ref.read(notificationCoordinatorProvider).reschedule();
+    final coordinator = ref.read(notificationCoordinatorProvider);
+    await coordinator.reschedule();
+    await coordinator.rescheduleHabits();
 
     // Refresh the home-screen widget queue (no-op on desktop).
     await HomeWidgetService.pushQueue(
@@ -62,7 +66,19 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // Debounced internally to once per day.
-      ref.read(notificationCoordinatorProvider).reschedule();
+      final coordinator = ref.read(notificationCoordinatorProvider);
+      coordinator.reschedule();
+      coordinator.rescheduleHabits();
+    }
+  }
+
+  /// A `habit:<id>` payload opens the Habits screen; any other payload is a
+  /// quote id (never parse a habit payload as one).
+  void _routeNotification(GoRouter router, String payload) {
+    if (payload.startsWith('habit:')) {
+      router.go('/habits');
+    } else {
+      router.go('/quote/$payload');
     }
   }
 

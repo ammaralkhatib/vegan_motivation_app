@@ -160,12 +160,15 @@ void main() {
     );
     await db.quoteDao.setFavorite(1, true);
 
-    // Roll the database back to a v1 state: drop the new table, reset version.
+    // Roll the database back to a v1 state: drop everything added after v1
+    // (the translations table and the v3 habit-reminder column), reset version.
     await db.customStatement('DROP TABLE quote_translations');
+    await db.customStatement('ALTER TABLE habits DROP COLUMN reminder_minutes');
     await db.customStatement('PRAGMA user_version = 1');
     await db.close();
 
-    // Reopen: drift sees user_version 1 < schemaVersion 2 → runs onUpgrade.
+    // Reopen: drift sees user_version 1 < schemaVersion 3 → runs onUpgrade
+    // (re-creates the translations table and re-adds the reminder column).
     db = AppDatabase.forTesting(NativeDatabase(file));
     addTearDown(db.close);
 

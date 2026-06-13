@@ -7,6 +7,7 @@ import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../../l10n/app_localizations.dart';
+import 'habit_reminder.dart';
 import 'notification_scheduler.dart';
 import 'trial_reminder.dart';
 
@@ -174,13 +175,17 @@ class NotificationService {
     await _plugin.cancelAll();
   }
 
-  /// Cancels every pending notification except the reserved trial reminder.
+  /// Cancels every pending *quote* notification, leaving the reserved trial
+  /// reminder and all per-habit reminders intact (a quote reschedule must never
+  /// wipe them).
   Future<void> _cancelDailyNotifications() async {
     final pending = await _plugin.pendingNotificationRequests();
     for (final p in pending) {
-      if (p.id != trialReminderNotificationId) {
-        await _plugin.cancel(p.id);
+      if (p.id == trialReminderNotificationId ||
+          isHabitReminderNotificationId(p.id)) {
+        continue;
       }
+      await _plugin.cancel(p.id);
     }
   }
 
@@ -212,6 +217,74 @@ class NotificationService {
       );
     } catch (_) {
       // Best-effort — never let a reminder failure surface to the user.
+    }
+  }
+
+  /// Schedules one daily-repeating reminder for a habit at [reminderMinutes]
+  /// minutes past local midnight. Uses a single pending slot (the OS repeats it
+  /// every day via [DateTimeComponents.time]). Best-effort: never throws to UI,
+  /// no-op when the plugin isn't ready / unsupported platform.
+  Future<void> scheduleHabitReminder({
+    required int habitId,
+    required String name,
+    required String emoji,
+    required int reminderMinutes,
+  }) async {
+    if (!_initialized || !isSupportedPlatform) return;
+    final l = _notificationL10n();
+    final details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        l.notificationChannelName,
+        channelDescription: l.notificationChannelDescription,
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
+        styleInformation: const BigTextStyleInformation(''),
+      ),
+      iOS: const DarwinNotificationDetails(),
+      macOS: const DarwinNotificationDetails(),
+    );
+    try {
+      await _plugin.zonedSchedule(
+        habitReminderNotificationId(habitId),
+        '$emoji $name',
+        l.notificationHabitBody,
+        tz.TZDateTime.from(
+          nextHabitFireTime(reminderMinutes, DateTime.now()),
+          tz.local,
+        ),
+        details,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+        payload: 'habit:$habitId',
+      );
+    } catch (_) {
+      // Best-effort — never let a reminder failure surface to the user.
+    }
+  }
+
+  /// Cancels a habit's daily reminder (if any).
+  Future<void> cancelHabitReminder(int habitId) async {
+    if (!_initialized) return;
+    await _plugin.cancel(habitReminderNotificationId(habitId));
+  }
+
+  /// Rebuilds every habit reminder: cancels each habit's slot first, then
+  /// re-schedules the ones that have a reminder. Idempotent.
+  Future<void> rescheduleAllHabitReminders(
+    List<({int id, String name, String emoji, int reminderMinutes})> habits,
+  ) async {
+    if (!_initialized || !isSupportedPlatform) return;
+    for (final h in habits) {
+      await cancelHabitReminder(h.id);
+    }
+    for (final h in habits) {
+      await scheduleHabitReminder(
+        habitId: h.id,
+        name: h.name,
+        emoji: h.emoji,
+        reminderMinutes: h.reminderMinutes,
+      );
     }
   }
 }

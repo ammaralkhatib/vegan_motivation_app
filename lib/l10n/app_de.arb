@@ -300,6 +300,9 @@
   "habitsPickEmoji": "Emoji wählen",
   "habitsAddButton": "Gewohnheit hinzufügen",
   "habitsSaveButton": "Änderungen speichern",
+  "habitsReminderSectionTitle": "Tägliche Erinnerung",
+  "habitsReminderSubtitle": "Erhalte jeden Tag zur gleichen Zeit einen kleinen Anstoß",
+  "habitsReminderSetTime": "Zeit festlegen",
 
   "shellTabHabits": "Gewohnheiten",
   "shellTabExplore": "Entdecken",
@@ -316,6 +319,7 @@
   "notificationChannelDescription": "Deine tägliche Portion pflanzlicher Ermutigung",
   "notificationTrialTitle": "deine kostenlose Testphase endet morgen",
   "notificationTrialBody": "bis dahin wird dir nichts berechnet — jederzeit in deinen Store-Einstellungen kündbar, oder tu nichts, um deine Funken zu behalten.",
+  "notificationHabitBody": "Zeit für deine Gewohnheit 🌱",
 
   "habitsPresetPlantBasedDay": "Heute vollständig pflanzlich gegessen",
   "habitsPresetNewRecipe": "Ein neues veganes Rezept ausprobiert",

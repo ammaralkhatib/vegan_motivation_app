@@ -74,6 +74,14 @@ class HabitDao extends DatabaseAccessor<AppDatabase> with _$HabitDaoMixin {
     );
   }
 
+  /// Sets (or clears, with null) the habit's daily reminder time, in minutes
+  /// from local midnight.
+  Future<void> setHabitReminder(int id, int? minutes) {
+    return (update(habits)..where((h) => h.id.equals(id))).write(
+      HabitsCompanion(reminderMinutes: Value(minutes)),
+    );
+  }
+
   Future<void> archiveHabit(int id) {
     return (update(habits)..where((h) => h.id.equals(id))).write(
       HabitsCompanion(archivedAt: Value(DateTime.now())),

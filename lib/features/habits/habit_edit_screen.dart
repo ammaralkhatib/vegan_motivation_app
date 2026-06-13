@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/db/database.dart';
+import '../../core/notifications/notification_service.dart';
 import '../../l10n/app_localizations.dart';
 
 const _emojiChoices = [
@@ -26,6 +27,12 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
   Habit? _existing;
   bool _loaded = false;
 
+  /// Chosen daily reminder, in minutes from local midnight; null = off.
+  int? _reminderMinutes;
+
+  /// Default reminder time when the switch is first turned on (9:00 AM).
+  static const int _defaultReminderMinutes = 9 * 60;
+
   bool get _isNew => widget.habitId == 'new';
 
   @override
@@ -48,6 +55,7 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
       if (_existing != null) {
         _nameController.text = _existing!.name;
         _emoji = _existing!.emoji;
+        _reminderMinutes = _existing!.reminderMinutes;
       }
     }
     if (mounted) setState(() => _loaded = true);
@@ -59,15 +67,51 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
     super.dispose();
   }
 
+  Future<void> _pickTime() async {
+    final current = _reminderMinutes ?? _defaultReminderMinutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: current ~/ 60, minute: current % 60),
+    );
+    if (picked != null) {
+      setState(() => _reminderMinutes = picked.hour * 60 + picked.minute);
+    }
+  }
+
   Future<void> _save() async {
     final name = _nameController.text.trim();
     if (name.isEmpty) return;
     final dao = ref.read(databaseProvider).habitDao;
+    final service = NotificationService.instance;
+
+    // New habit: insert first to get its id, then attach the reminder.
+    final int habitId;
     if (_existing == null) {
-      await dao.insertHabit(name: name, emoji: _emoji, sortOrder: 99);
+      habitId = await dao.insertHabit(name: name, emoji: _emoji, sortOrder: 99);
     } else {
-      await dao.renameHabit(_existing!.id, name, _emoji);
+      habitId = _existing!.id;
+      await dao.renameHabit(habitId, name, _emoji);
     }
+
+    final hadReminder = _existing?.reminderMinutes != null;
+    if (_reminderMinutes != null) {
+      await dao.setHabitReminder(habitId, _reminderMinutes);
+      // Ask for permission once when a reminder is turned on for the first
+      // time. If denied we still keep the time; the OS just won't show it.
+      if (!hadReminder) {
+        await service.requestPermission();
+      }
+      await service.scheduleHabitReminder(
+        habitId: habitId,
+        name: name,
+        emoji: _emoji,
+        reminderMinutes: _reminderMinutes!,
+      );
+    } else {
+      await dao.setHabitReminder(habitId, null);
+      await service.cancelHabitReminder(habitId);
+    }
+
     if (mounted) context.pop();
   }
 
@@ -92,6 +136,7 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
     );
     if (confirmed == true && _existing != null) {
       await ref.read(databaseProvider).habitDao.archiveHabit(_existing!.id);
+      await NotificationService.instance.cancelHabitReminder(_existing!.id);
       if (mounted) context.pop();
     }
   }
@@ -144,6 +189,28 @@ class _HabitEditScreenState extends ConsumerState<HabitEditScreen> {
                       ),
                   ],
                 ),
+                const SizedBox(height: 24),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(l.habitsReminderSectionTitle),
+                  subtitle: Text(l.habitsReminderSubtitle),
+                  value: _reminderMinutes != null,
+                  onChanged: (on) => setState(() {
+                    _reminderMinutes = on ? _defaultReminderMinutes : null;
+                  }),
+                ),
+                if (_reminderMinutes != null)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: _pickTime,
+                      icon: const Icon(Icons.schedule),
+                      label: Text(
+                        '${l.habitsReminderSetTime} · '
+                        '${TimeOfDay(hour: _reminderMinutes! ~/ 60, minute: _reminderMinutes! % 60).format(context)}',
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 32),
                 FilledButton(
                   onPressed: _save,

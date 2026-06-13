@@ -64,6 +64,10 @@ class Habits extends Table {
 
   /// Soft delete — preserves completion history.
   DateTimeColumn get archivedAt => dateTime().nullable()();
+
+  /// Optional daily reminder, in minutes from local midnight.
+  /// `null` = no reminder (the default).
+  IntColumn get reminderMinutes => integer().nullable()();
 }
 
 class HabitCompletions extends Table {
@@ -91,7 +95,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -99,6 +103,11 @@ class AppDatabase extends _$AppDatabase {
           // v1 → v2: add quote translations (content only, no user data).
           if (from < 2) {
             await m.createTable(quoteTranslations);
+          }
+          // v2 → v3: add the optional per-habit reminder column (additive,
+          // never touches existing user data).
+          if (from < 3) {
+            await m.addColumn(habits, habits.reminderMinutes);
           }
         },
         beforeOpen: (details) async {
