@@ -17,7 +17,7 @@ struct QuoteEntry: TimelineEntry {
 
 // MARK: - Provider
 
-struct VeggieTimelineProvider: TimelineProvider {
+struct VeganKitTimelineProvider: TimelineProvider {
     /// Must match HomeWidgetService._appGroupId on the Dart side.
     static let appGroup = "group.io.develooper.vegankit"
     static let queueKey = "quote_queue"
@@ -88,7 +88,7 @@ struct VeggieTimelineProvider: TimelineProvider {
 
 // MARK: - Views
 
-struct VeggieWidgetView: View {
+struct VeganKitWidgetView: View {
     var entry: QuoteEntry
     @Environment(\.widgetFamily) var family
 
@@ -119,14 +119,13 @@ struct VeggieWidgetView: View {
 
 // MARK: - Widget
 
-@main
-struct VeggieWidget: Widget {
+struct VeganKitWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(
-            kind: "VeggieWidget",
-            provider: VeggieTimelineProvider()
+            kind: "VeganKitWidget",
+            provider: VeganKitTimelineProvider()
         ) { entry in
-            VeggieWidgetView(entry: entry)
+            VeganKitWidgetView(entry: entry)
         }
         .configurationDisplayName("Daily Quote")
         .description("Today's vegan motivation at a glance.")
