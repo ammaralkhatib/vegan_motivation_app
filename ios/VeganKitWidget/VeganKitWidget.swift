@@ -11,7 +11,7 @@ struct QuoteEntry: TimelineEntry {
     static let placeholder = QuoteEntry(
         date: .now,
         text: "Every plant-based meal plants a little hope.",
-        category: "🌱 Veggie"
+        category: "🌱 VeganKit"
     )
 }
 
@@ -56,7 +56,7 @@ struct VeganKitTimelineProvider: TimelineProvider {
                 let text = item["text"] as? String
             else { continue }
             let emoji = item["emoji"] as? String ?? "🌱"
-            let category = item["category"] as? String ?? "Veggie"
+            let category = item["category"] as? String ?? "VeganKit"
 
             // epoch-day → local midnight of that calendar date
             let utcDate = Date(timeIntervalSince1970: TimeInterval(day) * 86_400)
@@ -112,7 +112,7 @@ struct VeganKitWidgetView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .containerBackground(for: .widget) {
-            Color(red: 0.98, green: 0.965, blue: 0.937) // Veggie cream
+            Color(red: 0.98, green: 0.965, blue: 0.937) // cream
         }
     }
 }
