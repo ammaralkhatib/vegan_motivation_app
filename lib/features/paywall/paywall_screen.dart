@@ -21,25 +21,25 @@ Future<void> showPaywall(BuildContext context, PaywallVariant variant) {
 
 /// The benefits every variant lists.
 List<String> _benefits(AppLocalizations l) => [
-      l.paywallBenefit1,
-      l.paywallBenefit2,
-      l.paywallBenefit3,
-      l.paywallBenefit4,
-    ];
+  l.paywallBenefit1,
+  l.paywallBenefit2,
+  l.paywallBenefit3,
+  l.paywallBenefit4,
+];
 
 /// Headline copy, by variant.
 String _paywallTitle(AppLocalizations l, PaywallVariant v) => switch (v) {
-      PaywallVariant.onboarding => l.paywallOnboardingTitle,
-      PaywallVariant.defaultOffer => l.paywallDefaultTitle,
-      PaywallVariant.discount => l.paywallDiscountTitle,
-    };
+  PaywallVariant.onboarding => l.paywallOnboardingTitle,
+  PaywallVariant.defaultOffer => l.paywallDefaultTitle,
+  PaywallVariant.discount => l.paywallDiscountTitle,
+};
 
 /// Primary-button copy, by variant.
 String _paywallCta(AppLocalizations l, PaywallVariant v) => switch (v) {
-      PaywallVariant.onboarding => l.paywallOnboardingCta,
-      PaywallVariant.defaultOffer => l.paywallDefaultCta,
-      PaywallVariant.discount => l.paywallDiscountCta,
-    };
+  PaywallVariant.onboarding => l.paywallOnboardingCta,
+  PaywallVariant.defaultOffer => l.paywallDefaultCta,
+  PaywallVariant.discount => l.paywallDiscountCta,
+};
 
 /// Discount badge — only shown when a real anchor price is present.
 String? _paywallBadge(AppLocalizations l, PaywallData d) {
@@ -63,13 +63,13 @@ String _trialDuration(AppLocalizations l, int count, TrialPeriodUnit unit) =>
 /// The "{trial} free, then {price}/year" line, or null when there's no trial.
 String? _trialText(AppLocalizations l, PaywallData d) {
   if (!d.hasTrial) return null;
-  final duration =
-      _trialDuration(l, d.trialPeriodCount!, d.trialPeriodUnit!);
+  final duration = _trialDuration(l, d.trialPeriodCount!, d.trialPeriodUnit!);
   return l.paywallTrialText(duration, d.priceString);
 }
 
 /// Supporting line under the price, by variant.
-String? _paywallSubtitle(AppLocalizations l, PaywallData d) => switch (d.variant) {
+String? _paywallSubtitle(AppLocalizations l, PaywallData d) =>
+    switch (d.variant) {
       PaywallVariant.onboarding =>
         d.hasTrial ? null : l.paywallPricePerYear(d.priceString),
       PaywallVariant.defaultOffer => l.paywallPricePerYear(d.priceString),
@@ -89,8 +89,9 @@ class PaywallScreen extends ConsumerStatefulWidget {
 }
 
 class _PaywallScreenState extends ConsumerState<PaywallScreen> {
-  final ConfettiController _confetti =
-      ConfettiController(duration: const Duration(milliseconds: 1200));
+  final ConfettiController _confetti = ConfettiController(
+    duration: const Duration(milliseconds: 1200),
+  );
   bool _busy = false;
 
   // Close-button gating: the onboarding/discount offers fade their X in after
@@ -131,8 +132,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Future<void> _buy(PaywallData data) async {
     if (_busy) return;
     setState(() => _busy = true);
-    final outcome =
-        await ref.read(purchaseServiceProvider).purchase(data.package);
+    final outcome = await ref
+        .read(purchaseServiceProvider)
+        .purchase(data.package);
     if (!mounted) return;
     switch (outcome) {
       case PurchaseOutcome.success:
@@ -159,8 +161,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Future<void> _restore() async {
     if (_busy) return;
     setState(() => _busy = true);
-    final result =
-        await performRestore(ref.read(purchaseServiceProvider));
+    final result = await performRestore(ref.read(purchaseServiceProvider));
     if (!mounted) return;
     setState(() => _busy = false);
     _snack(restoreMessage(result));
@@ -168,8 +169,9 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   }
 
   void _snack(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -181,8 +183,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         children: [
           SafeArea(
             child: async.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator()),
               error: (_, _) => _OffersUnavailable(onRetry: _retry),
               data: (data) => data == null
                   ? _OffersUnavailable(onRetry: _retry)
@@ -254,37 +255,121 @@ class PaywallView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(28, 56, 28, 28),
+    // Scrolling content (hero + benefits + price) above a pinned CTA bar.
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 56, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Hero: eco icon in a soft circular tinted badge.
+                Center(
+                  child: Container(
+                    width: 88,
+                    height: 88,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.eco,
+                      size: 44,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  _paywallTitle(l, data.variant),
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.displaySmall,
+                ),
+                const SizedBox(height: 28),
+                ..._benefits(l).map(
+                  (b) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _BenefitCard(text: b),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                _PriceBlock(data: data),
+              ],
+            ),
+          ),
+        ),
+        _CtaBar(
+          label: _paywallCta(l, data.variant),
+          busy: busy,
+          onPurchase: onPurchase,
+          onRestore: onRestore,
+        ),
+      ],
+    );
+  }
+}
+
+/// One benefit shown as a soft rounded card with a check accent.
+class _BenefitCard extends StatelessWidget {
+  const _BenefitCard({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle, size: 22, color: theme.colorScheme.primary),
+          const SizedBox(width: 12),
+          Expanded(child: Text(text, style: theme.textTheme.bodyLarge)),
+        ],
+      ),
+    );
+  }
+}
+
+/// Bottom bar that stays pinned while the content above scrolls. Holds the
+/// primary CTA, the restore link and the cancel footnote, separated from the
+/// scrolling content by a tinted surface + top divider.
+class _CtaBar extends StatelessWidget {
+  const _CtaBar({
+    required this.label,
+    required this.busy,
+    required this.onPurchase,
+    required this.onRestore,
+  });
+
+  final String label;
+  final bool busy;
+  final VoidCallback? onPurchase;
+  final VoidCallback? onRestore;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerLow,
+        border: Border(
+          top: BorderSide(color: theme.colorScheme.outlineVariant),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 14, 24, 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Icon(Icons.eco, size: 56, color: theme.colorScheme.primary),
-            const SizedBox(height: 16),
-            Text(
-              _paywallTitle(l, data.variant),
-              textAlign: TextAlign.center,
-              style: theme.textTheme.displaySmall,
-            ),
-            const SizedBox(height: 24),
-            ..._benefits(l).map(
-              (b) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  children: [
-                    Icon(Icons.check_circle,
-                        size: 20, color: theme.colorScheme.primary),
-                    const SizedBox(width: 12),
-                    Expanded(child: Text(b, style: theme.textTheme.bodyLarge)),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            _PriceBlock(data: data),
-            const SizedBox(height: 24),
             FilledButton(
               onPressed: busy ? null : onPurchase,
               style: FilledButton.styleFrom(
@@ -296,19 +381,18 @@ class PaywallView extends StatelessWidget {
                       width: 22,
                       child: CircularProgressIndicator(strokeWidth: 2.5),
                     )
-                  : Text(_paywallCta(l, data.variant)),
+                  : Text(label),
             ),
-            const SizedBox(height: 4),
             TextButton(
               onPressed: busy ? null : onRestore,
               child: Text(l.paywallRestore),
             ),
-            const SizedBox(height: 8),
             Text(
               l.paywallCancelAnytime,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
@@ -328,50 +412,64 @@ class _PriceBlock extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final badge = _paywallBadge(l, data);
     final subtitle = _paywallSubtitle(l, data);
-    return Column(
-      children: [
-        if (badge != null) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              badge,
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: theme.colorScheme.onTertiaryContainer,
-                fontWeight: FontWeight.w700,
+    // Highlighted card: a slightly raised surface with a stronger primary
+    // border so the price stands out from the soft benefit cards. Using a
+    // surface color (not primaryContainer) keeps the text contrast correct in
+    // both light and dark mode.
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.primary, width: 1.5),
+      ),
+      child: Column(
+        children: [
+          if (badge != null) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.tertiaryContainer,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                badge,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.onTertiaryContainer,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 12),
-        ],
-        if (data.anchorPriceString != null)
+            const SizedBox(height: 12),
+          ],
+          if (data.anchorPriceString != null)
+            Text(
+              data.anchorPriceString!,
+              style: theme.textTheme.titleMedium?.copyWith(
+                decoration: TextDecoration.lineThrough,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
           Text(
-            data.anchorPriceString!,
-            style: theme.textTheme.titleMedium?.copyWith(
-              decoration: TextDecoration.lineThrough,
-              color: theme.colorScheme.onSurfaceVariant,
+            // For the trial variant this carries the whole "X free, then …" line.
+            _trialText(l, data) ?? data.priceString,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
-        Text(
-          // For the trial variant this carries the whole "X free, then …" line.
-          _trialText(l, data) ?? data.priceString,
-          textAlign: TextAlign.center,
-          style: theme.textTheme.headlineSmall
-              ?.copyWith(fontWeight: FontWeight.w700),
-        ),
-        if (subtitle != null) ...[
-          const SizedBox(height: 4),
-          Text(
-            subtitle,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium
-                ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-          ),
+          if (subtitle != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
@@ -391,8 +489,11 @@ class _OffersUnavailable extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.cloud_off_outlined,
-                size: 48, color: theme.colorScheme.onSurfaceVariant),
+            Icon(
+              Icons.cloud_off_outlined,
+              size: 48,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             const SizedBox(height: 16),
             Text(
               l.paywallOffersUnavailable,
@@ -400,10 +501,7 @@ class _OffersUnavailable extends StatelessWidget {
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 20),
-            FilledButton(
-              onPressed: onRetry,
-              child: Text(l.paywallRetry),
-            ),
+            FilledButton(onPressed: onRetry, child: Text(l.paywallRetry)),
           ],
         ),
       ),
