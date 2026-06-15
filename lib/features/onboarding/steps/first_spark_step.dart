@@ -40,7 +40,10 @@ class FirstSparkStep extends ConsumerWidget {
           Text(headline, style: theme.textTheme.displaySmall),
           const SizedBox(height: 20),
           SizedBox(
-            height: 380,
+            // Tall enough to hold the full QuoteCard (chip + quote + author +
+            // 140px critter + actions + gaps) without overflow. The feed's
+            // QuoteCard is left untouched — only this onboarding box grew.
+            height: 480,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(24),
               child: quoteId == null

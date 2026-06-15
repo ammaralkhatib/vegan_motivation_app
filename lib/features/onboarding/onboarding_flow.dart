@@ -84,6 +84,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   }
 
   void _next() {
+    // Drop keyboard focus so a text field (e.g. the name step) doesn't leave
+    // the keyboard hanging over the next step. Central handler → covers all steps.
+    FocusScope.of(context).unfocus();
     final steps = _buildSteps(Theme.of(context));
     if (_page < steps.length - 1) {
       _pageController.nextPage(

@@ -85,16 +85,16 @@ class _LoadingStepState extends State<LoadingStep>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 96,
-                height: 96,
+                width: 130,
+                height: 130,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     CircularProgressIndicator(
                       value: t == 0 ? null : t,
-                      strokeWidth: 6,
+                      strokeWidth: 8,
                     ),
-                    Text('$percent%', style: theme.textTheme.titleMedium),
+                    Text('$percent%', style: theme.textTheme.headlineSmall),
                   ],
                 ),
               ),

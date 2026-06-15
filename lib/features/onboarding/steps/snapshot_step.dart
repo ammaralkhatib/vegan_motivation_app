@@ -129,9 +129,17 @@ class _ValueCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(child: Text(label, style: theme.textTheme.titleMedium)),
-            Text(value,
+            const SizedBox(width: 12),
+            // Let a long value (e.g. strengths text) share/wrap space instead
+            // of overflowing the row.
+            Flexible(
+              child: Text(
+                value,
+                textAlign: TextAlign.end,
                 style: theme.textTheme.bodyLarge
-                    ?.copyWith(color: theme.colorScheme.primary)),
+                    ?.copyWith(color: theme.colorScheme.primary),
+              ),
+            ),
           ],
         ),
       ),
