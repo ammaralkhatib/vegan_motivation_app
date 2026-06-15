@@ -1,6 +1,10 @@
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/backgrounds/background_providers.dart';
 import '../../core/db/database.dart';
@@ -9,6 +13,7 @@ import '../../core/notifications/notification_coordinator.dart';
 import '../../core/prefs/prefs_repository.dart';
 import '../../core/purchases/premium_gate.dart';
 import '../../core/purchases/purchase_providers.dart';
+import '../../core/purchases/purchase_service.dart';
 import '../../core/purchases/restore_flow.dart';
 import '../../core/widgetkit/home_widget_service.dart';
 import '../../data/content_importer.dart';
@@ -80,10 +85,12 @@ class SettingsScreen extends ConsumerWidget {
       await db.delete(db.categories).go();
     });
     await prefs.clear();
-    final jsonString =
-        await rootBundle.loadString('assets/content/quotes_v1.json');
-    final version = await ContentImporter(db)
-        .import(jsonString: jsonString, lastImportedVersion: 0);
+    final jsonString = await rootBundle.loadString(
+      'assets/content/quotes_v1.json',
+    );
+    final version = await ContentImporter(
+      db,
+    ).import(jsonString: jsonString, lastImportedVersion: 0);
     if (version != null) await prefs.setContentVersion(version);
 
     // Rebuild all prefs-derived state, then back to onboarding.
@@ -101,8 +108,8 @@ class SettingsScreen extends ConsumerWidget {
   /// following the device, else the literal endonym.
   String _languageLabel(AppLocalizations l10n, String? override) =>
       override == null
-          ? l10n.settingsLanguageSystemDefault
-          : (_languageEndonyms[override] ?? override);
+      ? l10n.settingsLanguageSystemDefault
+      : (_languageEndonyms[override] ?? override);
 
   Future<void> _pickLanguage(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context);
@@ -178,7 +185,8 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
         children: [
-          // Hidden once the user is premium — nothing left to sell / restore.
+          // Free users get the upsell + restore card; premium users get the
+          // subscription card in its place.
           if (!isPremium) ...[
             Card(
               child: Column(
@@ -201,6 +209,9 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 24),
+          ] else ...[
+            const _SubscriptionCard(),
+            const SizedBox(height: 24),
           ],
           // Photo backgrounds: a live switch for premium; for free users a
           // dimmed, off switch whose row opens the 50%-off paywall.
@@ -209,8 +220,9 @@ class SettingsScreen extends ConsumerWidget {
                 ? SwitchListTile(
                     secondary: const Icon(Icons.image_outlined),
                     title: Text(l10n.settingsPhotoBackgrounds),
-                    subtitle:
-                        Text(l10n.settingsPhotoBackgroundsSubtitlePremium),
+                    subtitle: Text(
+                      l10n.settingsPhotoBackgroundsSubtitlePremium,
+                    ),
                     value: ref.watch(photoBackgroundsProvider),
                     onChanged: (v) =>
                         ref.read(photoBackgroundsProvider.notifier).set(v),
@@ -225,8 +237,10 @@ class SettingsScreen extends ConsumerWidget {
                   ),
           ),
           const SizedBox(height: 24),
-          Text(l10n.settingsAppearance,
-              style: Theme.of(context).textTheme.titleMedium),
+          Text(
+            l10n.settingsAppearance,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
           const SizedBox(height: 10),
           SegmentedButton<ThemeMode>(
             segments: [
@@ -303,13 +317,87 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   title: Text(
                     l10n.settingsResetAllData,
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.error),
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                   onTap: () => _resetAllData(context, ref),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Shown only for premium users: subscription status (Active + renewal/expiry
+/// date when available) and a button that opens the store's subscription page.
+/// Degrades to just "Active" when details can't be loaded (offline / no SDK).
+class _SubscriptionCard extends ConsumerWidget {
+  const _SubscriptionCard();
+
+  /// Status line, derived from the loaded details. Anything other than a real
+  /// expiry date (loading, error, null, no expiry) shows plain "Active".
+  String _statusLine(
+    AppLocalizations l10n,
+    AsyncValue<SubscriptionDetails?> async,
+  ) {
+    final details = async.valueOrNull;
+    final expiry = details?.expirationDate;
+    if (details != null && expiry != null) {
+      final formatted = DateFormat.yMMMMd(l10n.localeName).format(expiry);
+      return details.willRenew
+          ? l10n.settingsSubscriptionRenewsOn(formatted)
+          : l10n.settingsSubscriptionExpiresOn(formatted);
+    }
+    return l10n.settingsSubscriptionStatusActive;
+  }
+
+  /// The store's subscription page, by platform.
+  String _defaultStoreUrl() => switch (defaultTargetPlatform) {
+    TargetPlatform.android =>
+      'https://play.google.com/store/account/subscriptions',
+    _ => 'https://apps.apple.com/account/subscriptions', // iOS + macOS
+  };
+
+  Future<void> _manageSubscription(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final details = ref.read(subscriptionDetailsProvider).valueOrNull;
+    final uri = Uri.parse(details?.managementUrl ?? _defaultStoreUrl());
+    var launched = false;
+    try {
+      launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      launched = false;
+    }
+    if (!launched) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.settingsManageSubscriptionError)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final details = ref.watch(subscriptionDetailsProvider);
+
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.workspace_premium_outlined),
+            title: Text(l10n.settingsSubscriptionTitle),
+            subtitle: Text(_statusLine(l10n, details)),
+          ),
+          const Divider(height: 1, indent: 56),
+          ListTile(
+            leading: const Icon(Icons.open_in_new),
+            title: Text(l10n.settingsManageSubscription),
+            onTap: () => _manageSubscription(context, ref),
           ),
         ],
       ),

@@ -18,6 +18,40 @@
   "@settingsRestorePurchases": {
     "description": "Row that restores previous purchases."
   },
+  "settingsSubscriptionTitle": "Subscription",
+  "@settingsSubscriptionTitle": {
+    "description": "Title of the subscription card shown to premium users."
+  },
+  "settingsSubscriptionStatusActive": "Active",
+  "@settingsSubscriptionStatusActive": {
+    "description": "Subscription status line when the plan is active."
+  },
+  "settingsSubscriptionRenewsOn": "Renews on {date}",
+  "@settingsSubscriptionRenewsOn": {
+    "description": "Subscription status line when the plan auto-renews.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsSubscriptionExpiresOn": "Expires on {date}",
+  "@settingsSubscriptionExpiresOn": {
+    "description": "Subscription status line when the plan is set to expire.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsManageSubscription": "Manage subscription",
+  "@settingsManageSubscription": {
+    "description": "Button that opens the store's subscription management page."
+  },
+  "settingsManageSubscriptionError": "Couldn't open subscription settings.",
+  "@settingsManageSubscriptionError": {
+    "description": "SnackBar shown when the subscription page can't be opened."
+  },
 
   "settingsPhotoBackgrounds": "Photo backgrounds",
   "@settingsPhotoBackgrounds": {

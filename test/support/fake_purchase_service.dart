@@ -15,9 +15,10 @@ class FakePurchaseService implements PurchaseService {
     this.purchaseResult = PurchaseOutcome.success,
     this.restoreResult = PurchaseOutcome.success,
     this.restoreGrantsPremium = true,
+    this.subscriptionDetails,
     Map<String, Offering>? offerings,
-  })  : _isPremium = initialPremium,
-        offerings = offerings ?? const {};
+  }) : _isPremium = initialPremium,
+       offerings = offerings ?? const {};
 
   bool _isPremium;
   final _controller = StreamController<bool>.broadcast();
@@ -35,6 +36,9 @@ class FakePurchaseService implements PurchaseService {
   /// Offerings returned by [getOffering], keyed by id. Empty → null (the
   /// paywall's offline/retry state).
   final Map<String, Offering> offerings;
+
+  /// What [getSubscriptionDetails] returns. Null models "details unavailable".
+  final SubscriptionDetails? subscriptionDetails;
 
   /// Call counters, handy for asserting wiring.
   int initCalls = 0;
@@ -74,6 +78,10 @@ class FakePurchaseService implements PurchaseService {
     }
     return restoreResult;
   }
+
+  @override
+  Future<SubscriptionDetails?> getSubscriptionDetails() async =>
+      subscriptionDetails;
 
   @override
   void dispose() {

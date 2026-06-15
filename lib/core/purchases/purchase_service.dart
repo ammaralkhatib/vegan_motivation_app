@@ -11,6 +11,27 @@ import 'purchase_config.dart';
 /// A user-cancelled purchase is [cancelled], not [error] — it isn't a failure.
 enum PurchaseOutcome { success, cancelled, error }
 
+/// A snapshot of the active subscription, for the Settings "Subscription" card.
+/// All fields can be absent — the card degrades to just "Active" when so.
+@immutable
+class SubscriptionDetails {
+  const SubscriptionDetails({
+    required this.willRenew,
+    this.expirationDate,
+    this.managementUrl,
+  });
+
+  /// Whether the plan auto-renews. False = set to expire at [expirationDate].
+  final bool willRenew;
+
+  /// When the current period ends. Null = no expiry on record (e.g. lifetime).
+  final DateTime? expirationDate;
+
+  /// Deep link to the store's subscription-management page, when the SDK
+  /// provides one. Null = not available on this platform/state.
+  final String? managementUrl;
+}
+
 /// The purchase layer the rest of the app talks to. Abstract so tests (and
 /// later paywall prompts) can swap in a fake without touching the real SDK.
 abstract class PurchaseService {
@@ -32,6 +53,10 @@ abstract class PurchaseService {
 
   /// Restores previous purchases (e.g. new device / reinstall).
   Future<PurchaseOutcome> restorePurchases();
+
+  /// Details of the active subscription for the Settings card, or null when not
+  /// premium / details can't be loaded (offline, unsupported platform).
+  Future<SubscriptionDetails?> getSubscriptionDetails();
 
   /// Releases resources. Call when the owning scope is torn down.
   void dispose();
@@ -56,10 +81,8 @@ bool defaultPurchasesSupported() {
 /// failure or a placeholder API key never crashes or blocks the app — the
 /// user simply continues with their cached (free, by default) status.
 class RevenueCatPurchaseService implements PurchaseService {
-  RevenueCatPurchaseService(
-    this._prefs, {
-    bool? supported,
-  }) : _supported = supported ?? defaultPurchasesSupported() {
+  RevenueCatPurchaseService(this._prefs, {bool? supported})
+    : _supported = supported ?? defaultPurchasesSupported() {
     // Seed synchronously so providers have an answer on the very first frame.
     _isPremium = _supported ? _prefs.premiumCached : true;
   }
@@ -103,8 +126,9 @@ class RevenueCatPurchaseService implements PurchaseService {
   }
 
   void _onCustomerInfo(CustomerInfo info) {
-    final active = info.entitlements.active
-        .containsKey(PurchaseConfig.premiumEntitlementId);
+    final active = info.entitlements.active.containsKey(
+      PurchaseConfig.premiumEntitlementId,
+    );
     _setPremium(active);
   }
 
@@ -159,6 +183,25 @@ class RevenueCatPurchaseService implements PurchaseService {
     } catch (e) {
       debugPrint('restorePurchases failed: $e');
       return PurchaseOutcome.error;
+    }
+  }
+
+  @override
+  Future<SubscriptionDetails?> getSubscriptionDetails() async {
+    if (!_supported || !_configured) return null;
+    try {
+      final info = await Purchases.getCustomerInfo();
+      final entitlement =
+          info.entitlements.active[PurchaseConfig.premiumEntitlementId];
+      if (entitlement == null) return null;
+      return SubscriptionDetails(
+        willRenew: entitlement.willRenew,
+        expirationDate: DateTime.tryParse(entitlement.expirationDate ?? ''),
+        managementUrl: info.managementURL,
+      );
+    } catch (e) {
+      debugPrint('getSubscriptionDetails failed: $e');
+      return null;
     }
   }
 

@@ -7,7 +7,8 @@ import 'purchase_service.dart';
 /// mirroring [prefsProvider]/[databaseProvider]. Tests override it with a
 /// fake.
 final purchaseServiceProvider = Provider<PurchaseService>(
-  (ref) => throw UnimplementedError('purchaseServiceProvider must be overridden'),
+  (ref) =>
+      throw UnimplementedError('purchaseServiceProvider must be overridden'),
 );
 
 /// Whether the user currently has premium. Seeded from the service's cached
@@ -31,5 +32,17 @@ class PremiumStatusNotifier extends Notifier<bool> {
   }
 }
 
-final isPremiumProvider =
-    NotifierProvider<PremiumStatusNotifier, bool>(PremiumStatusNotifier.new);
+final isPremiumProvider = NotifierProvider<PremiumStatusNotifier, bool>(
+  PremiumStatusNotifier.new,
+);
+
+/// Active-subscription details for the Settings card. Reloads when premium
+/// flips. Returns null (without touching the service) when not premium, so a
+/// free user never triggers an SDK call.
+final subscriptionDetailsProvider = FutureProvider<SubscriptionDetails?>((
+  ref,
+) async {
+  final isPremium = ref.watch(isPremiumProvider);
+  if (!isPremium) return null;
+  return ref.watch(purchaseServiceProvider).getSubscriptionDetails();
+});
