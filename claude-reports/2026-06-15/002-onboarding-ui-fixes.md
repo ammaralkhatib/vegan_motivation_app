@@ -60,7 +60,17 @@ expectation per requirement:
 ## Commit & push
 
 - **Commit:** `1ad126d` — `fix(onboarding): dismiss keyboard, fix two overflows, enlarge loading ring`
+  (requirements 1–4, original run).
+- **Commit:** `2615c14` — `fix(onboarding): wrap snapshot value card to fix overflow`
+  (re-run; see note below).
 - **Push:** `origin/main` — ok
+
+> **Re-run note.** Between runs, `snapshot_step.dart` was reformatted (newer
+> `dart format`) and `_ValueCard` had reverted to a `Column` with an `Expanded`
+> child — that both lost the requirement-4 fix and would throw at runtime
+> (`Expanded` inside an unbounded `Column`). I kept the reformatting and re-applied
+> the fix: `Row` with `Expanded(label)` + `Flexible(value, end-aligned)`. The other
+> three fixes were already committed and unchanged.
 
 ## Open items for the owner
 
