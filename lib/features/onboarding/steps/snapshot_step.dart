@@ -23,11 +23,11 @@ class SnapshotStep extends StatelessWidget {
   final VoidCallback onContinue;
 
   double get _motivationFill => switch (whyRelationship) {
-        'fading' => 0.25,
-        'ups_downs' || 'starting' => 0.5,
-        'strong' => 0.9,
-        _ => 0.5,
-      };
+    'fading' => 0.25,
+    'ups_downs' || 'starting' => 0.5,
+    'strong' => 0.9,
+    _ => 0.5,
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +44,7 @@ class SnapshotStep extends StatelessWidget {
       child: ListView(
         children: [
           const SizedBox(height: 8),
-          Text(l.onboardingSnapshotTitle,
-              style: theme.textTheme.displaySmall),
+          Text(l.onboardingSnapshotTitle, style: theme.textTheme.displaySmall),
           const SizedBox(height: 20),
           _BarCard(
             label: l.onboardingSnapshotMotivation,
@@ -58,15 +57,9 @@ class SnapshotStep extends StatelessWidget {
             value: l.onboardingSnapshotDipsValue(dips),
           ),
           const SizedBox(height: 12),
-          _BarCard(
-            label: l.onboardingSnapshotCommitment,
-            fill: commitmentFill,
-          ),
+          _BarCard(label: l.onboardingSnapshotCommitment, fill: commitmentFill),
           const SizedBox(height: 12),
-          _ValueCard(
-            label: l.onboardingSnapshotStrengths,
-            value: strength,
-          ),
+          _ValueCard(label: l.onboardingSnapshotStrengths, value: strength),
         ],
       ),
     );
@@ -92,8 +85,8 @@ class _BarCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child:
-                        Text(label, style: theme.textTheme.titleMedium)),
+                  child: Text(label, style: theme.textTheme.titleMedium),
+                ),
                 if (trailing != null)
                   Text(trailing!, style: theme.textTheme.bodySmall),
               ],
@@ -136,8 +129,9 @@ class _ValueCard extends StatelessWidget {
               child: Text(
                 value,
                 textAlign: TextAlign.end,
-                style: theme.textTheme.bodyLarge
-                    ?.copyWith(color: theme.colorScheme.primary),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: theme.colorScheme.primary,
+                ),
               ),
             ),
           ],
