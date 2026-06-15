@@ -326,6 +326,22 @@
   "@paywallClose": {
     "description": "Tooltip on the paywall close (X) button."
   },
+  "paywallPrivacy": "Privacy",
+  "@paywallPrivacy": {
+    "description": "Privacy link under the restore button on the paywall."
+  },
+  "paywallTerms": "Terms",
+  "@paywallTerms": {
+    "description": "Terms link under the restore button on the paywall."
+  },
+  "legalPrivacyTitle": "Privacy Policy",
+  "@legalPrivacyTitle": {
+    "description": "App bar title on the in-app privacy policy screen."
+  },
+  "legalTermsTitle": "Terms of Use",
+  "@legalTermsTitle": {
+    "description": "App bar title on the in-app terms of use screen."
+  },
 
   "onboardingContinue": "continue",
   "@onboardingContinue": {

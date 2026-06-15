@@ -294,13 +294,12 @@ class PaywallView extends StatelessWidget {
                     child: _BenefitCard(text: b),
                   ),
                 ),
-                const SizedBox(height: 8),
-                _PriceBlock(data: data),
               ],
             ),
           ),
         ),
         _CtaBar(
+          data: data,
           label: _paywallCta(l, data.variant),
           busy: busy,
           onPurchase: onPurchase,
@@ -339,16 +338,18 @@ class _BenefitCard extends StatelessWidget {
 }
 
 /// Bottom bar that stays pinned while the content above scrolls. Holds the
-/// primary CTA, the restore link and the cancel footnote, separated from the
-/// scrolling content by a tinted surface + top divider.
+/// price card, the primary CTA, the restore link and the Privacy/Terms links,
+/// separated from the scrolling content by a tinted surface + top divider.
 class _CtaBar extends StatelessWidget {
   const _CtaBar({
+    required this.data,
     required this.label,
     required this.busy,
     required this.onPurchase,
     required this.onRestore,
   });
 
+  final PaywallData data;
   final String label;
   final bool busy;
   final VoidCallback? onPurchase;
@@ -370,6 +371,10 @@ class _CtaBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Top room so the notch badge can lift above the price card.
+            const SizedBox(height: 14),
+            _PriceBlock(data: data),
+            const SizedBox(height: 16),
             FilledButton(
               onPressed: busy ? null : onPurchase,
               style: FilledButton.styleFrom(
@@ -387,16 +392,53 @@ class _CtaBar extends StatelessWidget {
               onPressed: busy ? null : onRestore,
               child: Text(l.paywallRestore),
             ),
-            Text(
-              l.paywallCancelAnytime,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+            // Secondary links: in-app Privacy / Terms screens.
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _LegalLink(
+                  label: l.paywallPrivacy,
+                  onTap: () => context.push('/legal/privacy'),
+                ),
+                Text(
+                  '·',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                _LegalLink(
+                  label: l.paywallTerms,
+                  onTap: () => context.push('/legal/terms'),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A small, muted text button used for the Privacy / Terms secondary links.
+class _LegalLink extends StatelessWidget {
+  const _LegalLink({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return TextButton(
+      onPressed: onTap,
+      style: TextButton.styleFrom(
+        minimumSize: Size.zero,
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        foregroundColor: theme.colorScheme.onSurfaceVariant,
+        textStyle: theme.textTheme.labelMedium,
+      ),
+      child: Text(label),
     );
   }
 }
@@ -411,22 +453,82 @@ class _PriceBlock extends StatelessWidget {
     final theme = Theme.of(context);
     final l = AppLocalizations.of(context);
     final badge = _paywallBadge(l, data);
-    final subtitle = _paywallSubtitle(l, data);
+    // The default (50%) paywall drops its per-year subtitle; the others keep
+    // theirs (e.g. the discount urgency line).
+    final subtitle = data.variant == PaywallVariant.defaultOffer
+        ? null
+        : _paywallSubtitle(l, data);
     // Highlighted card: a slightly raised surface with a stronger primary
     // border so the price stands out from the soft benefit cards. Using a
     // surface color (not primaryContainer) keeps the text contrast correct in
-    // both light and dark mode.
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: theme.colorScheme.primary, width: 1.5),
-      ),
-      child: Column(
-        children: [
-          if (badge != null) ...[
-            Container(
+    // both light and dark mode. The discount badge straddles the top border
+    // via a Stack with Clip.none (lifted up by half its own height).
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.topCenter,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: theme.colorScheme.primary, width: 1.5),
+          ),
+          child: Column(
+            children: [
+              // Anchor (strikethrough, muted) + real price (bold) on one line.
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (data.anchorPriceString != null) ...[
+                    Text(
+                      data.anchorPriceString!,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Flexible(
+                    child: Text(
+                      // For the trial variant this carries the whole
+                      // "X free, then …" line.
+                      _trialText(l, data) ?? data.priceString,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (subtitle != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+              const SizedBox(height: 12),
+              Text(
+                l.paywallCancelAnytime,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (badge != null)
+          FractionalTranslation(
+            translation: const Offset(0, -0.5),
+            child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: theme.colorScheme.tertiaryContainer,
@@ -440,36 +542,8 @@ class _PriceBlock extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
-          ],
-          if (data.anchorPriceString != null)
-            Text(
-              data.anchorPriceString!,
-              style: theme.textTheme.titleMedium?.copyWith(
-                decoration: TextDecoration.lineThrough,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          Text(
-            // For the trial variant this carries the whole "X free, then …" line.
-            _trialText(l, data) ?? data.priceString,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
           ),
-          if (subtitle != null) ...[
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ],
-      ),
+      ],
     );
   }
 }

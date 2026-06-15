@@ -9,12 +9,15 @@ import '../features/explore/favorites_screen.dart';
 import '../features/habits/habit_edit_screen.dart';
 import '../features/habits/habits_screen.dart';
 import '../features/journey/journey_screen.dart';
+import '../features/legal/legal_content.dart';
+import '../features/legal/legal_screen.dart';
 import '../features/onboarding/onboarding_flow.dart';
 import '../features/paywall/paywall_data.dart';
 import '../features/paywall/paywall_screen.dart';
 import '../features/quotes/quote_detail_screen.dart';
 import '../features/settings/notification_settings_screen.dart';
 import '../features/settings/settings_screen.dart';
+import '../l10n/app_localizations.dart';
 import 'shell.dart';
 
 /// A modal-sheet-style page: slides up from the bottom (ease-out, ~300ms).
@@ -71,12 +74,23 @@ final routerProvider = Provider<GoRouter>((ref) {
           variant: PaywallVariant.fromName(state.pathParameters['variant']),
         ),
       ),
+      GoRoute(
+        path: '/legal/privacy',
+        builder: (context, state) => LegalScreen(
+          title: AppLocalizations.of(context).legalPrivacyTitle,
+          sections: privacyPolicySections,
+        ),
+      ),
+      GoRoute(
+        path: '/legal/terms',
+        builder: (context, state) => LegalScreen(
+          title: AppLocalizations.of(context).legalTermsTitle,
+          sections: termsOfUseSections,
+        ),
+      ),
       // The feed + corner buttons. The only base screen; the four screens
       // below push on top of it as bottom-up sheets.
-      GoRoute(
-        path: '/today',
-        builder: (context, state) => const VeggieShell(),
-      ),
+      GoRoute(path: '/today', builder: (context, state) => const VeggieShell()),
       GoRoute(
         path: '/habits',
         pageBuilder: (context, state) =>
@@ -84,9 +98,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: 'edit/:id',
-            builder: (context, state) => HabitEditScreen(
-              habitId: state.pathParameters['id']!,
-            ),
+            builder: (context, state) =>
+                HabitEditScreen(habitId: state.pathParameters['id']!),
           ),
         ],
       ),
@@ -97,9 +110,8 @@ final routerProvider = Provider<GoRouter>((ref) {
         routes: [
           GoRoute(
             path: 'category/:id',
-            builder: (context, state) => CategoryDetailScreen(
-              categoryId: state.pathParameters['id']!,
-            ),
+            builder: (context, state) =>
+                CategoryDetailScreen(categoryId: state.pathParameters['id']!),
           ),
           GoRoute(
             path: 'favorites',

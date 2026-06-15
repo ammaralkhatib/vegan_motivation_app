@@ -72,6 +72,10 @@
   "paywallOffersUnavailable": "Impossible de charger les offres pour le moment — vérifie ta connexion.",
   "paywallRetry": "Réessayer",
   "paywallClose": "Fermer",
+  "paywallPrivacy": "Confidentialité",
+  "paywallTerms": "Conditions",
+  "legalPrivacyTitle": "Politique de confidentialité",
+  "legalTermsTitle": "Conditions d'utilisation",
 
   "onboardingContinue": "continuer",
   "onboardingTapToContinue": "appuie pour continuer →",
