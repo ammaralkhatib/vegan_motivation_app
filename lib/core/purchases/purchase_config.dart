@@ -8,11 +8,9 @@ class PurchaseConfig {
   PurchaseConfig._();
 
   // --- API keys -----------------------------------------------------------
-  // TODO(ammar): paste real key from RevenueCat dashboard (Project → API keys).
   // Apple key covers both iOS and macOS App Store apps.
-  static const String appleApiKey = 'appl_TODO_REPLACE_WITH_REAL_KEY';
-  // TODO(ammar): paste real key from RevenueCat dashboard (Google Play).
-  static const String googleApiKey = 'goog_TODO_REPLACE_WITH_REAL_KEY';
+  static const String appleApiKey = 'appl_zxfIslQFhVIENWBeXeetmsTUWrx';
+  static const String googleApiKey = 'goog_DYrsVmutVpPCByVybCOcKnimCUS';
 
   // --- Dev / testing switch ----------------------------------------------
   /// Dev/testing only — forces premium ON for a single run, bypassing
