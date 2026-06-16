@@ -21,10 +21,17 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
   static const _slide = Duration(milliseconds: 350);
   static const _hold = Duration(seconds: 3);
 
+  /// Short beat before the banner slides in, so it lands just after the screen
+  /// settles instead of competing with the app's first paint.
+  static const _enterDelay = Duration(milliseconds: 600);
+
   late final OpenStreakResult _result;
   late final AnimationController _controller;
   late final Animation<Offset> _offset;
   late final Animation<double> _fade;
+
+  /// Fires after the entrance delay to start the slide-in (then the hold timer).
+  Timer? _showTimer;
 
   /// Fires after slide-in + hold to start the slide-out. Cancelable so it never
   /// outlives the widget (e.g. in tests, or if the user leaves the screen).
@@ -45,8 +52,13 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
     _fade = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
 
     if (_result.showBanner) {
-      _controller.forward();
-      _holdTimer = Timer(_slide + _hold, _slideOut);
+      // Wait a beat, then slide in and arm the slide-out (delay excluded, so
+      // the visible hold is unchanged).
+      _showTimer = Timer(_enterDelay, () {
+        if (!mounted) return;
+        _controller.forward();
+        _holdTimer = Timer(_slide + _hold, _slideOut);
+      });
     } else {
       _done = true;
     }
@@ -65,6 +77,7 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
 
   @override
   void dispose() {
+    _showTimer?.cancel();
     _holdTimer?.cancel();
     _controller.dispose();
     super.dispose();
@@ -88,19 +101,19 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
               label: l.streakBannerLabel(_result.count),
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+                  horizontal: 18,
+                  vertical: 18,
                 ),
                 decoration: BoxDecoration(
                   color: scheme.inverseSurface.withValues(alpha: 0.92),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _StreakBadge(count: _result.count),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 18),
                     Expanded(
                       child: Theme(
                         // WeekStrip reads the ambient colorScheme; give it an
@@ -116,6 +129,9 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
                           completedDays: _result.openedDays,
                           today: _result.today,
                           alignment: MainAxisAlignment.spaceEvenly,
+                          dotSize: 17,
+                          showCheck: true,
+                          animateChecks: true,
                         ),
                       ),
                     ),
@@ -140,8 +156,8 @@ class _StreakBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Container(
-      width: 40,
-      height: 40,
+      width: 46,
+      height: 46,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
