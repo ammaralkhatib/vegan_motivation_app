@@ -360,6 +360,10 @@
   "@paywallClose": {
     "description": "Tooltip on the paywall close (X) button."
   },
+  "paywallInterstitialMessage": "one moment…",
+  "@paywallInterstitialMessage": {
+    "description": "Calm line under the spinner shown between the two onboarding paywalls."
+  },
   "paywallPrivacy": "Privacy",
   "@paywallPrivacy": {
     "description": "Privacy link under the restore button on the paywall."

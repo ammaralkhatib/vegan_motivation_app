@@ -104,7 +104,13 @@ void main() {
     expect(prefs.discountOfferShown, isFalse);
 
     await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
+    // A ~1.2s interstitial spinner now sits between the two paywalls. Its
+    // indeterminate spinner would hang pumpAndSettle, so pump fixed steps past
+    // its life + the pop/push transitions instead.
+    await tester.pump(); // push the interstitial
+    await tester.pump(const Duration(milliseconds: 1300)); // delay fires → pop + push discount
+    await tester.pump(const Duration(milliseconds: 350)); // pop-out transition
+    await tester.pump(const Duration(milliseconds: 350)); // push-in; interstitial gone
 
     // Discount paywall second; the flag is now set (before it was shown).
     expect(find.text('Claim my offer'), findsOneWidget);
