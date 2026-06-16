@@ -16,6 +16,7 @@ import 'steps/final_reflection_step.dart';
 import 'steps/first_spark_step.dart';
 import 'steps/loading_step.dart';
 import 'steps/motivation_chart.dart';
+import 'steps/notifications_education_screen.dart';
 import 'steps/plan_summary_step.dart';
 import 'steps/snapshot_step.dart';
 import 'steps/streak_step.dart';
@@ -42,8 +43,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   DateTime? _veganSince;
   String? _motivation;
   String? _commitment;
-  bool _wantsNotifications = true;
-  double _perDay = 3;
+  // Notifications step: amount (per day) + the daily window, seeded from saved
+  // prefs in initState so they match what the user already has.
+  int _notifPerDay = 3;
+  int _notifWindowStart = 9 * 60;
+  int _notifWindowEnd = 22 * 60;
   int _page = 0;
 
   // Age ranges are numeric tokens, locale-independent — not localized.
@@ -75,6 +79,16 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   bool get _showJourneyStep =>
       _dietStatus == 'vegan' || _dietStatus == 'mostly';
+
+  @override
+  void initState() {
+    super.initState();
+    // Seed the notifications step from saved prefs (defaults land near 09:00–22:00).
+    final s = ref.read(notifSettingsProvider);
+    _notifPerDay = s.perDay;
+    _notifWindowStart = s.windowStartMin;
+    _notifWindowEnd = s.windowEndMin;
+  }
 
   @override
   void dispose() {
@@ -128,12 +142,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       await journey.setCurious();
     }
 
-    if (_wantsNotifications) {
-      await NotificationService.instance.requestPermission();
-    }
-    final notif = ref.read(notifSettingsProvider.notifier);
-    await notif.setEnabled(_wantsNotifications);
-    await notif.setPerDay(_perDay.round());
+    // The notifications step (S26) already requested permission and saved
+    // enabled / perDay / window, so _finish no longer touches them (avoids a
+    // second permission prompt).
 
     // Mark done BEFORE the paywall funnel — closing a paywall must never drop
     // the user back into onboarding, even after a crash.
@@ -615,45 +626,130 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
+  String _fmtTime(int minutes) =>
+      TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60).format(context);
+
+  /// Time picker for the notification window, mirroring the settings screen's
+  /// keep-in-order, ≥2-hour-window guard. Updates local step state only; the
+  /// values are persisted when the user taps "allow & save".
+  Future<void> _pickNotifWindow({required bool isStart}) async {
+    final current = isStart ? _notifWindowStart : _notifWindowEnd;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: current ~/ 60, minute: current % 60),
+    );
+    if (picked == null) return;
+    final minutes = picked.hour * 60 + picked.minute;
+    var start = isStart ? minutes : _notifWindowStart;
+    var end = isStart ? _notifWindowEnd : minutes;
+    if (end - start < 120) {
+      if (isStart) {
+        end = (start + 120).clamp(0, 24 * 60 - 1);
+      } else {
+        start = (end - 120).clamp(0, end);
+      }
+    }
+    setState(() {
+      _notifWindowStart = start;
+      _notifWindowEnd = end;
+    });
+  }
+
+  /// "Allow & save": request the OS permission, persist the chosen settings,
+  /// then advance. On denial, show the soft-wall education screen first and
+  /// advance once the user resolves it (enabled in settings or continued
+  /// without). Unsupported platforms return granted = true and just proceed.
+  Future<void> _allowAndSaveNotifications() async {
+    final granted = await NotificationService.instance.requestPermission();
+    final notifier = ref.read(notifSettingsProvider.notifier);
+    await notifier.setEnabled(true);
+    await notifier.setPerDay(_notifPerDay);
+    await notifier.setWindow(_notifWindowStart, _notifWindowEnd);
+    if (!mounted) return;
+    if (granted) {
+      _next();
+    } else {
+      await Navigator.of(context).push<void>(
+        MaterialPageRoute(
+          builder: (_) => const NotificationsEducationScreen(),
+        ),
+      );
+      if (mounted) _next();
+    }
+  }
+
   Widget _notificationsStep(ThemeData theme) {
     final l = AppLocalizations.of(context);
     return InputStep(
-      onContinue: _next,
+      onContinue: _allowAndSaveNotifications,
+      cta: l.onboardingNotifAllowSave,
       child: ListView(
         children: [
           const SizedBox(height: 8),
-          _eyebrow(theme, l.onboardingNotifEyebrow),
           Text(l.onboardingNotifTitle, style: theme.textTheme.displaySmall),
           const SizedBox(height: 8),
           _body(theme, l.onboardingNotifBody),
-          const SizedBox(height: 16),
-          SwitchListTile(
-            value: _wantsNotifications,
-            onChanged: (v) => setState(() => _wantsNotifications = v),
-            title: Text(l.onboardingNotifToggle),
-            contentPadding: EdgeInsets.zero,
+          const SizedBox(height: 20),
+          _NotifPreviewCard(),
+          const SizedBox(height: 24),
+          // Amount: −/+ stepper, clamped 1–10.
+          Row(
+            children: [
+              Expanded(
+                child: Text(l.onboardingNotifAmount,
+                    style: theme.textTheme.titleMedium),
+              ),
+              IconButton.filledTonal(
+                onPressed: _notifPerDay > 1
+                    ? () => setState(() => _notifPerDay--)
+                    : null,
+                icon: const Icon(Icons.remove),
+              ),
+              SizedBox(
+                width: 56,
+                child: Text(
+                  l.notificationsPerDayCount(_notifPerDay),
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.titleMedium,
+                ),
+              ),
+              IconButton.filledTonal(
+                onPressed: _notifPerDay < 10
+                    ? () => setState(() => _notifPerDay++)
+                    : null,
+                icon: const Icon(Icons.add),
+              ),
+            ],
           ),
-          if (_wantsNotifications)
-            Row(
-              children: [
-                Expanded(
-                  child: Slider(
-                    value: _perDay,
-                    min: 1,
-                    max: 10,
-                    divisions: 9,
-                    label:
-                        l.onboardingNotifPerDaySliderLabel(_perDay.round()),
-                    onChanged: (v) => setState(() => _perDay = v),
-                  ),
-                ),
-                SizedBox(
-                  width: 70,
-                  child: Text(l.onboardingNotifPerDayValue(_perDay.round()),
-                      style: theme.textTheme.labelMedium),
-                ),
-              ],
-            ),
+          const SizedBox(height: 8),
+          // Start / until time rows.
+          Row(
+            children: [
+              Expanded(
+                child: Text(l.onboardingNotifStart,
+                    style: theme.textTheme.titleMedium),
+              ),
+              OutlinedButton.icon(
+                onPressed: () => _pickNotifWindow(isStart: true),
+                icon: const Icon(Icons.wb_sunny_outlined, size: 18),
+                label: Text(_fmtTime(_notifWindowStart)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: Text(l.onboardingNotifUntil,
+                    style: theme.textTheme.titleMedium),
+              ),
+              OutlinedButton.icon(
+                onPressed: () => _pickNotifWindow(isStart: false),
+                icon: const Icon(Icons.nights_stay_outlined, size: 18),
+                label: Text(_fmtTime(_notifWindowEnd)),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -774,6 +870,73 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             onTap: () => _toggleMax3(selected, id),
           ),
       ],
+    );
+  }
+}
+
+/// A static, decorative notification preview on the notifications step — shows
+/// the user what a daily quote nudge looks like. Purely illustrative.
+class _NotifPreviewCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l = AppLocalizations.of(context);
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              Icons.format_quote,
+              size: 20,
+              color: theme.colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l.onboardingNotifPreviewSender,
+                        style: theme.textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Text(
+                      l.onboardingNotifNow,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  l.onboardingNotifPreviewSample,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

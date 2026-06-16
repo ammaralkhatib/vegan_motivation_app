@@ -157,7 +157,11 @@ extension _Drive on WidgetTester {
     await tapContinue(); // S23 → S24 response
     await tapContinue('done ✓'); // S24 → S25 snapshot
     await tapContinue(); // S25 → S26 notifications
-    await tapContinue(); // S26 → S27 social proof
+    // S26: "allow & save" → permission is denied in tests (the plugin isn't
+    // initialized), so the education soft-wall appears; escape it to continue.
+    await tapContinue('allow & save');
+    await tap(find.text('continue without notifications'));
+    await pumpAndSettle();
     await tapContinue('join VeganKit 🌱'); // S27 → finish
   }
 }

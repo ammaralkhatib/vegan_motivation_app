@@ -912,39 +912,61 @@
   "@onboardingSnapshotStrengthFallback": {
     "description": "Snapshot strengths value when no goal was picked."
   },
-  "onboardingNotifEyebrow": "this is how your plan reaches you",
-  "@onboardingNotifEyebrow": {
-    "description": "Eyebrow on the notifications step."
-  },
-  "onboardingNotifTitle": "daily sparks?",
+  "onboardingNotifTitle": "gentle reminders, all day",
   "@onboardingNotifTitle": {
     "description": "Notifications step title."
   },
-  "onboardingNotifBody": "short bursts of motivation, delivered to your phone (and watch).",
+  "onboardingNotifBody": "a few quotes spread across your day — small doses of motivation that add up.",
   "@onboardingNotifBody": {
     "description": "Notifications step body."
   },
-  "onboardingNotifToggle": "send me motivation",
-  "@onboardingNotifToggle": {
-    "description": "Notifications opt-in switch label."
+  "onboardingNotifAmount": "amount",
+  "@onboardingNotifAmount": {
+    "description": "Label for the per-day notification count stepper."
   },
-  "onboardingNotifPerDaySliderLabel": "{count}× per day",
-  "@onboardingNotifPerDaySliderLabel": {
-    "description": "Slider tooltip for notifications per day.",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
+  "onboardingNotifStart": "start time",
+  "@onboardingNotifStart": {
+    "description": "Label for the notification window start time."
   },
-  "onboardingNotifPerDayValue": "{count}× / day",
-  "@onboardingNotifPerDayValue": {
-    "description": "Compact per-day notification count next to the slider.",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
+  "onboardingNotifUntil": "until",
+  "@onboardingNotifUntil": {
+    "description": "Label for the notification window end time."
+  },
+  "onboardingNotifAllowSave": "allow & save",
+  "@onboardingNotifAllowSave": {
+    "description": "Primary button: request permission and save notification settings."
+  },
+  "onboardingNotifPreviewSender": "VeganKit 🌱",
+  "@onboardingNotifPreviewSender": {
+    "description": "Sender line in the decorative notification preview card."
+  },
+  "onboardingNotifPreviewSample": "you're not giving things up — you're standing for something.",
+  "@onboardingNotifPreviewSample": {
+    "description": "Sample quote in the decorative notification preview card."
+  },
+  "onboardingNotifNow": "now",
+  "@onboardingNotifNow": {
+    "description": "Relative time label in the notification preview card."
+  },
+  "onboardingNotifEduTitle": "without nudges, it's easy to forget",
+  "@onboardingNotifEduTitle": {
+    "description": "Title of the notification-permission education screen."
+  },
+  "onboardingNotifEduBody": "veganKit works by sending small bursts of motivation through your day. without notifications you'll miss the daily sparks that keep you going — you can turn them on anytime.",
+  "@onboardingNotifEduBody": {
+    "description": "Body of the notification-permission education screen."
+  },
+  "onboardingNotifEduTurnOn": "turn on notifications",
+  "@onboardingNotifEduTurnOn": {
+    "description": "Primary action on the education screen: enable notifications."
+  },
+  "onboardingNotifEduContinue": "continue without notifications",
+  "@onboardingNotifEduContinue": {
+    "description": "Secondary escape action on the education screen."
+  },
+  "onboardingNotifEduSettingsHint": "open settings and allow notifications for veganKit.",
+  "@onboardingNotifEduSettingsHint": {
+    "description": "Snackbar hint when the OS settings deep link can't be opened."
   },
   "onboardingSocialTitle": "VeganKit was made for people like you",
   "@onboardingSocialTitle": {
