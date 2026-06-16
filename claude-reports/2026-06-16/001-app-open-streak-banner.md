@@ -57,8 +57,8 @@ the hold from `Future.delayed` to a cancelable `Timer` (see Decisions).
 
 ## Commit & push
 
-- **Commit:** `__SHA__` — `feat(streak): app-open streak banner`
-- **Push:** `origin/main` — __PUSH__
+- **Commit:** `e4890f1` — `feat(streak): app-open streak banner`
+- **Push:** `origin/main` — ok
 
 ## Open items for the owner
 
