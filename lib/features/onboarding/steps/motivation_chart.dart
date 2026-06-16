@@ -14,13 +14,20 @@ class MotivationChart extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          height: 170,
-          child: CustomPaint(
-            size: Size.infinite,
-            painter: _ChartPainter(
-              withColor: theme.colorScheme.primary,
-              willpowerColor: theme.colorScheme.outline,
+        Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: SizedBox(
+            height: 170,
+            child: CustomPaint(
+              size: Size.infinite,
+              painter: _ChartPainter(
+                withColor: theme.colorScheme.primary,
+                willpowerColor: theme.colorScheme.outline,
+              ),
             ),
           ),
         ),
@@ -84,16 +91,23 @@ class _ChartPainter extends CustomPainter {
     canvas.drawLine(Offset(0, h - 1), Offset(w, h - 1), axis);
 
     Path curve(double Function(double t) yOf) {
-      final path = Path();
-      for (var i = 0; i <= 40; i++) {
-        final t = i / 40;
-        final x = t * w;
-        final y = (1 - yOf(t)) * (h - 8) + 4;
-        if (i == 0) {
-          path.moveTo(x, y);
-        } else {
-          path.lineTo(x, y);
-        }
+      // Sample the function, then draw a smooth path through the points using
+      // Catmull-Rom -> cubic Bezier conversion so there are no sharp corners.
+      const samples = 28;
+      final pts = <Offset>[];
+      for (var i = 0; i <= samples; i++) {
+        final t = i / samples;
+        pts.add(Offset(t * w, (1 - yOf(t)) * (h - 8) + 4));
+      }
+      final path = Path()..moveTo(pts.first.dx, pts.first.dy);
+      for (var i = 0; i < pts.length - 1; i++) {
+        final p0 = i == 0 ? pts[i] : pts[i - 1];
+        final p1 = pts[i];
+        final p2 = pts[i + 1];
+        final p3 = i + 2 < pts.length ? pts[i + 2] : p2;
+        final c1 = Offset(p1.dx + (p2.dx - p0.dx) / 6, p1.dy + (p2.dy - p0.dy) / 6);
+        final c2 = Offset(p2.dx - (p3.dx - p1.dx) / 6, p2.dy - (p3.dy - p1.dy) / 6);
+        path.cubicTo(c1.dx, c1.dy, c2.dx, c2.dy, p2.dx, p2.dy);
       }
       return path;
     }
