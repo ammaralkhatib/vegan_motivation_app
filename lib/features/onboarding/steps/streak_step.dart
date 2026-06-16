@@ -105,11 +105,26 @@ class _StreakStepState extends ConsumerState<StreakStep> {
                   style: theme.textTheme.bodyLarge
                       ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                 ),
+                const SizedBox(height: 24),
+                // First-week strip: day 1 achieved, days 2–7 upcoming. Wrapped
+                // in FittedBox so the seven cells scale down instead of
+                // overflowing on narrow screens.
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    children: [
+                      for (var day = 1; day <= 7; day++) ...[
+                        if (day > 1) const SizedBox(width: 8),
+                        _DayCell(day: day, done: day == 1),
+                      ],
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
           Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.topRight,
             child: ConfettiWidget(
               confettiController: _confetti,
               blastDirectionality: BlastDirectionality.explosive,
@@ -126,6 +141,40 @@ class _StreakStepState extends ConsumerState<StreakStep> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// One cell in the first-week strip. [done] day 1 is filled with a check; the
+/// upcoming days 2–7 are muted outlined circles showing their number.
+class _DayCell extends StatelessWidget {
+  const _DayCell({required this.day, required this.done});
+
+  final int day;
+  final bool done;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: 38,
+      height: 38,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: done
+            ? theme.colorScheme.primary
+            : theme.colorScheme.surfaceContainerHighest,
+        border:
+            done ? null : Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      alignment: Alignment.center,
+      child: done
+          ? Icon(Icons.check, size: 20, color: theme.colorScheme.onPrimary)
+          : Text(
+              '$day',
+              style: theme.textTheme.labelLarge
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
     );
   }
 }
