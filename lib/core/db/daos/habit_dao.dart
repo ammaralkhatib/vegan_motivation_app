@@ -19,6 +19,11 @@ class HabitDao extends DatabaseAccessor<AppDatabase> with _$HabitDaoMixin {
     return (select(habits)..where((h) => h.archivedAt.isNull())).get();
   }
 
+  /// Watches a single habit row (null if it doesn't exist / was archived).
+  Stream<Habit?> watchHabit(int id) {
+    return (select(habits)..where((h) => h.id.equals(id))).watchSingleOrNull();
+  }
+
   /// All completions for active habits within [fromDay, toDay] inclusive.
   Stream<List<HabitCompletion>> watchCompletionsInRange(
     int fromDay,

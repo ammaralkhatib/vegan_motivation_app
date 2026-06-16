@@ -1492,5 +1492,29 @@
         "type": "int"
       }
     }
+  },
+  "habitsDetailEditTooltip": "Edit habit",
+  "@habitsDetailEditTooltip": {
+    "description": "Tooltip for the edit button on the habit detail screen."
+  },
+  "habitsDetailCurrentStreak": "Current streak",
+  "@habitsDetailCurrentStreak": {
+    "description": "Label under the big current-streak number on the detail screen."
+  },
+  "habitsDetailBestStreak": "Best streak",
+  "@habitsDetailBestStreak": {
+    "description": "Label for the all-time longest streak stat."
+  },
+  "habitsDetailTotalDays": "Total days",
+  "@habitsDetailTotalDays": {
+    "description": "Label for the total number of completed days stat."
+  },
+  "habitsDetailMarkToday": "Mark today done",
+  "@habitsDetailMarkToday": {
+    "description": "Button to mark today complete on the detail screen."
+  },
+  "habitsDetailDoneToday": "Done today ✓",
+  "@habitsDetailDoneToday": {
+    "description": "Button label when today is already complete on the detail screen."
   }
 }

@@ -7,6 +7,11 @@ final activeHabitsProvider = StreamProvider<List<Habit>>((ref) {
   return ref.watch(databaseProvider).habitDao.watchActiveHabits();
 });
 
+/// A single habit row (null if archived / deleted). Used by the detail screen.
+final habitProvider = StreamProvider.family<Habit?, int>((ref, id) {
+  return ref.watch(databaseProvider).habitDao.watchHabit(id);
+});
+
 /// Completions for the trailing 7 days (today inclusive), as
 /// habitId → set of epoch-days.
 final weekCompletionsProvider =

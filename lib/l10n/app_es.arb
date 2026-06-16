@@ -337,5 +337,11 @@
   "habitsPresetFiveServings": "5 raciones de fruta y verdura",
   "habitsPresetWater": "Bebí suficiente agua",
   "habitsPresetShared": "Compartí una comida o idea vegana",
-  "streakBannerLabel": "Racha de {count} días"
+  "streakBannerLabel": "Racha de {count} días",
+  "habitsDetailEditTooltip": "Editar",
+  "habitsDetailCurrentStreak": "Racha actual",
+  "habitsDetailBestStreak": "Mejor racha",
+  "habitsDetailTotalDays": "Días totales",
+  "habitsDetailMarkToday": "Marcar hoy",
+  "habitsDetailDoneToday": "Hecho hoy ✓"
 }

@@ -37,8 +37,9 @@ class HabitTile extends ConsumerWidget {
     return Card(
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
-        onLongPress: () => context.push('/habits/edit/${habit.id}'),
-        onTap: () => _toggle(ref, today),
+        // Tapping the tile opens the detail screen; the check circle (below) is
+        // the only thing that toggles completion in the list.
+        onTap: () => context.push('/habits/${habit.id}'),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 16, 16),
           child: Row(

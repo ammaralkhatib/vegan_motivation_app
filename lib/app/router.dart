@@ -6,6 +6,7 @@ import '../core/prefs/prefs_repository.dart';
 import '../features/explore/category_detail_screen.dart';
 import '../features/explore/explore_screen.dart';
 import '../features/explore/favorites_screen.dart';
+import '../features/habits/habit_detail_screen.dart';
 import '../features/habits/habit_edit_screen.dart';
 import '../features/habits/habits_screen.dart';
 import '../features/journey/journey_screen.dart';
@@ -100,6 +101,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: 'edit/:id',
             builder: (context, state) =>
                 HabitEditScreen(habitId: state.pathParameters['id']!),
+          ),
+          // One-segment detail route (/habits/5). No conflict with the
+          // two-segment edit route (/habits/edit/5).
+          GoRoute(
+            path: ':id',
+            builder: (context, state) => HabitDetailScreen(
+              habitId: int.parse(state.pathParameters['id']!),
+            ),
           ),
         ],
       ),

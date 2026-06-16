@@ -337,5 +337,11 @@
   "habitsPresetFiveServings": "5 Portionen Obst & Gemüse",
   "habitsPresetWater": "Genug Wasser getrunken",
   "habitsPresetShared": "Eine vegane Mahlzeit oder Idee geteilt",
-  "streakBannerLabel": "{count}-Tage-Serie"
+  "streakBannerLabel": "{count}-Tage-Serie",
+  "habitsDetailEditTooltip": "Bearbeiten",
+  "habitsDetailCurrentStreak": "Aktuelle Serie",
+  "habitsDetailBestStreak": "Beste Serie",
+  "habitsDetailTotalDays": "Tage gesamt",
+  "habitsDetailMarkToday": "Heute erledigen",
+  "habitsDetailDoneToday": "Heute erledigt ✓"
 }
