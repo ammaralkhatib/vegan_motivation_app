@@ -85,16 +85,16 @@ class _LoadingStepState extends State<LoadingStep>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 130,
-                height: 130,
+                width: 168,
+                height: 168,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     CircularProgressIndicator(
                       value: t == 0 ? null : t,
-                      strokeWidth: 8,
+                      strokeWidth: 10,
                     ),
-                    Text('$percent%', style: theme.textTheme.headlineSmall),
+                    Text('$percent%', style: theme.textTheme.headlineMedium),
                   ],
                 ),
               ),
@@ -104,8 +104,26 @@ class _LoadingStepState extends State<LoadingStep>
                   opacity: t >= (i + 1) / (lines.length + 1) ? 1 : 0,
                   duration: const Duration(milliseconds: 250),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Text(lines[i], style: theme.textTheme.bodyLarge),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: theme.colorScheme.primary,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            lines[i],
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               const SizedBox(height: 24),
