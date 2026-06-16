@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-/// Readable text color for a day-number drawn on top of a heatmap/calendar
-/// cell of [background]. Light text on dark cells, muted-dark on light cells.
-/// Theme-aware; callers handle transparent cells (no text) themselves.
+/// Text color for a day-number drawn on top of a heatmap/calendar cell of
+/// [background]. Only light-background cells get a stronger, higher-contrast
+/// color ([ColorScheme.onSurface]); every other cell (the green/filled and
+/// transparent ones) keeps the original muted [ColorScheme.onSurfaceVariant] —
+/// the look before the auto-contrast change. Theme-aware in both light and dark;
+/// callers handle transparent cells (no text) themselves.
 Color cellTextColor(Color background, ColorScheme scheme) {
-  return ThemeData.estimateBrightnessForColor(background) == Brightness.dark
-      ? scheme.onInverseSurface // near-white in light theme
-      : scheme.onSurfaceVariant; // muted dark
+  final isLight =
+      ThemeData.estimateBrightnessForColor(background) == Brightness.light;
+  // Only light cells get the stronger number color; everything else keeps the
+  // original muted onSurfaceVariant.
+  return isLight ? scheme.onSurface : scheme.onSurfaceVariant;
 }
