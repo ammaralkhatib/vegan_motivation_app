@@ -294,6 +294,16 @@ class PaywallView extends StatelessWidget {
                     child: _BenefitCard(text: b),
                   ),
                 ),
+                // "Cancel anytime…" sits under the benefit cards (moved out of
+                // the price card). Stays localized.
+                const SizedBox(height: 4),
+                Text(
+                  l.paywallCancelAnytime,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
               ],
             ),
           ),
@@ -358,7 +368,6 @@ class _CtaBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final l = AppLocalizations.of(context);
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
@@ -388,26 +397,28 @@ class _CtaBar extends StatelessWidget {
                     )
                   : Text(label),
             ),
-            TextButton(
-              onPressed: busy ? null : onRestore,
-              child: Text(l.paywallRestore),
-            ),
-            // Secondary links: in-app Privacy / Terms screens.
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            // Restore Purchases · Privacy · Terms, all on one line.
+            // These three labels are intentionally hardcoded in English (NOT
+            // read from l.paywallRestore/Privacy/Terms): store/legal wording
+            // stays English by request — a paywall-only exception to the
+            // UI-strings l10n rule. The ARB keys stay in place, just unused
+            // here. Wrap so the row never overflows on narrow screens.
+            Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 _LegalLink(
-                  label: l.paywallPrivacy,
+                  label: 'Restore Purchases',
+                  onTap: busy ? null : onRestore,
+                ),
+                const _LegalDot(),
+                _LegalLink(
+                  label: 'Privacy',
                   onTap: () => context.push('/legal/privacy'),
                 ),
-                Text(
-                  '·',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
+                const _LegalDot(),
                 _LegalLink(
-                  label: l.paywallTerms,
+                  label: 'Terms',
                   onTap: () => context.push('/legal/terms'),
                 ),
               ],
@@ -419,12 +430,13 @@ class _CtaBar extends StatelessWidget {
   }
 }
 
-/// A small, muted text button used for the Privacy / Terms secondary links.
+/// A small, muted text button used for the Restore / Privacy / Terms links.
+/// A null [onTap] disables the button (used to gate Restore while busy).
 class _LegalLink extends StatelessWidget {
   const _LegalLink({required this.label, required this.onTap});
 
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -439,6 +451,22 @@ class _LegalLink extends StatelessWidget {
         textStyle: theme.textTheme.labelMedium,
       ),
       child: Text(label),
+    );
+  }
+}
+
+/// The muted "·" separator between the secondary links.
+class _LegalDot extends StatelessWidget {
+  const _LegalDot();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      '·',
+      style: theme.textTheme.bodySmall?.copyWith(
+        color: theme.colorScheme.onSurfaceVariant,
+      ),
     );
   }
 }
@@ -514,14 +542,6 @@ class _PriceBlock extends StatelessWidget {
                   ),
                 ),
               ],
-              const SizedBox(height: 12),
-              Text(
-                l.paywallCancelAnytime,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
             ],
           ),
         ),

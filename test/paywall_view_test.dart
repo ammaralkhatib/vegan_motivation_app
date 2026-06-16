@@ -61,7 +61,9 @@ void main() {
     await tester.pumpWidget(host(testPaywallData()));
 
     expect(find.text('All 6 quote categories'), findsOneWidget);
-    expect(find.text('Restore purchases'), findsOneWidget);
+    // The paywall's restore link is hardcoded English 'Restore Purchases'
+    // (paywall-only l10n exception), not the l.paywallRestore string.
+    expect(find.text('Restore Purchases'), findsOneWidget);
     expect(
       find.text('Cancel anytime in your store settings.'),
       findsOneWidget,
