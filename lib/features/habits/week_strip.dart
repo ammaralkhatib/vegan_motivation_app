@@ -9,21 +9,33 @@ class WeekStrip extends StatelessWidget {
     super.key,
     required this.completedDays,
     required this.today,
+    this.alignment = MainAxisAlignment.start,
   });
 
   final Set<int> completedDays;
   final int today;
+
+  /// How the seven dots are laid out across the row. Defaults to [start]
+  /// (the habits-screen layout). The streak banner passes [spaceEvenly] to
+  /// spread the dots across a full-width pill.
+  final MainAxisAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     // Narrow weekday initial in the ambient locale (English: M T W T F S S).
     final weekdayLetter = DateFormat('EEEEE');
+    // When the dots are spread evenly, the row itself supplies the gaps, so
+    // the per-dot right padding is dropped to avoid a double gap on the right.
+    final dotPadding = alignment == MainAxisAlignment.spaceEvenly
+        ? EdgeInsets.zero
+        : const EdgeInsets.only(right: 10);
     return Row(
+      mainAxisAlignment: alignment,
       children: [
         for (var offset = 6; offset >= 0; offset--)
           Padding(
-            padding: const EdgeInsets.only(right: 10),
+            padding: dotPadding,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

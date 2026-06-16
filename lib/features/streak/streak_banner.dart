@@ -79,7 +79,7 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: SlideTransition(
           position: _offset,
           child: FadeTransition(
@@ -96,23 +96,27 @@ class _StreakBannerState extends ConsumerState<StreakBanner>
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _StreakBadge(count: _result.count),
                     const SizedBox(width: 16),
-                    Theme(
-                      // WeekStrip reads the ambient colorScheme; give it an
-                      // inverse scheme so its dots read on the dark pill.
-                      data: Theme.of(context).copyWith(
-                        colorScheme: scheme.copyWith(
-                          onSurfaceVariant: scheme.onInverseSurface,
-                          surfaceContainerHighest:
-                              scheme.onInverseSurface.withValues(alpha: 0.25),
+                    Expanded(
+                      child: Theme(
+                        // WeekStrip reads the ambient colorScheme; give it an
+                        // inverse scheme so its dots read on the dark pill.
+                        data: Theme.of(context).copyWith(
+                          colorScheme: scheme.copyWith(
+                            onSurfaceVariant: scheme.onInverseSurface,
+                            surfaceContainerHighest:
+                                scheme.onInverseSurface.withValues(alpha: 0.25),
+                          ),
                         ),
-                      ),
-                      child: WeekStrip(
-                        completedDays: _result.openedDays,
-                        today: _result.today,
+                        child: WeekStrip(
+                          completedDays: _result.openedDays,
+                          today: _result.today,
+                          alignment: MainAxisAlignment.spaceEvenly,
+                        ),
                       ),
                     ),
                   ],
