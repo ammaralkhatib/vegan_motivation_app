@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/quotes/feed_screen.dart';
+import '../features/streak/streak_banner.dart';
 import '../l10n/app_localizations.dart';
 
 /// The app's base screen: the full-screen quote feed with four floating,
@@ -57,6 +58,12 @@ class VeggieShell extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          // Top streak banner — paints above the feed and corner buttons. It
+          // manages its own show/hide, so mounting it unconditionally is fine.
+          const Align(
+            alignment: Alignment.topCenter,
+            child: StreakBanner(),
           ),
         ],
       ),

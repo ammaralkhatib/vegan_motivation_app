@@ -45,6 +45,7 @@ class PrefsRepository {
   static const _kWhyRelationship = 'whyRelationship';
   static const _kReviewPromptShown = 'reviewPromptShown';
   static const _kCommitmentLevel = 'commitmentLevel';
+  static const _kOpenDays = 'openDays';
 
   bool get onboardingDone => _prefs.getBool(_kOnboardingDone) ?? false;
   Future<void> setOnboardingDone(bool value) =>
@@ -208,6 +209,23 @@ class PrefsRepository {
   Future<void> setLanguageOverride(String? value) => value == null
       ? _prefs.remove(_kLanguageOverride)
       : _prefs.setString(_kLanguageOverride, value);
+
+  /// Epoch-days the app was opened, ascending. Stored as a string list (ints
+  /// as strings) following the [goalsPick] pattern. Unparseable entries are
+  /// dropped. Used by the app-open streak banner.
+  List<int> get openDays {
+    final raw = _prefs.getStringList(_kOpenDays) ?? const [];
+    final days = <int>[];
+    for (final s in raw) {
+      final n = int.tryParse(s);
+      if (n != null) days.add(n);
+    }
+    days.sort();
+    return days;
+  }
+
+  Future<void> setOpenDays(List<int> days) =>
+      _prefs.setStringList(_kOpenDays, days.map((d) => d.toString()).toList());
 
   /// Wipes everything (used by "reset all data").
   Future<void> clear() => _prefs.clear();

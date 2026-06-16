@@ -336,5 +336,6 @@
   "habitsPresetB12": "B12 genommen",
   "habitsPresetFiveServings": "5 Portionen Obst & Gemüse",
   "habitsPresetWater": "Genug Wasser getrunken",
-  "habitsPresetShared": "Eine vegane Mahlzeit oder Idee geteilt"
+  "habitsPresetShared": "Eine vegane Mahlzeit oder Idee geteilt",
+  "streakBannerLabel": "{count}-Tage-Serie"
 }
