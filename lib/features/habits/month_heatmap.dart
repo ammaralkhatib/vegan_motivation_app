@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/utils/date_utils.dart';
 import '../../l10n/app_localizations.dart';
+import 'cell_text_color.dart';
 import 'providers.dart';
 
 /// GitHub-style intensity grid for the current month: how many habits were
@@ -90,13 +91,14 @@ class MonthHeatmap extends ConsumerWidget {
                               final dayOfMonth = index - leadingBlanks + 1;
                               final valid = dayOfMonth >= 1 &&
                                   dayOfMonth <= daysInMonth;
+                              final bg = valid
+                                  ? cellColor(dayOfMonth)
+                                  : Colors.transparent;
                               return Container(
                                 width: cell,
                                 height: cell * 0.72,
                                 decoration: BoxDecoration(
-                                  color: valid
-                                      ? cellColor(dayOfMonth)
-                                      : Colors.transparent,
+                                  color: bg,
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 alignment: Alignment.center,
@@ -106,8 +108,8 @@ class MonthHeatmap extends ConsumerWidget {
                                         style: theme.textTheme.labelSmall
                                             ?.copyWith(
                                           fontSize: 9,
-                                          color: theme
-                                              .colorScheme.onSurfaceVariant,
+                                          color: cellTextColor(
+                                              bg, theme.colorScheme),
                                         ),
                                       )
                                     : null,
