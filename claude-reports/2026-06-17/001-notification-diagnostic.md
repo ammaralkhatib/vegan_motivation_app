@@ -97,8 +97,8 @@ analyze clean, all 178 tests green.
 
 ## Commit & push
 
-- **Commit:** `__SHA__` — `feat(notifications): add temporary scheduling diagnostics section`
-- **Push:** `origin/main` — see below.
+- **Commit:** `a54b441` — `feat(notifications): add temporary scheduling diagnostics section`
+- **Push:** `origin/main` — ok.
 
 ## Open items for the owner
 
