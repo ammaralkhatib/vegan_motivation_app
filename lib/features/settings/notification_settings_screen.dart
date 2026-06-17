@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/notifications/notification_coordinator.dart'; // TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
 import '../../core/notifications/notification_service.dart';
 import '../../l10n/app_localizations.dart';
 import 'notification_prefs.dart';
@@ -86,6 +87,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
             else
               ..._mealControls(l10n, theme, settings),
           ],
+          // TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+          const _DiagnosticsSection(),
         ],
       ),
     );
@@ -171,6 +174,224 @@ class NotificationSettingsScreen extends ConsumerWidget {
         style: theme.textTheme.bodySmall,
       ),
     ];
+  }
+}
+
+// =============================================================================
+// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+// Throwaway "Diagnostics (temporary)" section: shows the real scheduling state
+// and offers test buttons. NOT gated behind kDebugMode (must work in the
+// TestFlight release build) but clearly labelled so it isn't a shipping
+// feature. Delete this whole block + its <_DiagnosticsSection() usage above
+// and the debug helpers in notification_service / notification_coordinator once
+// the notification bug is found.
+// =============================================================================
+
+class _DiagnosticsSection extends ConsumerStatefulWidget {
+  const _DiagnosticsSection();
+
+  @override
+  ConsumerState<_DiagnosticsSection> createState() =>
+      _DiagnosticsSectionState();
+}
+
+class _DiagnosticsSectionState extends ConsumerState<_DiagnosticsSection> {
+  bool _loading = true;
+  NotifPlanDiagnostics? _plan;
+  DebugPendingBreakdown? _pending;
+  String _tzName = '';
+  String _tzNow = '';
+  String _perms = '';
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    setState(() => _loading = true);
+    final service = NotificationService.instance;
+    try {
+      final coordinator = ref.read(notificationCoordinatorProvider);
+      final plan = await coordinator.debugComputePlan();
+      final pending = await service.debugPendingBreakdown();
+      final perms = await service.debugIosPermissions();
+      if (!mounted) return;
+      setState(() {
+        _plan = plan;
+        _pending = pending;
+        _tzName = service.debugTimezoneName;
+        _tzNow = service.debugTzNow();
+        _perms = perms;
+        _error = null;
+        _loading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _error = '$e';
+        _loading = false;
+      });
+    }
+  }
+
+  static String _hhmm(int minutes) {
+    final h = (minutes ~/ 60).toString().padLeft(2, '0');
+    final m = (minutes % 60).toString().padLeft(2, '0');
+    return '$h:$m';
+  }
+
+  static String _stamp(DateTime d) {
+    String p(int n) => n.toString().padLeft(2, '0');
+    return '${p(d.month)}-${p(d.day)} ${p(d.hour)}:${p(d.minute)}';
+  }
+
+  Future<void> _forceReschedule() async {
+    await ref.read(notificationCoordinatorProvider).reschedule(force: true);
+    await _load();
+  }
+
+  Future<void> _testOneShot() async {
+    await NotificationService.instance.debugScheduleOneShot();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'TEST one-shot set for ~20s. Lock the phone / leave the app and wait.',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _testRepeating() async {
+    await NotificationService.instance.debugScheduleRepeating();
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'TEST repeating set for ~90s. Lock the phone / leave the app and wait.',
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final settings = ref.watch(notifSettingsProvider);
+    final mono = theme.textTheme.bodySmall
+        ?.copyWith(fontFamily: 'monospace', height: 1.5);
+
+    final lines = <String>[];
+    lines.add('enabled: ${settings.enabled}');
+    lines.add('mode: ${settings.mode.name}');
+    if (settings.mode == NotifMode.spread) {
+      lines.add('perDay: ${settings.perDay}');
+      lines.add(
+        'window: ${_hhmm(settings.windowStartMin)} – '
+        '${_hhmm(settings.windowEndMin)}',
+      );
+    } else {
+      for (final meal in Meal.values) {
+        final m = settings.meal(meal);
+        lines.add(
+          '${meal.name}: on=${m.enabled} '
+          'time=${_hhmm(m.timeMin)} count=${m.count}',
+        );
+      }
+    }
+    final plan = _plan;
+    if (plan != null) {
+      lines.add('locale: ${plan.locale}');
+      lines.add(
+        'unlocked (${plan.unlockedCategoryIds.length}): '
+        '${plan.unlockedCategoryIds.join(", ")}',
+      );
+      lines.add('quotes in mix: ${plan.quotesInMix}');
+      lines.add('plans now: ${plan.planCount}');
+      if (plan.firstFireTimes.isEmpty) {
+        lines.add('first fire times: (none)');
+      } else {
+        lines.add(
+          'first fires: ${plan.firstFireTimes.map(_stamp).join(" · ")}',
+        );
+      }
+    }
+    lines.add('tz: $_tzName');
+    lines.add('tz now: $_tzNow');
+    lines.add('iOS perms: $_perms');
+    if (_error != null) lines.add('ERROR: $_error');
+    final pending = _pending;
+    if (pending != null) {
+      lines.add('pending total: ${pending.total}');
+      lines.add(
+        'pending: quote=${pending.quote} habit=${pending.habit} '
+        'trial=${pending.trial} other=${pending.other}',
+      );
+      if (pending.first5.isEmpty) {
+        lines.add('first 5: (none)');
+      } else {
+        for (final r in pending.first5) {
+          lines.add('  #${r.id}  ${r.title}');
+        }
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Divider(),
+          Text(
+            'Diagnostics (temporary)',
+            style: theme.textTheme.titleMedium
+                ?.copyWith(color: theme.colorScheme.error),
+          ),
+          Text(
+            'Throwaway debug tools — removed once the notification bug is found.',
+            style: theme.textTheme.bodySmall,
+          ),
+          const SizedBox(height: 12),
+          Card(
+            color: theme.colorScheme.surfaceContainerHighest,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: _loading
+                  ? Text('Loading…', style: mono)
+                  : Text(lines.join('\n'), style: mono),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              OutlinedButton.icon(
+                onPressed: _loading ? null : _load,
+                icon: const Icon(Icons.refresh, size: 18),
+                label: const Text('Refresh'),
+              ),
+              OutlinedButton.icon(
+                onPressed: _loading ? null : _forceReschedule,
+                icon: const Icon(Icons.update, size: 18),
+                label: const Text('Force reschedule now'),
+              ),
+              FilledButton.tonal(
+                onPressed: _testOneShot,
+                child: const Text('Test one-shot (+20s)'),
+              ),
+              FilledButton.tonal(
+                onPressed: _testRepeating,
+                child: const Text('Test repeating-time (+~90s)'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

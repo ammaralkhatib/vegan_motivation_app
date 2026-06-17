@@ -287,4 +287,145 @@ class NotificationService {
       );
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  // Throwaway helpers that expose the real runtime scheduling state to the
+  // settings "Diagnostics (temporary)" section. None of these change scheduling
+  // behavior. Delete this whole block (and its callers) once the bug is found.
+  // ---------------------------------------------------------------------------
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// The active timezone name (catches a wrong / UTC timezone).
+  String get debugTimezoneName => tz.local.name;
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// "Now" as the plugin sees it, in the active timezone.
+  String debugTzNow() => tz.TZDateTime.now(tz.local).toString();
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// iOS alert/badge/sound permission status, or a short note off iOS.
+  Future<String> debugIosPermissions() async {
+    if (!_initialized) return 'plugin not initialized';
+    if (defaultTargetPlatform != TargetPlatform.iOS) {
+      return 'n/a (not iOS)';
+    }
+    final ios = _plugin.resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin>();
+    final p = await ios?.checkPermissions();
+    if (p == null) return 'unavailable';
+    return 'alert=${p.isAlertEnabled} '
+        'badge=${p.isBadgeEnabled} '
+        'sound=${p.isSoundEnabled} '
+        '(enabled=${p.isEnabled})';
+  }
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// Pending notifications, counted and split into quote / habit / trial /
+  /// other using the same id bands the app schedules into.
+  Future<DebugPendingBreakdown> debugPendingBreakdown() async {
+    if (!_initialized) {
+      return const DebugPendingBreakdown(
+        total: 0, quote: 0, habit: 0, trial: 0, other: 0, first5: [],
+      );
+    }
+    final pending = await _plugin.pendingNotificationRequests();
+    // Meal-mode quote ids live in a high band starting here (see scheduler).
+    const mealIdBase = 100000000;
+    var quote = 0, habit = 0, trial = 0, other = 0;
+    for (final p in pending) {
+      if (p.id == trialReminderNotificationId) {
+        trial++;
+      } else if (isHabitReminderNotificationId(p.id)) {
+        habit++;
+      } else if (p.id < 1600000 ||
+          (p.id >= mealIdBase && p.id < mealIdBase + 1600000)) {
+        // Spread quotes sit below ~1.6M; meal quotes in the 100M band.
+        quote++;
+      } else {
+        other++;
+      }
+    }
+    return DebugPendingBreakdown(
+      total: pending.length,
+      quote: quote,
+      habit: habit,
+      trial: trial,
+      other: other,
+      first5: [
+        for (final p in pending.take(5)) (id: p.id, title: p.title ?? ''),
+      ],
+    );
+  }
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// The exact NotificationDetails the app already uses, for the test buttons.
+  NotificationDetails _debugDetails() {
+    final l = _notificationL10n();
+    return NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        l.notificationChannelName,
+        channelDescription: l.notificationChannelDescription,
+        importance: Importance.defaultImportance,
+        priority: Priority.defaultPriority,
+        styleInformation: const BigTextStyleInformation(''),
+      ),
+      iOS: const DarwinNotificationDetails(),
+      macOS: const DarwinNotificationDetails(),
+    );
+  }
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// Fires ONE notification ~[seconds]s out the way QUOTE notifications are
+  /// scheduled: plain zonedSchedule, no matchDateTimeComponents.
+  Future<void> debugScheduleOneShot({int seconds = 20}) async {
+    if (!_initialized) return;
+    await _plugin.zonedSchedule(
+      2000000001,
+      'TEST one-shot',
+      'Scheduled the QUOTE way (no repeat match), +${seconds}s.',
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds)),
+      _debugDetails(),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+    );
+  }
+
+  /// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+  /// Fires ONE notification ~[seconds]s out the way HABIT reminders are
+  /// scheduled: matchDateTimeComponents: DateTimeComponents.time.
+  Future<void> debugScheduleRepeating({int seconds = 90}) async {
+    if (!_initialized) return;
+    await _plugin.zonedSchedule(
+      2000000002,
+      'TEST repeating',
+      'Scheduled the HABIT way (matchDateTimeComponents.time), +${seconds}s.',
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: seconds)),
+      _debugDetails(),
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+}
+
+/// TEMP DIAGNOSTIC — remove after notif debug (prompt 2026-06-17/001)
+/// Counted pending-notification breakdown for the diagnostics card.
+class DebugPendingBreakdown {
+  const DebugPendingBreakdown({
+    required this.total,
+    required this.quote,
+    required this.habit,
+    required this.trial,
+    required this.other,
+    required this.first5,
+  });
+
+  final int total;
+  final int quote;
+  final int habit;
+  final int trial;
+  final int other;
+
+  /// First few pending requests (id + title) for eyeballing.
+  final List<({int id, String title})> first5;
 }
