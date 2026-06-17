@@ -2,7 +2,7 @@ name: vegan_motivation_app
 description: "VeganKit — daily vegan motivation, quotes, and habit tracking. Offline-first, no account needed."
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.0.1+3
 
 environment:
   sdk: ^3.11.5
