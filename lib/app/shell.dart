@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/paywall/discount_banner.dart';
 import '../features/quotes/feed_screen.dart';
 import '../features/streak/streak_banner.dart';
 import '../l10n/app_localizations.dart';
@@ -64,6 +65,13 @@ class VeggieShell extends StatelessWidget {
           const Align(
             alignment: Alignment.topCenter,
             child: StreakBanner(),
+          ),
+          // Opt-in 80%-off discount banner, same top-center slot. It yields
+          // whenever the streak banner is showing (see DiscountBanner), so the
+          // two never overlap; mounting it unconditionally is fine.
+          const Align(
+            alignment: Alignment.topCenter,
+            child: DiscountBanner(),
           ),
         ],
       ),

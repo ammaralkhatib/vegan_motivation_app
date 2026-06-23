@@ -12,7 +12,6 @@ import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
 import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
-import 'helpers.dart';
 import 'support/fake_purchase_service.dart';
 import 'support/paywall_fixtures.dart';
 
@@ -88,9 +87,8 @@ Widget _app(PrefsRepository prefs, FakePurchaseService fake) => ProviderScope(
     );
 
 void main() {
-  testWidgets('free user: trial paywall, then discount, then Today',
+  testWidgets('free user: trial paywall only, then straight to Today',
       (tester) async {
-    disableCritterAnimations(tester); // close button shows immediately
     final prefs = await _prefs({});
     final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
     await tester.pumpWidget(_app(prefs, fake));
@@ -99,32 +97,24 @@ void main() {
     await tester.tap(find.byKey(const Key('finish')));
     await tester.pumpAndSettle();
 
-    // Trial paywall first; the one-time flag is NOT set yet.
+    // Trial paywall shows. App Review 5.6: there is no exit-intent discount,
+    // and the funnel no longer touches the one-time flag (the banner owns it).
     expect(find.text('Start free trial'), findsOneWidget);
     expect(prefs.discountOfferShown, isFalse);
 
-    await tester.tap(find.byIcon(Icons.close));
-    // A ~1.2s interstitial spinner now sits between the two paywalls. Its
-    // indeterminate spinner would hang pumpAndSettle, so pump fixed steps past
-    // its life + the pop/push transitions instead.
-    await tester.pump(); // push the interstitial
-    await tester.pump(const Duration(milliseconds: 1300)); // delay fires → pop + push discount
-    await tester.pump(const Duration(milliseconds: 350)); // pop-out transition
-    await tester.pump(const Duration(milliseconds: 350)); // push-in; interstitial gone
-
-    // Discount paywall second; the flag is now set (before it was shown).
-    expect(find.text('Claim my offer'), findsOneWidget);
-    expect(prefs.discountOfferShown, isTrue);
-
+    // The X is tappable on the first frame (no delay gating it any more).
     await tester.tap(find.byIcon(Icons.close));
     await tester.pumpAndSettle();
 
+    // Straight to Today — no second paywall, no interstitial.
+    expect(find.text('Claim my offer'), findsNothing);
     expect(find.text('TODAY HOME'), findsOneWidget);
+    // The funnel still doesn't set the flag; the home banner does that.
+    expect(prefs.discountOfferShown, isFalse);
   });
 
-  testWidgets('discount paywall never shows again once the flag is set',
+  testWidgets('free user with the flag already set still sees only the trial',
       (tester) async {
-    disableCritterAnimations(tester); // close button shows immediately
     final prefs = await _prefs({'discountOfferShown': true});
     final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
     await tester.pumpWidget(_app(prefs, fake));

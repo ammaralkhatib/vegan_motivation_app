@@ -360,9 +360,21 @@
   "@paywallClose": {
     "description": "Tooltip on the paywall close (X) button."
   },
-  "paywallInterstitialMessage": "one moment…",
-  "@paywallInterstitialMessage": {
-    "description": "Calm line under the spinner shown between the two onboarding paywalls."
+  "discountBannerTitle": "Limited offer",
+  "@discountBannerTitle": {
+    "description": "Title on the opt-in home banner for the one-time 80%-off discount."
+  },
+  "discountBannerMessage": "Get 80% off VeganKit Premium",
+  "@discountBannerMessage": {
+    "description": "Supporting line on the opt-in discount banner."
+  },
+  "discountBannerCta": "See offer",
+  "@discountBannerCta": {
+    "description": "Call-to-action button on the discount banner; opens the 80%-off paywall."
+  },
+  "discountBannerDismiss": "Dismiss offer",
+  "@discountBannerDismiss": {
+    "description": "Tooltip on the discount banner's dismiss (X) button."
   },
   "paywallPrivacy": "Privacy",
   "@paywallPrivacy": {

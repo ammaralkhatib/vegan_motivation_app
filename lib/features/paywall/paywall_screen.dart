@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -94,35 +92,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   );
   bool _busy = false;
 
-  // Close-button gating: the onboarding/discount offers fade their X in after
-  // 2 s so the offer is actually seen, not reflex-dismissed.
-  bool _closeReady = false;
-  bool _closeScheduled = false;
-  Timer? _closeTimer;
-
-  bool get _delaysClose =>
-      widget.variant == PaywallVariant.onboarding ||
-      widget.variant == PaywallVariant.discount;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_closeScheduled) return;
-    _closeScheduled = true;
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
-    if (!_delaysClose || reduceMotion) {
-      _closeReady = true;
-    } else {
-      _closeTimer = Timer(const Duration(seconds: 2), () {
-        if (mounted) setState(() => _closeReady = true);
-      });
-    }
-  }
-
   @override
   void dispose() {
-    _closeTimer?.cancel();
     _confetti.dispose();
     super.dispose();
   }
@@ -207,23 +178,17 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
               gravity: 0.25,
             ),
           ),
-          // Close (X) — fades in after a beat on the onboarding/discount offers.
+          // Close (X) — always visible and tappable from the first frame
+          // (App Review 5.6: no delay gating the user's ability to leave).
           SafeArea(
             child: Align(
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: const EdgeInsets.all(4),
-                child: IgnorePointer(
-                  ignoring: !_closeReady,
-                  child: AnimatedOpacity(
-                    opacity: _closeReady ? 1 : 0,
-                    duration: const Duration(milliseconds: 300),
-                    child: IconButton(
-                      onPressed: _close,
-                      icon: const Icon(Icons.close),
-                      tooltip: AppLocalizations.of(context).paywallClose,
-                    ),
-                  ),
+                child: IconButton(
+                  onPressed: _close,
+                  icon: const Icon(Icons.close),
+                  tooltip: AppLocalizations.of(context).paywallClose,
                 ),
               ),
             ),

@@ -110,6 +110,54 @@ void main() {
     expect(find.byType(SnackBar), findsNothing);
   });
 
+  testWidgets('onboarding paywall X is tappable on the first frame',
+      (tester) async {
+    // App Review 5.6: the close button used to fade in after 2 s on the
+    // onboarding/discount offers. It's now always live — no delay, no
+    // reduce-motion setup needed.
+    final fake = FakePurchaseService(initialPremium: false);
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        purchaseServiceProvider.overrideWithValue(fake),
+        paywallDataProvider(PaywallVariant.onboarding).overrideWith(
+          (ref) async => testPaywallData(
+            variant: PaywallVariant.onboarding,
+            trialPeriodCount: 7,
+            trialPeriodUnit: TrialPeriodUnit.day,
+          ),
+        ),
+      ],
+      child: MaterialApp(
+        theme: VeggieTheme.light(),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => Center(
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) =>
+                        const PaywallScreen(variant: PaywallVariant.onboarding),
+                  ),
+                ),
+                child: const Text('open'),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ));
+    await openPaywall(tester);
+
+    // The trial paywall is up; close it right away — no waiting on a timer.
+    expect(find.text('Start free trial'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+    expect(find.byType(PaywallScreen), findsNothing);
+    expect(find.text('open'), findsOneWidget);
+  });
+
   testWidgets('errored purchase shows the not-charged SnackBar',
       (tester) async {
     final fake = FakePurchaseService(
