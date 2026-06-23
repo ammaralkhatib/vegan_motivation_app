@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/paywall/discount_banner.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
-import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_presenter.dart';
 import 'package:vegan_motivation_app/features/streak/open_streak.dart';
 import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
+import 'support/fake_paywall_presenter.dart';
 import 'support/fake_purchase_service.dart';
 
 /// Streak result that keeps the streak banner hidden (so the discount banner
@@ -43,12 +43,15 @@ Widget _app(
   PrefsRepository prefs,
   FakePurchaseService fake, {
   OpenStreakResult streak = _noStreak,
+  FakePaywallPresenter? presenter,
 }) =>
     ProviderScope(
       overrides: [
         prefsProvider.overrideWithValue(prefs),
         purchaseServiceProvider.overrideWithValue(fake),
         appOpenStreakProvider.overrideWithValue(streak),
+        paywallPresenterProvider
+            .overrideWithValue(presenter ?? FakePaywallPresenter()),
       ],
       child: MaterialApp(
         theme: VeggieTheme.light(),
@@ -127,46 +130,19 @@ void main() {
     expect(prefs.discountOfferShown, isTrue);
   });
 
-  testWidgets('tapping the CTA opens the discount paywall, then the banner is gone',
+  testWidgets('tapping the CTA presents the discount paywall, then it is gone',
       (tester) async {
     final prefs = await _prefs({'onboardingDone': true});
     final fake = FakePurchaseService(initialPremium: false);
-
-    final router = GoRouter(
-      initialLocation: '/home',
-      routes: [
-        GoRoute(
-          path: '/home',
-          builder: (c, s) => const Scaffold(body: DiscountBanner()),
-        ),
-        GoRoute(
-          path: '/paywall/:variant',
-          builder: (c, s) => PaywallScreen(
-            variant: PaywallVariant.fromName(s.pathParameters['variant']),
-          ),
-        ),
-      ],
-    );
-
-    await tester.pumpWidget(ProviderScope(
-      overrides: [
-        prefsProvider.overrideWithValue(prefs),
-        purchaseServiceProvider.overrideWithValue(fake),
-        appOpenStreakProvider.overrideWithValue(_noStreak),
-      ],
-      child: MaterialApp.router(
-        theme: VeggieTheme.light(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
-      ),
-    ));
+    final presenter = FakePaywallPresenter();
+    await tester.pumpWidget(_app(prefs, fake, presenter: presenter));
     await tester.pump();
 
     await tester.tap(find.text('See offer'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PaywallScreen), findsOneWidget);
+    expect(presenter.presented, [PaywallVariant.discount]);
+    expect(find.text('See offer'), findsNothing);
     expect(prefs.discountOfferShown, isTrue);
   });
 }

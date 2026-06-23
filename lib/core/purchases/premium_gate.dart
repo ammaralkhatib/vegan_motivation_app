@@ -1,8 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../features/paywall/paywall_data.dart';
-import '../../features/paywall/paywall_screen.dart';
+import '../../features/paywall/paywall_presenter.dart';
 import 'purchase_providers.dart';
 
 /// The free/premium content split (CLAUDE.md §3). Free users keep two quote
@@ -30,8 +29,8 @@ final unlockedCategoryIdsProvider = Provider<Set<String>>((ref) {
   return ref.watch(isPremiumProvider) ? allCategoryIds : freeCategoryIds;
 });
 
-/// Opens the 50%-off paywall when a free user taps locked content (the
-/// `default` RevenueCat offering). Replaced the old placeholder sheet in 005.
-Future<void> showPremiumPaywall(BuildContext context) {
-  return showPaywall(context, PaywallVariant.defaultOffer);
-}
+/// Presents the 50%-off hosted paywall when a free user taps locked content
+/// (the `default` RevenueCat offering). Takes a [WidgetRef] — the presenter
+/// shows RevenueCat's paywall natively, no BuildContext needed.
+Future<void> showPremiumPaywall(WidgetRef ref) =>
+    ref.read(paywallPresenterProvider).present(PaywallVariant.defaultOffer);

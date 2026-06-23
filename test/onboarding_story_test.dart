@@ -16,8 +16,6 @@ import 'package:vegan_motivation_app/data/content_importer.dart';
 import 'package:vegan_motivation_app/features/onboarding/onboarding_flow.dart';
 import 'package:vegan_motivation_app/features/onboarding/onboarding_widgets.dart';
 import 'package:vegan_motivation_app/features/onboarding/review_prompter.dart';
-import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
-import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
 import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
 import 'helpers.dart';
@@ -33,12 +31,6 @@ GoRouter _router() => GoRouter(
       initialLocation: '/onboarding',
       routes: [
         GoRoute(path: '/onboarding', builder: (_, _) => const OnboardingFlow()),
-        GoRoute(
-          path: '/paywall/:variant',
-          builder: (c, s) => PaywallScreen(
-            variant: PaywallVariant.fromName(s.pathParameters['variant']),
-          ),
-        ),
         GoRoute(
           path: '/today',
           builder: (_, _) => const Scaffold(body: Text('TODAY HOME')),

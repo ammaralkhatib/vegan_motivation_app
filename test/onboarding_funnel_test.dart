@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
-import 'package:vegan_motivation_app/core/theme/app_theme.dart';
 import 'package:vegan_motivation_app/features/paywall/onboarding_paywall_funnel.dart';
 import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
-import 'package:vegan_motivation_app/features/paywall/paywall_screen.dart';
-import 'package:vegan_motivation_app/l10n/app_localizations.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_presenter.dart';
 
+import 'support/fake_paywall_presenter.dart';
 import 'support/fake_purchase_service.dart';
-import 'support/paywall_fixtures.dart';
 
-/// Stands in for the last onboarding slide: a button that runs the funnel then
-/// navigates to /today — exactly what `_finish()` does.
+/// Stands in for the last onboarding slide: a button that runs the funnel.
 class _FinishButton extends ConsumerWidget {
   const _FinishButton();
 
@@ -26,10 +21,7 @@ class _FinishButton extends ConsumerWidget {
       body: Center(
         child: ElevatedButton(
           key: const Key('finish'),
-          onPressed: () async {
-            await runOnboardingPaywallFunnel(context, ref);
-            if (context.mounted) context.go('/today');
-          },
+          onPressed: () => runOnboardingPaywallFunnel(ref),
           child: const Text('finish'),
         ),
       ),
@@ -37,114 +29,52 @@ class _FinishButton extends ConsumerWidget {
   }
 }
 
-GoRouter _router() => GoRouter(
-      initialLocation: '/start',
-      routes: [
-        GoRoute(path: '/start', builder: (c, s) => const _FinishButton()),
-        GoRoute(
-          path: '/paywall/:variant',
-          builder: (c, s) => PaywallScreen(
-            variant: PaywallVariant.fromName(s.pathParameters['variant']),
-          ),
-        ),
-        GoRoute(
-          path: '/today',
-          builder: (c, s) => const Scaffold(body: Text('TODAY HOME')),
-        ),
-      ],
-    );
-
-Map<String, Offering> _offerings() => {
-      'onboarding': testOffering(
-        'onboarding',
-        package: testPackage(product: testStoreProduct(intro: trial7Days)),
-      ),
-      'default': testOffering('default'),
-      'discount': testOffering(
-        'discount',
-        package: testPackage(
-          product: testStoreProduct(priceString: r'$9.99', price: 9.99),
-        ),
-      ),
-    };
-
 Future<PrefsRepository> _prefs(Map<String, Object> values) async {
   SharedPreferences.setMockInitialValues(values);
   return PrefsRepository(await SharedPreferences.getInstance());
 }
 
-Widget _app(PrefsRepository prefs, FakePurchaseService fake) => ProviderScope(
+Widget _app(
+  PrefsRepository prefs,
+  FakePurchaseService fake,
+  FakePaywallPresenter presenter,
+) =>
+    ProviderScope(
       overrides: [
         prefsProvider.overrideWithValue(prefs),
         purchaseServiceProvider.overrideWithValue(fake),
+        paywallPresenterProvider.overrideWithValue(presenter),
       ],
-      child: MaterialApp.router(
-        theme: VeggieTheme.light(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: _router(),
-      ),
+      child: const MaterialApp(home: _FinishButton()),
     );
 
 void main() {
-  testWidgets('free user: trial paywall only, then straight to Today',
+  testWidgets('free user: funnel presents the onboarding paywall only',
       (tester) async {
     final prefs = await _prefs({});
-    final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
-    await tester.pumpWidget(_app(prefs, fake));
-    await tester.pumpAndSettle();
+    final fake = FakePurchaseService(initialPremium: false);
+    final presenter = FakePaywallPresenter();
+    await tester.pumpWidget(_app(prefs, fake, presenter));
 
     await tester.tap(find.byKey(const Key('finish')));
-    await tester.pumpAndSettle();
+    await tester.pump();
 
-    // Trial paywall shows. App Review 5.6: there is no exit-intent discount,
-    // and the funnel no longer touches the one-time flag (the banner owns it).
-    expect(find.text('Start free trial'), findsOneWidget);
-    expect(prefs.discountOfferShown, isFalse);
-
-    // The X is tappable on the first frame (no delay gating it any more).
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
-
-    // Straight to Today — no second paywall, no interstitial.
-    expect(find.text('Claim my offer'), findsNothing);
-    expect(find.text('TODAY HOME'), findsOneWidget);
-    // The funnel still doesn't set the flag; the home banner does that.
+    // Only the onboarding (trial) paywall is presented — no exit discount.
+    expect(presenter.presented, [PaywallVariant.onboarding]);
+    // The funnel doesn't touch the one-time discount flag (the banner owns it).
     expect(prefs.discountOfferShown, isFalse);
   });
 
-  testWidgets('free user with the flag already set still sees only the trial',
-      (tester) async {
-    final prefs = await _prefs({'discountOfferShown': true});
-    final fake = FakePurchaseService(initialPremium: false, offerings: _offerings());
-    await tester.pumpWidget(_app(prefs, fake));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(const Key('finish')));
-    await tester.pumpAndSettle();
-
-    // Trial still shows; closing it goes straight to Today — no discount.
-    expect(find.text('Start free trial'), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.close));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Claim my offer'), findsNothing);
-    expect(find.text('TODAY HOME'), findsOneWidget);
-  });
-
-  testWidgets('premium user sees no paywalls and lands on Today',
-      (tester) async {
+  testWidgets('premium user: funnel presents nothing', (tester) async {
     final prefs = await _prefs({});
-    final fake = FakePurchaseService(initialPremium: true, offerings: _offerings());
-    await tester.pumpWidget(_app(prefs, fake));
-    await tester.pumpAndSettle();
+    final fake = FakePurchaseService(initialPremium: true);
+    final presenter = FakePaywallPresenter();
+    await tester.pumpWidget(_app(prefs, fake, presenter));
 
     await tester.tap(find.byKey(const Key('finish')));
-    await tester.pumpAndSettle();
+    await tester.pump();
 
-    expect(find.text('Start free trial'), findsNothing);
-    expect(find.text('Claim my offer'), findsNothing);
-    expect(find.text('TODAY HOME'), findsOneWidget);
-    expect(prefs.discountOfferShown, isFalse); // nothing was offered
+    expect(presenter.presented, isEmpty);
+    expect(prefs.discountOfferShown, isFalse);
   });
 }

@@ -47,6 +47,8 @@ dependencies:
   intl: ^0.20.2
   window_manager: ^0.5.1
   purchases_flutter: ^10.2.3
+  # RevenueCat hosted Paywalls UI — must track the purchases_flutter major (10).
+  purchases_ui_flutter: ^10.2.3
   in_app_review: ^2.0.12
   url_launcher: ^6.3.1
   flutter_localizations:

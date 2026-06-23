@@ -6,7 +6,7 @@ import '../../core/purchases/purchase_providers.dart';
 import '../../l10n/app_localizations.dart';
 import '../streak/open_streak.dart';
 import 'paywall_data.dart';
-import 'paywall_screen.dart';
+import 'paywall_presenter.dart';
 
 /// A dismissible top banner that offers the one-time 80%-off discount. Unlike
 /// the auto-hiding [StreakBanner], this one stays put until the user either taps
@@ -59,7 +59,8 @@ class _DiscountBannerState extends ConsumerState<DiscountBanner> {
 
   void _openPaywall() {
     setState(() => _consumed = true);
-    showPaywall(context, PaywallVariant.discount);
+    // User-initiated (Apple 5.6): present the hosted discount paywall natively.
+    ref.read(paywallPresenterProvider).present(PaywallVariant.discount);
   }
 
   void _dismiss() => setState(() => _consumed = true);

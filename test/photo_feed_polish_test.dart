@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vegan_motivation_app/core/prefs/prefs_repository.dart';
 import 'package:vegan_motivation_app/core/purchases/purchase_providers.dart';
 import 'package:vegan_motivation_app/core/theme/app_theme.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_data.dart';
+import 'package:vegan_motivation_app/features/paywall/paywall_presenter.dart';
 import 'package:vegan_motivation_app/features/quotes/quote_card.dart';
 import 'package:vegan_motivation_app/features/settings/settings_screen.dart';
 import 'package:vegan_motivation_app/l10n/app_localizations.dart';
 
+import 'support/fake_paywall_presenter.dart';
 import 'support/fake_purchase_service.dart';
 
 void main() {
@@ -34,33 +36,20 @@ void main() {
       'opens the paywall', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = PrefsRepository(await SharedPreferences.getInstance());
-
-    final router = GoRouter(
-      initialLocation: '/settings',
-      routes: [
-        GoRoute(
-          path: '/settings',
-          builder: (_, _) => const SettingsScreen(),
-        ),
-        GoRoute(
-          path: '/paywall/:variant',
-          builder: (_, _) =>
-              const Scaffold(body: Text('PAYWALL OPENED')),
-        ),
-      ],
-    );
+    final presenter = FakePaywallPresenter();
 
     await tester.pumpWidget(ProviderScope(
       overrides: [
         prefsProvider.overrideWithValue(prefs),
         purchaseServiceProvider
             .overrideWithValue(FakePurchaseService(initialPremium: false)),
+        paywallPresenterProvider.overrideWithValue(presenter),
       ],
-      child: MaterialApp.router(
+      child: MaterialApp(
         theme: VeggieTheme.light(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+        home: const SettingsScreen(),
       ),
     ));
     await tester.pumpAndSettle();
@@ -71,9 +60,9 @@ void main() {
     expect(sw.value, isFalse);
     expect(sw.onChanged, isNull);
 
-    // Tapping the row opens the default paywall.
+    // Tapping the row presents the default (50%-off) paywall.
     await tester.tap(find.text('Photo backgrounds'));
     await tester.pumpAndSettle();
-    expect(find.text('PAYWALL OPENED'), findsOneWidget);
+    expect(presenter.presented, [PaywallVariant.defaultOffer]);
   });
 }

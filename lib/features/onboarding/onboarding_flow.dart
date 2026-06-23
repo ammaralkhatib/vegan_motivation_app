@@ -150,7 +150,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     // the user back into onboarding, even after a crash.
     await prefs.setOnboardingDone(true);
     if (!mounted) return;
-    await runOnboardingPaywallFunnel(context, ref);
+    await runOnboardingPaywallFunnel(ref);
     if (mounted) context.go('/today');
   }
 

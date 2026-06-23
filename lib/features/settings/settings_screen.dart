@@ -19,7 +19,7 @@ import '../../core/widgetkit/home_widget_service.dart';
 import '../../data/content_importer.dart';
 import '../../l10n/app_localizations.dart';
 import '../paywall/paywall_data.dart';
-import '../paywall/paywall_screen.dart';
+import '../paywall/paywall_presenter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 /// Endonyms — a language's own name for itself. Kept literal and **never**
@@ -196,8 +196,9 @@ class SettingsScreen extends ConsumerWidget {
                     title: Text(l10n.settingsPremiumTitle),
                     subtitle: Text(l10n.settingsPremiumSubtitle),
                     trailing: const Icon(Icons.chevron_right),
-                    onTap: () =>
-                        showPaywall(context, PaywallVariant.defaultOffer),
+                    onTap: () => ref
+                        .read(paywallPresenterProvider)
+                        .present(PaywallVariant.defaultOffer),
                   ),
                   const Divider(height: 1, indent: 56),
                   ListTile(
@@ -232,8 +233,9 @@ class SettingsScreen extends ConsumerWidget {
                     title: Text(l10n.settingsPhotoBackgrounds),
                     subtitle: Text(l10n.settingsPhotoBackgroundsSubtitleFree),
                     trailing: const Switch(value: false, onChanged: null),
-                    onTap: () =>
-                        showPaywall(context, PaywallVariant.defaultOffer),
+                    onTap: () => ref
+                        .read(paywallPresenterProvider)
+                        .present(PaywallVariant.defaultOffer),
                   ),
           ),
           const SizedBox(height: 24),

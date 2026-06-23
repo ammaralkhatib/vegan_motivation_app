@@ -13,8 +13,6 @@ import '../features/journey/journey_screen.dart';
 import '../features/legal/legal_content.dart';
 import '../features/legal/legal_screen.dart';
 import '../features/onboarding/onboarding_flow.dart';
-import '../features/paywall/paywall_data.dart';
-import '../features/paywall/paywall_screen.dart';
 import '../features/quotes/quote_detail_screen.dart';
 import '../features/settings/notification_settings_screen.dart';
 import '../features/settings/settings_screen.dart';
@@ -67,12 +65,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/quote/:id',
         builder: (context, state) => QuoteDetailScreen(
           quoteId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
-        ),
-      ),
-      GoRoute(
-        path: '/paywall/:variant',
-        builder: (context, state) => PaywallScreen(
-          variant: PaywallVariant.fromName(state.pathParameters['variant']),
         ),
       ),
       GoRoute(
