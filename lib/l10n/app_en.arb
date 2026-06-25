@@ -6,7 +6,7 @@
     "description": "App bar title for the settings screen."
   },
 
-  "settingsPremiumTitle": "VeganKit Premium",
+  "settingsPremiumTitle": "Stay Vegan Premium",
   "@settingsPremiumTitle": {
     "description": "Title of the premium upsell row in settings."
   },
@@ -61,7 +61,7 @@
   "@settingsPhotoBackgroundsSubtitlePremium": {
     "description": "Subtitle shown for premium users on the photo backgrounds toggle."
   },
-  "settingsPhotoBackgroundsSubtitleFree": "A VeganKit Premium touch for your feed",
+  "settingsPhotoBackgroundsSubtitleFree": "A Stay Vegan Premium touch for your feed",
   "@settingsPhotoBackgroundsSubtitleFree": {
     "description": "Subtitle shown for free users on the photo backgrounds row."
   },
@@ -104,7 +104,7 @@
     "description": "Language option that follows the phone's language. Other options are language endonyms and are never translated."
   },
 
-  "settingsAbout": "About VeganKit",
+  "settingsAbout": "About Stay Vegan",
   "@settingsAbout": {
     "description": "Row opening the open-source license page."
   },
@@ -224,7 +224,7 @@
     "description": "Dinner meal card title."
   },
 
-  "paywallOnboardingTitle": "Start your VeganKit journey",
+  "paywallOnboardingTitle": "Start your Stay Vegan journey",
   "@paywallOnboardingTitle": {
     "description": "Headline on the end-of-onboarding trial paywall."
   },
@@ -232,11 +232,11 @@
   "@paywallOnboardingCta": {
     "description": "Primary button on the trial paywall."
   },
-  "paywallDefaultTitle": "Unlock VeganKit Premium",
+  "paywallDefaultTitle": "Unlock Stay Vegan Premium",
   "@paywallDefaultTitle": {
     "description": "Headline on the 50%-off (default) paywall."
   },
-  "paywallDefaultCta": "Unlock VeganKit Premium",
+  "paywallDefaultCta": "Unlock Stay Vegan Premium",
   "@paywallDefaultCta": {
     "description": "Primary button on the 50%-off paywall."
   },
@@ -364,7 +364,7 @@
   "@discountBannerTitle": {
     "description": "Title on the opt-in home banner for the one-time 80%-off discount."
   },
-  "discountBannerMessage": "Get 80% off VeganKit Premium",
+  "discountBannerMessage": "Get 80% off Stay Vegan Premium",
   "@discountBannerMessage": {
     "description": "Supporting line on the opt-in discount banner."
   },
@@ -417,7 +417,7 @@
   "@onboardingProblemBody": {
     "description": "S2 body."
   },
-  "onboardingSolutionHeadline": "VeganKit keeps your why in front of you",
+  "onboardingSolutionHeadline": "Stay Vegan keeps your why in front of you",
   "@onboardingSolutionHeadline": {
     "description": "S3 headline. The word in onboardingSolutionEmphasis is highlighted within it."
   },
@@ -485,7 +485,7 @@
   "@onboardingBridgeHeadline2Emphasis": {
     "description": "Emphasized substring inside onboardingBridgeHeadline2."
   },
-  "onboardingGoalsTitle": "what do you want from VeganKit?",
+  "onboardingGoalsTitle": "what do you want from Stay Vegan?",
   "@onboardingGoalsTitle": {
     "description": "Goals multi-select title."
   },
@@ -557,7 +557,7 @@
   "@onboardingGoalsReflectionHeadline": {
     "description": "S10 reassurance headline."
   },
-  "onboardingGoalsReflectionBody": "every journey here starts with the same goals — VeganKit was built for exactly this.",
+  "onboardingGoalsReflectionBody": "every journey here starts with the same goals — Stay Vegan was built for exactly this.",
   "@onboardingGoalsReflectionBody": {
     "description": "S10 reassurance body."
   },
@@ -691,7 +691,7 @@
   "@onboardingReflectionDipsUnknown": {
     "description": "S15 reflection dips line when the dip count is unknown."
   },
-  "onboardingReflectionClose": "VeganKit was made for exactly this moment.",
+  "onboardingReflectionClose": "Stay Vegan was made for exactly this moment.",
   "@onboardingReflectionClose": {
     "description": "S15 closing reflection line."
   },
@@ -727,7 +727,7 @@
   "@onboardingChartBody": {
     "description": "S17 chart step body."
   },
-  "onboardingChartLegendWith": "with VeganKit",
+  "onboardingChartLegendWith": "with Stay Vegan",
   "@onboardingChartLegendWith": {
     "description": "Chart legend for the rising curve."
   },
@@ -952,7 +952,7 @@
   "@onboardingNotifAllowSave": {
     "description": "Primary button: request permission and save notification settings."
   },
-  "onboardingNotifPreviewSender": "VeganKit 🌱",
+  "onboardingNotifPreviewSender": "Stay Vegan 🌱",
   "@onboardingNotifPreviewSender": {
     "description": "Sender line in the decorative notification preview card."
   },
@@ -984,7 +984,7 @@
   "@onboardingNotifEduSettingsHint": {
     "description": "Snackbar hint when the OS settings deep link can't be opened."
   },
-  "onboardingSocialTitle": "VeganKit was made for people like you",
+  "onboardingSocialTitle": "Stay Vegan was made for people like you",
   "@onboardingSocialTitle": {
     "description": "S27 social-proof step title."
   },
@@ -1004,7 +1004,7 @@
   "@onboardingSocialBody": {
     "description": "Social-proof step body."
   },
-  "onboardingSocialCta": "join VeganKit 🌱",
+  "onboardingSocialCta": "join Stay Vegan 🌱",
   "@onboardingSocialCta": {
     "description": "Final onboarding CTA."
   },

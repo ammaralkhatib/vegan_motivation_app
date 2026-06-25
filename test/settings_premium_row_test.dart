@@ -39,11 +39,11 @@ Future<Widget> settingsApp({
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('free user sees the VeganKit Premium row', (tester) async {
+  testWidgets('free user sees the Stay Vegan Premium row', (tester) async {
     await tester.pumpWidget(await settingsApp(premium: false));
     await tester.pumpAndSettle();
 
-    expect(find.text('VeganKit Premium'), findsOneWidget);
+    expect(find.text('Stay Vegan Premium'), findsOneWidget);
   });
 
   testWidgets('premium user sees the Subscription card, not the upsell', (
@@ -61,7 +61,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // The upsell / restore card is gone.
-    expect(find.text('VeganKit Premium'), findsNothing);
+    expect(find.text('Stay Vegan Premium'), findsNothing);
     expect(find.text('Restore purchases'), findsNothing);
     // The subscription card is shown with its manage button.
     expect(find.text('Subscription'), findsOneWidget);

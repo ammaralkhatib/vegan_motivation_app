@@ -20,11 +20,11 @@ class LegalSection {
 /// Last-updated stamp shown at the top of both documents.
 const String legalLastUpdated = 'Last updated: 13 June 2026';
 
-/// Privacy Policy — verbatim from the VeganKit website (Appendix A).
+/// Privacy Policy — verbatim from the Stay Vegan website (Appendix A).
 const List<LegalSection> privacyPolicySections = [
   LegalSection(
     paragraphs: [
-      'The short version: VeganKit does not collect, store, or transmit any '
+      'The short version: Stay Vegan does not collect, store, or transmit any '
           'personal data. There is no account, no analytics, and no '
           'third-party tracking. Everything stays on your device.',
     ],
@@ -32,7 +32,7 @@ const List<LegalSection> privacyPolicySections = [
   LegalSection(
     heading: '1. Who we are',
     paragraphs: [
-      'VeganKit ("the app", "we", "us") is a mobile application that provides '
+      'Stay Vegan ("the app", "we", "us") is a mobile application that provides '
           'daily vegan motivation, gentle habit tracking, and an estimated '
           'impact journey. This policy explains how the app handles '
           'information. If you have any questions, contact us at '
@@ -42,7 +42,7 @@ const List<LegalSection> privacyPolicySections = [
   LegalSection(
     heading: '2. Data we collect',
     paragraphs: [
-      'None. VeganKit is designed to work entirely on your device, fully '
+      'None. Stay Vegan is designed to work entirely on your device, fully '
           'offline. We do not ask you to create an account, we do not request '
           'your name, email, or location, and we do not operate a server that '
           'receives your information.',
@@ -73,7 +73,7 @@ const List<LegalSection> privacyPolicySections = [
   LegalSection(
     heading: '5. Analytics, advertising & tracking',
     paragraphs: [
-      "VeganKit contains no analytics SDKs, no advertising, and no third-party "
+      "Stay Vegan contains no analytics SDKs, no advertising, and no third-party "
           "trackers. We do not build a profile of you and we do not sell or "
           "share any information, because we don't collect any.",
     ],
@@ -81,7 +81,7 @@ const List<LegalSection> privacyPolicySections = [
   LegalSection(
     heading: "6. Children's privacy",
     paragraphs: [
-      'VeganKit is suitable for general audiences and does not knowingly '
+      'Stay Vegan is suitable for general audiences and does not knowingly '
           'collect any information from anyone, including children. Because no '
           'data is collected, there is nothing to request, correct, or delete '
           'on our servers.',
@@ -90,7 +90,7 @@ const List<LegalSection> privacyPolicySections = [
   LegalSection(
     heading: '7. App stores',
     paragraphs: [
-      "When you download VeganKit, the Apple App Store or Google Play may "
+      "When you download Stay Vegan, the Apple App Store or Google Play may "
           "collect information under their own privacy policies as part of the "
           "download and payment process. That activity is governed by Apple's "
           "and Google's policies, not ours.",
@@ -122,11 +122,11 @@ const List<LegalSection> privacyPolicySections = [
   ),
 ];
 
-/// Terms of Use — verbatim from the VeganKit website (Appendix B).
+/// Terms of Use — verbatim from the Stay Vegan website (Appendix B).
 const List<LegalSection> termsOfUseSections = [
   LegalSection(
     paragraphs: [
-      "Welcome to VeganKit. By downloading or using the app, you agree to "
+      "Welcome to Stay Vegan. By downloading or using the app, you agree to "
           "these Terms of Use. Please read them carefully. If you don't agree, "
           "please don't use the app.",
     ],
@@ -134,7 +134,7 @@ const List<LegalSection> termsOfUseSections = [
   LegalSection(
     heading: '1. The app',
     paragraphs: [
-      'VeganKit provides daily vegan motivational content, optional habit '
+      'Stay Vegan provides daily vegan motivational content, optional habit '
           'tracking, and an estimated impact journey. The app is provided free '
           'of charge and is intended for personal, non-commercial use.',
     ],
@@ -143,7 +143,7 @@ const List<LegalSection> termsOfUseSections = [
     heading: '2. License',
     paragraphs: [
       'We grant you a personal, non-exclusive, non-transferable, revocable '
-          'license to use VeganKit on devices you own or control, for your own '
+          'license to use Stay Vegan on devices you own or control, for your own '
           'personal use, in accordance with these terms and the rules of the '
           'app store you downloaded it from.',
     ],
@@ -160,7 +160,7 @@ const List<LegalSection> termsOfUseSections = [
   LegalSection(
     heading: '4. Content & quotes',
     paragraphs: [
-      'The motivational quotes, tips, and other content in VeganKit are '
+      'The motivational quotes, tips, and other content in Stay Vegan are '
           'provided for inspiration and general information only. They are not '
           'professional, medical, nutritional, or dietary advice. Always '
           'consult a qualified professional before making significant changes '
@@ -180,14 +180,14 @@ const List<LegalSection> termsOfUseSections = [
     heading: '6. Intellectual property',
     paragraphs: [
       'The app, its design, branding, illustrations, and original content are '
-          'owned by VeganKit and protected by applicable intellectual property '
+          'owned by Stay Vegan and protected by applicable intellectual property '
           'laws. These terms do not transfer any ownership rights to you.',
     ],
   ),
   LegalSection(
     heading: '7. Disclaimer of warranties',
     paragraphs: [
-      'VeganKit is provided "as is" and "as available," without warranties of '
+      'Stay Vegan is provided "as is" and "as available," without warranties of '
           'any kind, express or implied, including fitness for a particular '
           'purpose. We do not guarantee that the app will be uninterrupted, '
           'error-free, or available at all times.',
@@ -196,7 +196,7 @@ const List<LegalSection> termsOfUseSections = [
   LegalSection(
     heading: '8. Limitation of liability',
     paragraphs: [
-      'To the maximum extent permitted by law, VeganKit and its creators will '
+      'To the maximum extent permitted by law, Stay Vegan and its creators will '
           'not be liable for any indirect, incidental, special, or '
           'consequential damages arising from your use of, or inability to '
           'use, the app.',
@@ -214,7 +214,7 @@ const List<LegalSection> termsOfUseSections = [
   LegalSection(
     heading: '10. Governing terms of the app stores',
     paragraphs: [
-      "Your use of VeganKit obtained through the Apple App Store or Google "
+      "Your use of Stay Vegan obtained through the Apple App Store or Google "
           "Play is also subject to that store's terms and policies, which apply "
           "in addition to these terms.",
     ],

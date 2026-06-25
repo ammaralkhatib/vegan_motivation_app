@@ -154,7 +154,7 @@ class NotificationService {
     for (final plan in plans) {
       await _plugin.zonedSchedule(
         plan.notificationId,
-        'VeganKit 🌱',
+        'Stay Vegan 🌱',
         // Full quote in the plain body — Apple Watch / Wear OS mirror it.
         plan.body,
         tz.TZDateTime.from(plan.fireAt, tz.local),

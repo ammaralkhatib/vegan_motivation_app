@@ -154,7 +154,7 @@ extension _Drive on WidgetTester {
     await tapContinue('allow & save');
     await tap(find.text('continue without notifications'));
     await pumpAndSettle();
-    await tapContinue('join VeganKit 🌱'); // S27 → finish
+    await tapContinue('join Stay Vegan 🌱'); // S27 → finish
   }
 }
 
@@ -248,7 +248,7 @@ void main() {
     // Next is S15, not the journey-date step.
     expect(find.text('when did your journey start?'), findsNothing);
     expect(
-      find.textContaining('VeganKit was made for exactly this moment'),
+      find.textContaining('Stay Vegan was made for exactly this moment'),
       findsOneWidget,
     );
 
