@@ -76,9 +76,9 @@ Manual click-path (needs a device/simulator — not run here):
 
 ## Commit & push
 
-- **Commit:** `<filled after commit>` — `feat(notifications): new spread defaults
-  (6/day, 7:30–21:30), habit reminders default on + moved to detail screen`
-- **Push:** `origin/main` — `<filled after push>`
+- **Commit:** `fce1726` — `feat(notifications): new spread defaults (6/day,
+  7:30–21:30), habit reminders default on + moved to detail screen`
+- **Push:** `origin/main` — ok (`8ee58d4..fce1726`)
 
 ## Open items for the owner
 
