@@ -89,7 +89,7 @@ class _VeggieAppState extends ConsumerState<VeggieApp>
     final locale = ref.watch(appLocaleProvider);
 
     return MaterialApp.router(
-      title: 'VeganKit',
+      title: 'Stay Vegan',
       debugShowCheckedModeBanner: false,
       theme: VeggieTheme.light(),
       darkTheme: VeggieTheme.dark(),
