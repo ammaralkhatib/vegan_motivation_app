@@ -131,16 +131,16 @@ class PrefsRepository {
   Future<void> setNotifEnabled(bool value) =>
       _prefs.setBool(_kNotifEnabled, value);
 
-  int get notifPerDay => _prefs.getInt(_kNotifPerDay) ?? 3;
+  int get notifPerDay => _prefs.getInt(_kNotifPerDay) ?? 6;
   Future<void> setNotifPerDay(int value) =>
       _prefs.setInt(_kNotifPerDay, value);
 
-  /// Notification window, minutes from midnight. Default 9:00–21:00.
-  int get notifWindowStart => _prefs.getInt(_kNotifWindowStart) ?? 9 * 60;
+  /// Notification window, minutes from midnight. Default 7:30–21:30.
+  int get notifWindowStart => _prefs.getInt(_kNotifWindowStart) ?? 7 * 60 + 30;
   Future<void> setNotifWindowStart(int value) =>
       _prefs.setInt(_kNotifWindowStart, value);
 
-  int get notifWindowEnd => _prefs.getInt(_kNotifWindowEnd) ?? 21 * 60;
+  int get notifWindowEnd => _prefs.getInt(_kNotifWindowEnd) ?? 21 * 60 + 30;
   Future<void> setNotifWindowEnd(int value) =>
       _prefs.setInt(_kNotifWindowEnd, value);
 

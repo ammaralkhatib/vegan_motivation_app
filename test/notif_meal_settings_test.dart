@@ -22,6 +22,10 @@ void main() {
     final s = container.read(notifSettingsProvider);
 
     expect(s.mode, NotifMode.spread);
+    // Spread defaults: 6/day across a 7:30 AM–9:30 PM window.
+    expect(s.perDay, 6);
+    expect(s.windowStartMin, 7 * 60 + 30);
+    expect(s.windowEndMin, 21 * 60 + 30);
     expect(s.breakfast.enabled, isTrue);
     expect(s.breakfast.timeMin, 8 * 60);
     expect(s.lunch.timeMin, 13 * 60);

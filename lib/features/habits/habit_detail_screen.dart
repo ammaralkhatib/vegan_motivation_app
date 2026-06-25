@@ -5,15 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/db/database.dart';
+import '../../core/notifications/notification_service.dart';
 import '../../core/utils/date_utils.dart';
 import '../../l10n/app_localizations.dart';
 import 'habit_calendar.dart';
 import 'providers.dart';
 import 'streak_engine.dart';
 
-/// One habit's detail screen: streak stats, a "mark today" toggle, and a
-/// month-browsable calendar where today and past days can be backfilled. Edit
-/// (name/emoji/reminder) reuses the existing [HabitEditScreen] via its route.
+/// One habit's detail screen: streak stats, a "mark today" toggle, a daily
+/// reminder control, and a month-browsable calendar where today and past days
+/// can be backfilled. Edit (name/emoji) reuses [HabitEditScreen] via its route.
 class HabitDetailScreen extends ConsumerStatefulWidget {
   const HabitDetailScreen({super.key, required this.habitId});
 
@@ -26,6 +27,9 @@ class HabitDetailScreen extends ConsumerStatefulWidget {
 class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
   /// First-of-month for the calendar currently shown.
   late DateTime _visibleMonth;
+
+  /// Reminder time used when the switch is turned on (9:00 AM).
+  static const int _defaultReminderMinutes = 9 * 60;
 
   @override
   void initState() {
@@ -107,9 +111,86 @@ class _HabitDetailScreenState extends ConsumerState<HabitDetailScreen> {
             ),
           ),
           const SizedBox(height: 16),
+          _reminderCard(theme, l, habit),
+          const SizedBox(height: 16),
           _calendarCard(theme, days, today),
         ],
       ),
+    );
+  }
+
+  /// "Daily reminder" card. Reads its state straight from [habit] (the screen
+  /// watches the row), so it stays in sync with the DB instead of holding local
+  /// state that could drift.
+  Widget _reminderCard(ThemeData theme, AppLocalizations l, Habit habit) {
+    final minutes = habit.reminderMinutes;
+    final on = minutes != null;
+    return Card(
+      child: Column(
+        children: [
+          SwitchListTile(
+            title: Text(l.habitsReminderSectionTitle),
+            subtitle: Text(l.habitsReminderSubtitle),
+            value: on,
+            onChanged: (value) =>
+                value ? _enableReminder(habit) : _disableReminder(habit),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+          ),
+          if (on)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  onPressed: () => _pickReminderTime(habit, minutes),
+                  icon: const Icon(Icons.schedule),
+                  label: Text(
+                    '${l.habitsReminderSetTime} · '
+                    '${TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60).format(context)}',
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// Turns the reminder on at the default time, asks for permission the first
+  /// time (off → on), and schedules it. Best-effort: never throws to the UI.
+  Future<void> _enableReminder(Habit habit) async {
+    final dao = ref.read(databaseProvider).habitDao;
+    final service = NotificationService.instance;
+    await dao.setHabitReminder(habit.id, _defaultReminderMinutes);
+    await service.requestPermission();
+    await service.scheduleHabitReminder(
+      habitId: habit.id,
+      name: habit.name,
+      emoji: habit.emoji,
+      reminderMinutes: _defaultReminderMinutes,
+    );
+  }
+
+  Future<void> _disableReminder(Habit habit) async {
+    final dao = ref.read(databaseProvider).habitDao;
+    await dao.setHabitReminder(habit.id, null);
+    await NotificationService.instance.cancelHabitReminder(habit.id);
+  }
+
+  Future<void> _pickReminderTime(Habit habit, int current) async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: current ~/ 60, minute: current % 60),
+    );
+    if (picked == null) return;
+    final minutes = picked.hour * 60 + picked.minute;
+    final dao = ref.read(databaseProvider).habitDao;
+    await dao.setHabitReminder(habit.id, minutes);
+    await NotificationService.instance.scheduleHabitReminder(
+      habitId: habit.id,
+      name: habit.name,
+      emoji: habit.emoji,
+      reminderMinutes: minutes,
     );
   }
 

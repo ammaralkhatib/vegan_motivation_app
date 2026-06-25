@@ -59,9 +59,9 @@ class SlotPlan {
 /// Plans the rolling batch of notification slots.
 ///
 /// iOS caps pending local notifications at 64 — we budget ≤ 60 and keep at
-/// least 3 days of runway even at 10/day:
+/// least 3 days of runway even at 12/day:
 ///   daysAhead = clamp(60 ~/ perDay, 3, 14)  →  perDay*daysAhead ≤ 60
-/// (except perDay ≥ 10 where 3 days × 10 = 30, still well under).
+/// (except perDay ≥ 12 where 5 days × 12 = 60, still within the 64 cap).
 ///
 /// Fire times: the daily window is split into [perDay] equal segments, each
 /// slot fires at a deterministic jittered point inside its segment
@@ -74,7 +74,7 @@ List<SlotPlan> planSlots({
   required DateTime now,
   required List<SchedulableQuote> quotes,
 }) {
-  assert(perDay >= 1 && perDay <= 10);
+  assert(perDay >= 1 && perDay <= 12);
   if (quotes.isEmpty) return const [];
   final windowLen = windowEndMin - windowStartMin;
   if (windowLen <= 0) return const [];

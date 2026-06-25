@@ -10,8 +10,8 @@ void main() {
   final now = DateTime(2026, 6, 11, 8, 0); // before the default window
 
   group('planSlots', () {
-    test('stays at or under 60 pending for every perDay 1–10', () {
-      for (var perDay = 1; perDay <= 10; perDay++) {
+    test('stays within the iOS-64 cap for every perDay 1–12', () {
+      for (var perDay = 1; perDay <= 12; perDay++) {
         final plans = planSlots(
           perDay: perDay,
           windowStartMin: 9 * 60,
@@ -19,11 +19,24 @@ void main() {
           now: now,
           quotes: quotes(100),
         );
-        expect(plans.length, lessThanOrEqualTo(60),
+        expect(plans.length, lessThanOrEqualTo(64),
             reason: 'perDay=$perDay produced ${plans.length}');
         expect(plans.length, greaterThanOrEqualTo(3 * perDay - perDay),
             reason: 'at least ~3 days of runway for perDay=$perDay');
       }
+    });
+
+    test('perDay 12 stays at or under 64 pending', () {
+      // daysAhead = clamp(60 ~/ 12, 3, 14) = 5, so 12 × 5 = 60 ≤ 64.
+      final plans = planSlots(
+        perDay: 12,
+        windowStartMin: 9 * 60,
+        windowEndMin: 21 * 60,
+        now: now,
+        quotes: quotes(100),
+      );
+      expect(plans.length, lessThanOrEqualTo(64));
+      expect(plans.length, 60);
     });
 
     test('every fire time falls inside the configured window', () {

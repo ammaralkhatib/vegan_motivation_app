@@ -107,8 +107,8 @@ class NotificationSettingsScreen extends ConsumerWidget {
             child: Slider(
               value: settings.perDay.toDouble(),
               min: 1,
-              max: 10,
-              divisions: 9,
+              max: 12,
+              divisions: 11,
               label: l10n.notificationsPerDayCount(settings.perDay),
               onChanged: (v) => notifier.setPerDay(v.round()),
             ),

@@ -102,7 +102,7 @@ class NotifSettingsNotifier extends Notifier<NotifSettings> {
   }
 
   Future<void> setPerDay(int value) async {
-    await ref.read(prefsProvider).setNotifPerDay(value.clamp(1, 10));
+    await ref.read(prefsProvider).setNotifPerDay(value.clamp(1, 12));
     ref.invalidateSelf();
   }
 
